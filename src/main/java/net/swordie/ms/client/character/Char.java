@@ -3327,9 +3327,7 @@ public class Char {
             write(FieldPacket.clock(ClockPacket.secondsClock(getInstance().getRemainingTime())));
         }
         showSkillOnOffEffect();
-        // slide msg
         getClient().getChannelInstance().broadcastPacket(WvsContext.broadcastMessage(4, getClient().getChannel(), ServerConfig.SLIDE_MSG, false));
-
     }
 
     public void initFriendStatus() {

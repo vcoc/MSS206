@@ -1515,7 +1515,7 @@ public class Field {
      */
     public void generateMobs(boolean init) {
         if (init || getChars().size() > 0) {
-            boolean buffed = (this.getChannel() >= GameConstants.BUFFED_CH_ST && this.getChannel() <= GameConstants.BUFFED_CH_END);
+            boolean buffed = isBuffedField();
             int currentMobs = getMobs().size();
             List<MobGen> shuffledMobs = new ArrayList<>(getMobGens());
             // shuffle so the mobs spawn on random positions, instead of a fixed order
@@ -1575,6 +1575,10 @@ public class Field {
 
     public void removeOpenGate(OpenGate openGate) {
         getOpenGates().remove(openGate);
+    }
+
+    public boolean isBuffedField() {
+        return (this.getChannel() >= GameConstants.BUFFED_CH_ST && this.getChannel() <= GameConstants.BUFFED_CH_END);
     }
 
     public boolean isChannelField() {

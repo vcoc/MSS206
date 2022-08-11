@@ -141,6 +141,9 @@ public class MigrationHandler {
         acc.initAuctions();
         chr.recalcStats(EnumSet.of(BaseStat.mhp, BaseStat.mmp));
         chr.checkHotTimeRewards();
+        if (chr.getField().isBuffedField()) {
+            chr.chatScriptMessage(ServerConfig.BUFFED_CH_MSG);
+        }
     }
 
 

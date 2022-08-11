@@ -21,7 +21,6 @@ import java.util.*;
  */
 public class GameConstants {
     public static final int CHANNELS_PER_WORLD = 3;
-    public static final int BUFFED_CHANNELS = 3;
     public static final int BUFFED_CH_ST = 2;
     public static final int BUFFED_CH_END = 3;
     public static final int MOB_EXP_RATE = 10;
