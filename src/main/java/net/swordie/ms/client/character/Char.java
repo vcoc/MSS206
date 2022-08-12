@@ -3025,6 +3025,10 @@ public class Char {
         this.marriageRecord = marriageRecord;
     }
 
+    public boolean isGM() {
+        return this.getUser().getAccountType().ordinal() >= AccountType.GameMaster.ordinal();
+    }
+
     public boolean isHide() {
         return hide;
     }
@@ -3034,7 +3038,7 @@ public class Char {
             return;
         }
         this.hide = hide;
-        chatMessage(String.format("Hide is %s.", (hide ? "enabled" : "disabled")));
+        chatScriptMessage(String.format("Hide is %s.", (hide ? "enabled" : "disabled")));
         write(FieldPacket.setHideEffect(hide));
         if (getField() == null) {
             return;

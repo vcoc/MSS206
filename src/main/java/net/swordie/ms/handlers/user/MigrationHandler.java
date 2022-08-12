@@ -144,8 +144,10 @@ public class MigrationHandler {
         if (chr.getField().isBuffedField()) {
             chr.chatScriptMessage(ServerConfig.BUFFED_CH_MSG);
         }
+        if (GameConstants.HIDE_ON_LOGIN && chr.isGM()) {
+            chr.setHide(true);
+        }
     }
-
 
     @Handler(op = InHeader.USER_TRANSFER_FIELD_REQUEST)
     public static void handleUserTransferFieldRequest(Client c, InPacket inPacket) {

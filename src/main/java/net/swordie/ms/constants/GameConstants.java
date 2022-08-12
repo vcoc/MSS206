@@ -44,7 +44,7 @@ public class GameConstants {
     public static final int PLAYER_HUB_MAP = 100000000; // Henesys
 
     // GameMaster
-    public static final boolean HIDE_ON_LOGIN = false;
+    public static final boolean HIDE_ON_LOGIN = true;
 
     // Inventory
     public static final int MAX_INV_SLOTS = 128;
