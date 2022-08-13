@@ -1,1 +1,1 @@
-sm.sendSayOkay("(Npc) Not coded. Admin was lazy and didn't fix this :). ID: " + str(parentID))
+sm.sendSayOkay("Unhandled npc script ID: " + str(parentID))
