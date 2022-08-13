@@ -291,7 +291,6 @@ public class LoginHandler {
         short curSelectedSubJob = inPacket.decodeShort();
         byte gender = inPacket.decodeByte();
         byte skin = inPacket.decodeByte();
-
         byte itemLength = inPacket.decodeByte();
         int[] items = new int[itemLength]; //face, hair, markings, skin, overall, top, bottom, cape, boots, weapon
         for (int i = 0; i < itemLength; i++) {
@@ -306,7 +305,6 @@ public class LoginHandler {
             c.getUser().getOffenseManager().addOffense("Tried to add items unavailable on character creation.");
             code = CharNameResult.Unavailable_CashItem;
         }
-
         if (!GameConstants.isValidName(name)) {
             code = CharNameResult.Unavailable_Invalid;
         } else if (Char.getFromDBByNameAndWorld(name, acc.getWorldId()) != null) {
@@ -323,7 +321,6 @@ public class LoginHandler {
                 curSelectedSubJob, curSelectedRace, gender, skin, face, hair, items);
         chr.setUserId(acc.getUser().getId());
         JobManager.getJobById(job.getJobId(), chr).setCharCreationStats(chr);
-
         chr.initFuncKeyMaps(keySettingType, JobConstants.isBeastTamer(chr.getJob()));
         // chr.setFuncKeyMap(FuncKeyMap.getDefaultMapping());
         // default quick slot keys
@@ -334,7 +331,6 @@ public class LoginHandler {
         if (curSelectedRace == JobConstants.LoginJob.DUAL_BLADE.getJobType()) {
             cs.setSubJob(1);
         }
-
         cs.setCharacterId(chr.getId());
         cs.setCharacterIdForLog(chr.getId());
         cs.setWorldIdForLog(acc.getWorldId());
@@ -357,6 +353,7 @@ public class LoginHandler {
         }
         chr.setLocation(ServerConstants.MAX_CHARACTERS); // so new characters are appended to the end
         acc.addCharacter(chr);
+        DatabaseManager.saveToDB(acc);
         c.write(Login.createNewCharacterResult(LoginType.Success, chr));
     }
 
@@ -370,11 +367,11 @@ public class LoginHandler {
             if (!Util.isStringBCrypt(user.getPic())) {
                 user.setPic(BCrypt.hashpw(user.getPic(), BCrypt.gensalt(ServerConstants.BCRYPT_ITERATIONS)));
             }
-
             if (BCrypt.checkpw(pic, user.getPic())) {
                 Char chr = acc.getCharById(charId);
                 if (chr != null) {
                     acc.removeChar(chr);
+                    DatabaseManager.saveToDB(acc);
                     c.write(Login.sendDeleteCharacterResult(charId, LoginType.Success));
                 } else {
                     c.write(Login.sendDeleteCharacterResult(charId, LoginType.UnauthorizedUser));
@@ -383,7 +380,6 @@ public class LoginHandler {
                 c.write(Login.selectCharacterResult(LoginType.IncorrectPassword, (byte) 0, 0, 0));
             }
         }
-        // TODO: Update database when deleting a character.
     }
 
     @Handler(op = InHeader.CLIENT_ERROR)
