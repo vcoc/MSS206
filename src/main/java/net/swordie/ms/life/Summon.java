@@ -464,11 +464,13 @@ public class Summon extends Life {
                 ((BattleMage) chr.getJobHandler()).getAnnihilationAltarList().remove(0); // remove first altar in the list.
                 break;
             case Kanna.KISHIN_SHOUKAN:
-            case Job.MONOLITH:
                 getField().setKishin(false);
                 break;
+            case Job.MONOLITH:
+                getField().setFrenzyTotem(false);
+                break;
             case Job.FURY_TOTEM:
-                getField().setKishin(false);
+                getField().setFuryTotem(false);
                 break;
             case Jett.GRAVITY_CRUSH:
                 SkillInfo si = SkillData.getSkillInfoById(skillId);

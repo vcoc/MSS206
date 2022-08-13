@@ -432,14 +432,14 @@ public abstract class Job {
                         field = c.getChr().getField();
                         summon.setMoveAbility(MoveAbility.Stop);
                         field.spawnSummon(summon);
-                        field.setKishin(true);
+                        field.setFrenzyTotem(true);
                         break;
                     case FURY_TOTEM:
                         summon = Summon.getSummonByNoCTS(c.getChr(), skillID, slv);
                         field = c.getChr().getField();
                         summon.setMoveAbility(MoveAbility.Stop);
                         field.spawnSummon(summon);
-                        field.setKishin(true);
+                        field.setFuryTotem(true);
                         break;
                     case WHITE_ANGELIC_BLESSING:
                     case WHITE_ANGELIC_BLESSING_2:

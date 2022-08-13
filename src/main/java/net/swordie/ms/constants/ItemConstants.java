@@ -50,6 +50,9 @@ public class ItemConstants {
 
     public static final int GAGAGUCCI = 5680047;
 
+    public static final int FRENZY_TOTEM = 1202236;
+    public static final int FURY_TOTEM = 1202267;
+
     public static final int RED_CUBE = 5062009;
     public static final int BLACK_CUBE = 5062010;
 

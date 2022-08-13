@@ -37,7 +37,6 @@ public class PetHandler {
 
     private static final Logger log = Logger.getLogger(PetHandler.class);
 
-
     @Handler(op = InHeader.USER_ACTIVATE_PET_REQUEST)
     public static void handleUserActivatePetRequest(Client c, InPacket inPacket) {
         Char chr = c.getChr();
@@ -157,6 +156,7 @@ public class PetHandler {
         String msg = inPacket.decodeString();
         chr.getField().broadcastPacket(UserLocal.petActionSpeak(chr, idk, msg));
     }
+
     @Handler(op = InHeader.PET_MOVE)
     public static void handlePetMove(Char chr, InPacket inPacket) {
         Field field = chr.getField();
@@ -172,7 +172,6 @@ public class PetHandler {
             movementInfo.applyTo(pet);
             chr.getField().broadcastPacket(UserLocal.petMove(chr.getId(), petID, movementInfo), chr);
         }
-
         if (pet != null) {
             if (!chr.hasSkillOnCooldown(SkillConstants.DUMMY_FOR_PVAC) && chr.getRecordFromQuestEx(QuestConstants.PVAC_DATA, "vac") == 1) {
                 Set<Drop> dropsInMap = field.getDrops();
@@ -185,11 +184,10 @@ public class PetHandler {
                         field.removeDrop(dropID, chr.getId(), false, petID);
                     }
                 }
-                chr.addSkillCoolTime(SkillConstants.DUMMY_FOR_PVAC, 15000);
+                chr.addSkillCoolTime(SkillConstants.DUMMY_FOR_PVAC, SkillConstants.PVAC_COOLDOWN);
             }
         }
     }
-
 
     @Handler(op = InHeader.SKILL_PET_MOVE)
     public static void handleHakuMove(Char chr, InPacket inPacket) {
@@ -200,7 +198,6 @@ public class PetHandler {
         movementInfo.applyTo(chr);
         chr.getField().broadcastPacket(UserLocal.hakuMove(chr.getId(), hakuID, movementInfo), chr);
     }
-
 
     @Handler(op = InHeader.PET_DROP_PICK_UP_REQUEST)
     public static void handlePetDropPickUpRequest(Char chr, InPacket inPacket) {

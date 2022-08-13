@@ -672,7 +672,11 @@ public class Char {
         }
         Inventory inventory = getInventoryByType(type);
         if (inventory == null || inventory.isFull()) {
-            throw new IllegalStateException("Cannot add item to a full inventory.");
+            if (inventory != null) {
+                this.chatMessage("You don't have enough space in your '%s' inventory.", inventory.getType().name());
+            } else {
+                throw new IllegalStateException("Cannot add item to a null inventory.");
+            }
         }
         ItemInfo ii = ItemData.getItemInfoByID(item.getItemId());
         int quantity = item.getQuantity();
@@ -5519,11 +5523,8 @@ public class Char {
                 getEtcInventory(), getInstallInventory(), getCashInventory()};
         Set<Item> expiredItems = new HashSet<>();
         for (Inventory inv : inventories) {
-            expiredItems.addAll(
-                    inv.getItems().stream()
-                            .filter(item -> item.getDateExpire().isExpired())
-                            .collect(Collectors.toSet())
-            );
+            expiredItems.addAll(inv.getItems().stream().filter(item -> item.getDateExpire().isExpired())
+                    .collect(Collectors.toSet()));
         }
         List<Integer> expiredItemIDs = expiredItems.stream().map(Item::getItemId).collect(Collectors.toList());
         write(WvsContext.message(MessageType.GENERAL_ITEM_EXPIRE_MESSAGE, expiredItemIDs));
@@ -5533,7 +5534,16 @@ public class Char {
                 int qid = QuestConstants.PVAC_DATA;
                 if (getRecordFromQuestEx(qid, "vac") == 1) {
                     setQuestRecordEx(qid, "vac", 0);
-                    chatMessage("Pvac has been disabled since your item has expired");
+                    chatMessage("Pvac has been disabled since your item has expired.");
+                }
+            }
+            if (item.getItemId() == ItemConstants.FRENZY_TOTEM || item.getItemId() == ItemConstants.FURY_TOTEM) {
+                if (hasSkill(Job.MONOLITH)) {
+                    removeSkillAndSendPacket(Job.MONOLITH);
+                    chatMessage("Monolith skill has been removed since your item has expired.");
+                } else if (hasSkill(Job.FURY_TOTEM)) {
+                    removeSkillAndSendPacket(Job.FURY_TOTEM);
+                    chatMessage("Fury Totem skill has been removed since your item has expired.");
                 }
             }
         }

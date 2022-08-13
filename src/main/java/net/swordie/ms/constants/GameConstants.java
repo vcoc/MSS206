@@ -59,6 +59,10 @@ public class GameConstants {
     public static final int BASE_MOB_RESPAWN_RATE = 2500; // In milliseconds
     public static final double KISHIN_MOB_MULTIPLIER = 2;
     public static final double KISHIN_MOB_RATE_MULTIPLIER = 2;
+    public static final double FRENZY_TOTEM_MOB_MULTIPLIER = 1.75;
+    public static final double FRENZY_TOTEM_MOB_RATE_MULTIPLIER = 1.7;
+    public static final double FURY_TOTEM_MOB_MULTIPLIER = 1.5;
+    public static final double FURY_TOTEM_MOB_RATE_MULTIPLIER = 1.5;
     public static final Rect MOB_CHECK_RECT = new Rect(-100, -100, 100, 100);
     public static final Rect drops = new Rect(-1000, -1000, 1000, 1000);
     public static final int MIN_LEVEL_FOR_RANDOM_FIELD_OCCURENCES = 10;

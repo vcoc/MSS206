@@ -85,6 +85,7 @@ public class SkillConstants {
     public static final int LEVEL_UP_DAMAGE_SKILL_ID = 80001770;
 
     public static final int DUMMY_FOR_PVAC = 69001000;
+    public static final int PVAC_COOLDOWN = 3000; // Milliseconds
 
     public static final short LINK_SKILL_1_LEVEL = 70;
     public static final short LINK_SKILL_2_LEVEL = 120;

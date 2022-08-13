@@ -11,7 +11,6 @@ import net.swordie.ms.client.jobs.Job;
 import net.swordie.ms.client.jobs.adventurer.archer.BowMaster;
 import net.swordie.ms.client.jobs.cygnus.NightWalker;
 import net.swordie.ms.client.jobs.resistance.OpenGate;
-import net.swordie.ms.client.jobs.sengoku.Kanna;
 import net.swordie.ms.client.party.Party;
 import net.swordie.ms.client.party.PartyMember;
 import net.swordie.ms.connection.OutPacket;
@@ -87,6 +86,8 @@ public class Field {
     private EliteState eliteState;
     private int bossMobID;
     private boolean kishin;
+    private boolean frenzyTotem;
+    private boolean furyTotem;
     private List<Integer> noRespawnList = new ArrayList<>();
     private List<OpenGate> openGateList = new ArrayList<>();
     private List<TownPortal> townPortalList = new ArrayList<>();
@@ -649,15 +650,20 @@ public class Field {
         if (android != null) {
             removeLife(android);
         }
-
+        // remove char's frenzy totem
         if (getSummons().stream().anyMatch(frenzy -> frenzy.getTemplateId() == Job.MONOLITH)) {
-            removeLife(getSummons().stream().filter(frenzy -> frenzy.getTemplateId() == Job.MONOLITH).findFirst().orElse(null));
-            if (hasKishin() && getSummons().stream().noneMatch(frenzy -> frenzy.getTemplateId() == Kanna.KISHIN_SHOUKAN)) {
-                setKishin(false);
+            removeLife(Objects.requireNonNull(getSummons().stream().filter(frenzy -> frenzy.getTemplateId() == Job.MONOLITH).findFirst().orElse(null)));
+            if (hasFrenzyTotem()) {
+                setFrenzyTotem(false);
             }
         }
-
-
+        // remove char's fury totem
+        if (getSummons().stream().anyMatch(fury -> fury.getTemplateId() == Job.FURY_TOTEM)) {
+            removeLife(Objects.requireNonNull(getSummons().stream().filter(fury -> fury.getTemplateId() == Job.FURY_TOTEM).findFirst().orElse(null)));
+            if (hasFuryTotem()) {
+                setFuryTotem(false);
+            }
+        }
         getChars().remove(chr);
         OutPacket leavePacket = UserPool.userLeaveField(chr);
         if (!chr.isHide()) {
@@ -672,7 +678,6 @@ public class Field {
                 }
             }
         }
-
         // change controllers for which the chr was the controller of
         for (Map.Entry<Life, Char> entry : getLifeToControllers().entrySet()) {
             if (entry.getValue() != null && entry.getValue().equals(chr)) {
@@ -1531,14 +1536,19 @@ public class Field {
                 }
             }
         }
-        // No fixed rate to ensure kishin-ness keeps being checked
-        double kishinMultiplier = hasKishin() ? GameConstants.KISHIN_MOB_RATE_MULTIPLIER : 1;
+        // No fixed rate to ensure kishin and totems keeps being checked
+        double furyTotemMultiplier = hasFuryTotem() ? GameConstants.FURY_TOTEM_MOB_RATE_MULTIPLIER : 1;
+        double frenzyTotemMultiplier = hasFrenzyTotem() ? GameConstants.FRENZY_TOTEM_MOB_RATE_MULTIPLIER : furyTotemMultiplier;
+        double kishinMultiplier = hasKishin() ? GameConstants.KISHIN_MOB_RATE_MULTIPLIER : frenzyTotemMultiplier;
         EventManager.addEvent(() -> generateMobs(false),
                 (long) (GameConstants.BASE_MOB_RESPAWN_RATE / (getMobRate() * kishinMultiplier)));
     }
 
     public int getMobCapacity() {
-        return (int) (getFixedMobCapacity() * (hasKishin() ? GameConstants.KISHIN_MOB_MULTIPLIER : 0.5));
+        double furyTotemMultiplier = hasFuryTotem() ? GameConstants.FURY_TOTEM_MOB_MULTIPLIER : 0.5;
+        double frenzyTotemMultiplier = hasFrenzyTotem() ? GameConstants.FRENZY_TOTEM_MOB_MULTIPLIER : furyTotemMultiplier;
+        double kishinMultiplier = hasKishin() ? GameConstants.KISHIN_MOB_MULTIPLIER : frenzyTotemMultiplier;
+        return (int) (getFixedMobCapacity() * kishinMultiplier);
     }
 
     public boolean hasKishin() {
@@ -1547,6 +1557,22 @@ public class Field {
 
     public void setKishin(boolean kishin) {
         this.kishin = kishin;
+    }
+
+    public boolean hasFrenzyTotem() {
+        return frenzyTotem;
+    }
+
+    public void setFrenzyTotem(boolean frenzyTotem) {
+        this.frenzyTotem = frenzyTotem;
+    }
+
+    public boolean hasFuryTotem() {
+        return furyTotem;
+    }
+
+    public void setFuryTotem(boolean furyTotem) {
+        this.furyTotem = furyTotem;
     }
 
     public List<OpenGate> getOpenGates() {
