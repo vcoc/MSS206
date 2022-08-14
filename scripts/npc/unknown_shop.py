@@ -1,1 +1,1 @@
-sm.sendSayOkay("This shop is empty! ID = " + str(parentID))
+sm.sendSayOkay("Unhandled shop script ID: " + str(parentID))

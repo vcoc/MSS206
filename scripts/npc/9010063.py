@@ -1,9 +1,11 @@
 # Dressing Room NPC
 
+sm.setSpeakerID(2007) # Maple Administrator
+
 equip_type = 0
 equip_page = 0
 page_limit = 300
-expire_time = 5
+expire_time = 1
 
 # flags
 flag_main = 1
@@ -31,7 +33,7 @@ categories = [
 selected_item = 0
 
 def prompt_main():
-    text = "#eYou currently have #b" + str(sm.getVotePoints()) +" Vote Points#n\r\nPlease select a category\r\n"
+    text = "You currently have #b" + str(sm.getVotePoints()) + " vote points#k.\r\nWhat would you like to buy with your vote points?\r\n"
     count = 0
     for category in categories:
         if count == 4:
@@ -131,14 +133,20 @@ while flag_main == 1:
                         sm.sendNext("You do not have enough vote points!")
                     else:
                         if selection_options == 1: # buy
-                            sm.giveItem(item)
-                            sm.deductVotePoints(cost)
-                            sm.sendNext(message_done(item, cost, False))
+                            if sm.canHold(item):
+                                sm.giveItem(item)
+                                sm.deductVotePoints(cost)
+                                sm.sendNext(message_done(item, cost, False))
+                            else:
+                                sm.sendNext("Please make sure you have enough space in your inventory.")
                             flag_main = 0 # exit npc
                         elif selection_options == 2: # rent
-                            sm.giveItemWithExpireDate(item, 1, False, 5)
-                            sm.deductVotePoints(cost)
-                            sm.sendNext(message_done(item, cost, True))
+                            if sm.canHold(item):
+                                sm.giveItemWithExpireDate(item, 1, False, expire_time)
+                                sm.deductVotePoints(cost)
+                                sm.sendNext(message_done(item, cost, True))
+                            else:
+                                sm.sendNext("Please make sure you have enough space in your inventory.")
                             flag_main = 0 # exit npc
     elif selection_main == 999:
         flag_search = 1
@@ -168,12 +176,18 @@ while flag_main == 1:
                     sm.sendNext("You do not have enough vote points!")
                 else:
                     if selection_options == 1: # buy
-                        sm.giveItem(item)
-                        sm.deductVotePoints(cost)
-                        sm.sendNext(message_done(item, cost, False))
+                        if sm.canHold(item):
+                            sm.giveItem(item)
+                            sm.deductVotePoints(cost)
+                            sm.sendNext(message_done(item, cost, False))
+                        else:
+                            sm.sendNext("Please make sure you have enough space in your inventory.")
                         flag_main = 0 # exit npc
                     elif selection_options == 2: # rent
-                        sm.giveItemWithExpireDate(item, 1, False, 5)
-                        sm.deductVotePoints(cost)
-                        sm.sendNext(message_done(item, cost, True))
+                        if sm.canHold(item):
+                            sm.giveItemWithExpireDate(item, 1, False, expire_time)
+                            sm.deductVotePoints(cost)
+                            sm.sendNext(message_done(item, cost, True))
+                        else:
+                            sm.sendNext("Please make sure you have enough space in your inventory.")
                         flag_main = 0 # exit npc

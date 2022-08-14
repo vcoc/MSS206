@@ -2,6 +2,8 @@
 
 import math
 
+sm.setSpeakerID(2007) # Maple Administrator
+
 # ======================================================================================================================
 # VP Items
 # ======================================================================================================================
@@ -31,7 +33,7 @@ vp_cosmetics = [
 
 vp_game_changers = [
     [5680047, 120, 1, 1], # Pvac
-	[2630793, 1, 1, 0], # Fury Totem
+	[2630793, 1, 1, 0] # Fury Totem
 ]
 
 vp_pet_shop = [
@@ -44,7 +46,8 @@ vp_pet_shop = [
     [5190002, 1, 1, 0],
     [5190003, 1, 1, 0],
     [5190004, 1, 1, 0],
-    [5190005, 1, 1, 0]
+    [5190005, 1, 1, 0],
+    [5190013, 1, 1, 0]
 ]
 
 # ======================================================================================================================
@@ -57,7 +60,7 @@ vp_pet_shop = [
 dp_exp = [
     [2450015, 1, 1, 0], # 3x Exp 30 Min
     [2450016, 1, 1, 0], # 3x Exp 60 Min
-    [2023722, 1, 1, 0], # [Dice Master] Meso Drop Rate Buff
+    [2023722, 1, 1, 0] # [Dice Master] Meso Drop Rate Buff
 ]
 
 dp_cosmetics = [
@@ -65,7 +68,7 @@ dp_cosmetics = [
     [5553000, 1, 1, 0], # Face Slot
 	[5155000, 1, 1, 0], # Carta's Indigo Pearl
 	[5155004, 1, 1, 0], # Carta's Teal Pearl
-	[5155005, 1, 1, 0], # Carta's Scarlet Pearl
+	[5155005, 1, 1, 0] # Carta's Scarlet Pearl
 ]
 
 dp_game_changers = [
@@ -83,9 +86,8 @@ dp_game_changers = [
 ]
 
 dp_surprise_box = [
-    [5068300, 1, 250, 0], # Pet Box
-	[2435163, 1, 300, 0], # Random Damage Skin
-	[5190013, 1, 1000, 0] # Open Pet Shop Skill
+	[2435163, 1, 1, 0], # Random Damage Skin Box
+	[2437025, 1, 1, 0] # Random Planet Chair Box
 ]
 
 # ======================================================================================================================
@@ -227,7 +229,7 @@ def donationPointOptions():
 # Start Menu
 # ======================================================================================================================
 
-selection = sm.sendNext("Hey! What would you have me do?\r\n#b" + main_menu + "#k")
+selection = sm.sendNext("Hello #r#h0##k! How can I help you today?\r\n#b" + main_menu + "#k")
 if selection:
     donationPointOptions()
 else:

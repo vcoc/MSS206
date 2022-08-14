@@ -74,12 +74,14 @@ public class LoginHandler {
     public static void handleApplyHotfix(Client c, InPacket inPacket) {
         File dataWz = new File(ServerConstants.RESOURCES_DIR + "/Data2.wz");
         byte[] data = new byte[0];
-        try {
-            data = Files.readAllBytes(dataWz.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (dataWz.exists()) {
+            try {
+                data = Files.readAllBytes(dataWz.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            c.write(Login.sendHotfix(data));
         }
-        c.write(Login.sendHotfix(data));
     }
 
     @Handler(op = InHeader.PONG)

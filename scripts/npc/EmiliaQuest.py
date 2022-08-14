@@ -1,4 +1,6 @@
-# Dressing Room for Hair/Face/Eyes
+# Style Room NPC
+
+sm.setSpeakerID(2007) # Maple Administrator
 
 # Hair
 # Male: 30000, 33000, 35000, 36000, 40000, 43000, 45000, 46000, 60000
@@ -50,7 +52,7 @@ def prompt_category(category_name, category_list):
 # SCRIPT_START
 
 text_menu = (
-    "Welcome to #b{}'s Style Room!#k \r\n\r\nWhat would you like to change?\r\n#b"
+    "Hello #r#h0##k! What would you like to change?\r\n#b"
     "#L0#Hair#l\r\n"
     "#L1#Face#l\r\n"
     "#L2#Hair Color#l\r\n"

@@ -323,25 +323,13 @@ public class GameConstants {
         initGuildExp();
     }
 
-//    private static void initQuickMove() {
-//        quickMoveInfos = new ArrayList<>();
-//        quickMoveInfos.add(new QuickMoveInfo(0, 9072302, QuickMoveType.Boat, 1, "Warping", false,
-//                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-//        quickMoveInfos.add(new QuickMoveInfo(0, 9010063, QuickMoveType.Girl, 20, "Help", false,
-//                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-//        quickMoveInfos.add(new QuickMoveInfo(0, 9010022, QuickMoveType.DimensionalPortal, 20, "Dimensional Portal", false,
-//                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-//        quickMoveInfos.add(new QuickMoveInfo(0, 9071003, QuickMoveType.MonsterPark, 20, "Monster Park", false,
-//                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-//    }
-
     private static void initQuickMove() {
         quickMoveInfos = new ArrayList<>();
         quickMoveInfos.add(new QuickMoveInfo(0, 9010063, QuickMoveType.Girl, 0, "Dressing Room", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
         quickMoveInfos.add(new QuickMoveInfo(0, 9400301, QuickMoveType.Nurse, 0, "Style Room", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-        quickMoveInfos.add(new QuickMoveInfo(0, 9000035, QuickMoveType.Boat, 1, "Warping", false,
+        quickMoveInfos.add(new QuickMoveInfo(0, 9000035, QuickMoveType.Boat, 1, "Boat", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
         quickMoveInfos.add(new QuickMoveInfo(0, 1092014, QuickMoveType.Taxi, 0, "Taxi", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
@@ -349,15 +337,7 @@ public class GameConstants {
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
         quickMoveInfos.add(new QuickMoveInfo(0, 9010022, QuickMoveType.DimensionalPortal, 20, "Dimensional Portal", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-        quickMoveInfos.add(new QuickMoveInfo(0, 9071003, QuickMoveType.MonsterPark, 20, "Monster Park", false,
-                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-        quickMoveInfos.add(new QuickMoveInfo(0, 9030300, QuickMoveType.FreeMarket, 0, "Free Market", false,
-                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
         quickMoveInfos.add(new QuickMoveInfo(0, 1012009, QuickMoveType.Bunny, 0, "Storage", false,
-                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-        quickMoveInfos.add(new QuickMoveInfo(0, 9900000, QuickMoveType.Baret, 0, "Inventory Seller", false,
-                FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
-        quickMoveInfos.add(new QuickMoveInfo(0, 9900001, QuickMoveType.Waitress, 0, "Job Advancement (Explorers only)", false,
                 FileTime.fromType(FileTime.Type.ZERO_TIME), FileTime.fromType(FileTime.Type.MAX_TIME)));
     }
 

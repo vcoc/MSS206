@@ -3470,7 +3470,8 @@ public class ScriptManagerImpl implements ScriptManager {
         Map<Integer, String> map = StringData.getItemStringByName(query.toLowerCase());
         Set<Integer> nonEquips = new HashSet<>();
         for (int itemId : map.keySet()) {
-            if (!ItemConstants.isEquip(itemId) ||
+            if (ItemData.getItemDeepCopy(itemId) == null ||
+                    !ItemConstants.isEquip(itemId) ||
                     !ItemData.getItemDeepCopy(itemId).isCash() ||
                     ItemConstants.isRemovedFromCashShop(itemId)) {
                 nonEquips.add(itemId);
