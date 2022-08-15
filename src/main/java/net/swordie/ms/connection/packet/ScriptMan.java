@@ -119,18 +119,15 @@ public class ScriptMan {
                 outPacket.encodeInt(0); // last selected
                 if(nsi.getDlgType() == 0) {
                     StringBuilder sb = new StringBuilder();
-
                     for (DimensionalPortalType dpt : DimensionalPortalType.values()) {
                         if (dpt.getMapID() != 0) {
                             sb.append("#").append(dpt.getVal()).append("#").append(dpt.getDesc());
                         }
                     }
                     outPacket.encodeString(sb.toString());
-                    outPacket.encodeInt(0);
                 }
                 if(nsi.getDlgType() == 5) {
                     StringBuilder sb = new StringBuilder();
-
                     for (DimensionalPortalTownType dpt : DimensionalPortalTownType.values()) {
                         if (dpt.getMapID() != 0) {
                             sb.append("#").append(dpt.getVal()).append("#").append(dpt.getDesc());

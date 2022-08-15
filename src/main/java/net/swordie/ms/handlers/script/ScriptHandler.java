@@ -77,12 +77,7 @@ public class ScriptHandler {
                     && nmt != NpcMessageType.AskAvatar && nmt != NpcMessageType.AskAvatarZero
                     && nmt != NpcMessageType.AskSlideMenu) || hasAnswer) {
                 // else -> User pressed escape in a selection (choice) screen
-                if(nmt == NpcMessageType.AskSlideMenu)
-                {
-                    chr.warp(DimensionalPortalType.getByVal(answer).getMapID());
-                    chr.dispose();
-                }
-                    chr.getScriptManager().handleAction(nmt, action, answer);
+                chr.getScriptManager().handleAction(nmt, action, answer);
             } else {
                 // User pressed escape in a selection (choice) screen
                 chr.getScriptManager().dispose(false);
