@@ -188,6 +188,7 @@ public class Account {
     }
 
     public void setNxCredit(int nxCredit) {
+        nxCredit = Math.min(GameConstants.MAX_NX_CREDIT, nxCredit);
         this.nxCredit = nxCredit;
     }
 
@@ -215,8 +216,8 @@ public class Account {
         this.linkSkills = linkSkills;
     }
 
-    public void addNXCredit(int credit) {
-        int newCredit = getNxCredit() + credit;
+    public void addNXCredit(int nxCredit) {
+        int newCredit = getNxCredit() + nxCredit;
         if (newCredit >= 0) {
             setNxCredit(newCredit);
         }

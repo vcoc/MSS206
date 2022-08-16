@@ -26,7 +26,6 @@ public class GameConstants {
     public static final int MOB_EXP_RATE = 10;
     public static final int MOB_MESO_RATE = 10;
     public static final int MOB_DROP_RATE = 10;
-    public static final long MAX_MONEY = 999_999_999_999_999L;
     public static final short DAMAGE_SKIN_MAX_SIZE = 100;
     public static final int MAX_PET_AMOUNT = 3;
     public static final int MAX_HP_MP = 500000;
@@ -38,6 +37,17 @@ public class GameConstants {
     public static final int MAX_TRUNK_SIZE = 120;
     public static final int MIN_CHAR_SLOT_SIZE = 4;
     public static final int MAX_CHAR_SLOT_SIZE = 40;
+
+    // Currency
+    public static final int MAX_REWARD_POINTS = 99_999_999;
+    public static final int MAX_NX_PREPAID = 999_999_999;
+    public static final int MAX_NX_CREDIT = 999_999_999;
+    public static final int MAX_MAPLE_POINTS = 999_999_999;
+    public static final long MAX_MONEY = 99_999_999_999L;
+
+    // Custom Currency
+    public static final int MAX_VOTE_POINTS = 999_999_999;
+    public static final int MAX_DONATION_POINTS = 999_999_999;
 
     // Custom
     public static final int PLAYER_START_MAP = 4000011; // Maple Tree Hill

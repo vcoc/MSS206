@@ -7,6 +7,8 @@ import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.friend.Friend;
 import net.swordie.ms.connection.db.DatabaseManager;
 import net.swordie.ms.connection.db.converters.FileTimeConverter;
+import net.swordie.ms.connection.packet.WvsContext;
+import net.swordie.ms.constants.GameConstants;
 import net.swordie.ms.enums.AccountType;
 import net.swordie.ms.enums.PicStatus;
 import net.swordie.ms.util.FileTime;
@@ -184,6 +186,7 @@ public class User {
     }
 
     public void setMaplePoints(int maplePoints) {
+        maplePoints = Math.min(GameConstants.MAX_MAPLE_POINTS, maplePoints);
         this.maplePoints = maplePoints;
     }
 
@@ -192,29 +195,31 @@ public class User {
     }
 
     public void setNxPrepaid(int nxPrepaid) {
+        nxPrepaid = Math.min(GameConstants.MAX_NX_PREPAID, nxPrepaid);
         this.nxPrepaid = nxPrepaid;
+        getCurrentChr().write(WvsContext.setMaplePoints(getNxPrepaid()));
     }
 
-    public void addMaplePoints(int points) {
-        int newPoints = getMaplePoints() + points;
+    public void addMaplePoints(int maplePoints) {
+        int newPoints = getMaplePoints() + maplePoints;
         if (newPoints >= 0) {
             setMaplePoints(newPoints);
         }
     }
 
-    public void deductMaplePoints(int points) {
-        addMaplePoints(-points);
+    public void deductMaplePoints(int maplePoints) {
+        addMaplePoints(-maplePoints);
     }
 
-    public void addNXPrepaid(int prepaid) {
-        int newPrepaid = getNxPrepaid() + prepaid;
+    public void addNXPrepaid(int nxPrepaid) {
+        int newPrepaid = getNxPrepaid() + nxPrepaid;
         if (newPrepaid >= 0) {
             setNxPrepaid(newPrepaid);
         }
     }
 
-    public void deductNXPrepaid(int prepaid) {
-        addNXPrepaid(-prepaid);
+    public void deductNXPrepaid(int nxPrepaid) {
+        addNXPrepaid(-nxPrepaid);
     }
 
     public Set<Account> getAccounts() {
@@ -392,6 +397,7 @@ public class User {
     }
 
     public void setVotePoints(int votePoints) {
+        votePoints = Math.min(GameConstants.MAX_VOTE_POINTS, votePoints);
         this.votePoints = votePoints;
     }
 
@@ -399,29 +405,30 @@ public class User {
         return donationPoints;
     }
 
-    public void deductDonationPoints(int points) {
-        addDP(-points);
+    public void deductDonationPoints(int donationPoints) {
+        addDonationPoints(-donationPoints);
     }
 
-    public void deductVotePoints(int points) {
-        addVP(-points);
+    public void deductVotePoints(int votePoints) {
+        addVotePoints(-votePoints);
     }
 
-    public void addDP(int points) {
-        int newPoints = getDonationPoints() + points;
+    public void addDonationPoints(int donationPoints) {
+        int newPoints = getDonationPoints() + donationPoints;
         if (newPoints >= 0) {
             setDonationPoints(newPoints);
         }
     }
 
-    public void addVP(int points) {
-        int newPoints = getVotePoints() + points;
+    public void addVotePoints(int votePoints) {
+        int newPoints = getVotePoints() + votePoints;
         if (newPoints >= 0) {
             setVotePoints(newPoints);
         }
     }
 
     public void setDonationPoints(int donationPoints) {
+        donationPoints = Math.min(GameConstants.MAX_DONATION_POINTS, donationPoints);
         this.donationPoints = donationPoints;
     }
 

@@ -76,6 +76,9 @@ import static net.swordie.ms.enums.InventoryOperation.Add;
 public class AdminCommands {
     static final org.apache.log4j.Logger log = LogManager.getRootLogger();
 
+    public static ChatType adminChatType = Mob;
+    public static String adminMsgPrefix = "[System] ";
+
     @Command(names = {"help"}, description = "Displays all commands available to you.", requiredType = Player)
     public static class Help extends AdminCommand {
         public static void execute(Char chr, String[] args) {
@@ -1675,49 +1678,187 @@ public class AdminCommands {
         }
     }
 
-    @Command(names = {"mesos", "money"}, requiredType = Tester)
-    public static class Mesos extends AdminCommand {
+    @Command(names = { "meso" }, requiredType = Admin)
+    public static class Meso extends AdminCommand {
         public static void execute(Char chr, String[] args) {
-            long mesos = Long.parseLong(args[1]);
-            chr.addMoney(mesos);
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !meso <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            long amount = Long.parseLong(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.addMoney(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d mesos by %s.", amount, chr.getName());
+            } else {
+                target.setMoney(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your mesos have changed to %d by %s.", amount, chr.getName());
+            }
         }
     }
 
-    @Command(names = {"nx", "setnx"}, requiredType = Tester)
-    public static class NxCommand extends AdminCommand {
+    @Command(names = { "nxcredit" }, requiredType = Admin)
+    public static class NxCredit extends AdminCommand {
         public static void execute(Char chr, String[] args) {
-            int nx = Integer.parseInt(args[1]);
-            chr.addNx(nx);
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !nxcredit <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.getAccount().addNXCredit(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d nx credit by %s.", amount, chr.getName());
+            } else {
+                target.getAccount().setNxCredit(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your nx credit have changed to %d by %s.", amount, chr.getName());
+            }
         }
     }
 
-    @Command(names = {"maplepoints", "setmaplepoints"}, requiredType = Tester)
-    public static class maplepoints extends AdminCommand {
+    @Command(names = { "nxprepaid" }, requiredType = Admin)
+    public static class NxPrepaid extends AdminCommand {
         public static void execute(Char chr, String[] args) {
-            int nx = Integer.parseInt(args[1]);
-            chr.getUser().addMaplePoints(nx);
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !nxprepaid <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.getUser().addNXPrepaid(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d nx prepaid by %s.", amount, chr.getName());
+            } else {
+                target.getUser().setNxPrepaid(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your nx prepaid have changed to %d by %s.", amount, chr.getName());
+            }
         }
     }
 
-    @Command(names = {"dp", "setdp"}, requiredType = Tester)
-    public static class DpCommand extends AdminCommand {
+    @Command(names = { "maplepoints" }, requiredType = Admin)
+    public static class MaplePoints extends AdminCommand {
         public static void execute(Char chr, String[] args) {
-            int dp = Integer.parseInt(args[1]);
-            User user = chr.getUser();
-            user.setDonationPoints(dp);
-            chr.chatMessage(WhiteOnGreen, "You now have " + dp + " Donation Points :)");
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !maplepoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.getUser().addMaplePoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d maple points by %s.", amount, chr.getName());
+            } else {
+                target.getUser().setMaplePoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your maple points have changed to %d by %s.", amount, chr.getName());
+            }
         }
     }
 
-    @Command(names = {"vp", "setvp"}, requiredType = Tester)
-    public static class VpCommand extends AdminCommand {
+    @Command(names = { "donationpoints" }, requiredType = Admin)
+    public static class DonationPoints extends AdminCommand {
         public static void execute(Char chr, String[] args) {
-            int vp = Integer.parseInt(args[1]);
-            User user = chr.getUser();
-            user.setVotePoints(vp);
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !donationpoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.getUser().addDonationPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d donation points by %s.", amount, chr.getName());
+            } else {
+                target.getUser().setDonationPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your donation points have changed to %d by %s.", amount, chr.getName());
+            }
         }
     }
 
+    @Command(names = { "votepoints" }, requiredType = Admin)
+    public static class VotePoints extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !votepoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.getUser().addVotePoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d vote points by %s.", amount, chr.getName());
+            } else {
+                target.getUser().setVotePoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your vote points have changed to %d by %s.", amount, chr.getName());
+            }
+        }
+    }
+
+    @Command(names = { "rewardpoints" }, requiredType = Admin)
+    public static class RewardPoints extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !rewardpoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.addRewardPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d reward points by %s.", amount, chr.getName());
+            } else {
+                target.setRewardPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your reward points have changed to %d by %s.", amount, chr.getName());
+            }
+        }
+    }
 
     @Command(names = {"goto"}, requiredType = Tester)
     public static class GoTo extends AdminCommand {
@@ -3117,26 +3258,6 @@ public class AdminCommands {
     public static class BossCd extends AdminCommand {
         public static void execute(Char chr, String[] args) {
             chr.getAccount().clearCoolDowns();
-        }
-    }
-
-    @Command(names = {"givenx"}, requiredType = Tester)
-    public static class giveNx extends AdminCommand {
-        public static void execute(Char chr, String[] args) {
-            String name = args[1];
-            int amount = Integer.parseInt(args[2]);
-            Char other = chr.getWorld().getCharByName(name);
-            other.addNx(amount);
-        }
-    }
-
-    @Command(names = {"givedp"}, requiredType = Tester)
-    public static class givedp extends AdminCommand {
-        public static void execute(Char chr, String[] args) {
-            String name = args[1];
-            int amount = Integer.parseInt(args[2]);
-            Char other = chr.getWorld().getCharByName(name);
-            other.addDP(amount);
         }
     }
 
