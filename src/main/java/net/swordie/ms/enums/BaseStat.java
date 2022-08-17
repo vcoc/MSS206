@@ -13,19 +13,19 @@ import java.util.Map;
  */
 public enum BaseStat {
     unk,
-    str,
-    strR,
-    dex,
-    dexR,
-    inte,
-    intR,
-    luk,
-    lukR,
-    mdf, // MP for non-MP jobs,   Time Force, Fury, Mana
-    pad,
-    padR,
-    mad,
-    madR,
+    str, // Str
+    strR, // Str %
+    dex, // Dex
+    dexR, // Dex %
+    inte, // Int
+    intR, // Int %
+    luk, // Luk
+    lukR, // Luk %
+    mdf, // MP for non-MP jobs.. Time Force, Fury, Mana..
+    pad, // Att
+    padR, // Att %
+    mad, // Matt
+    madR, // Matt %
     pdd,
     pddR,
     mdd,
@@ -51,18 +51,18 @@ public enum BaseStat {
     evaR,
     jump,
     speed,
-    expR,
+    expR, // Exp %
     comboKillOrbExpR, // Exp multiplier specifically for Combo Kill Orbs
-    dropR,
+    dropR, // Drop %
     dropRMulti,
-    mesoR,
+    mesoR, // Meso %
     mesoRMulti,
-    booster,
+    booster, // Attack Speed
     stance,
     mastery,
-    damageOver, // max damage
-    allStat,
-    allStatR,
+    damageOver, // Max Damage
+    allStat, // All Stat
+    allStatR, // All Stat %
     hpRecovery,
     mpRecovery,
     incAllSkill,

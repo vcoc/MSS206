@@ -2184,6 +2184,7 @@ public class Char {
         stats.put(BaseStat.acc, 11L);
         stats.put(BaseStat.eva, 8L);
         stats.put(BaseStat.buffTimeR, 100L);
+        stats.put(BaseStat.expR, 100L);
         stats.put(BaseStat.dropR, 100L);
         stats.put(BaseStat.mesoR, 100L);
         stats.put(BaseStat.costmpR, 100L);

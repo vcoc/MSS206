@@ -58,10 +58,10 @@ def sellItemsFromTab(invType = InvType.EQUIP):
                 for item in sellingItems:
                     soldItemsTemplate += "#i{}# #z{}#\r\n".format(item.getItemId(), item.getItemId(), item.getBagIndex())
                 confirmed = sm.sendAskYesNo(soldItemsTemplate)
-        else:
-            # 'maybe later' option / no response
-            disposeAll()
-            return
+            else:
+                # 'maybe later' option / no response
+                disposeAll()
+                return
     # finish asking for selling items, proceed to actually sell it
     if not confirmed:
         sm.sendSayOkay("Thank you for using my service")

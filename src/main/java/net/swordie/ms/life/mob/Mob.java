@@ -1481,6 +1481,7 @@ public class Mob extends Life {
         if (getMostDamageChar() != null) {
             for (Item item : getMostDamageChar().getCashInventory().getItems()) {
                 if (ItemConstants.is2XDropCoupon(item.getItemId())) {
+                    totalMesoRate *= 2;
                     totalDropRate *= 2;
                     break;
                 }

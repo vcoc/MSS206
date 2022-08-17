@@ -8,6 +8,7 @@ import net.swordie.ms.client.character.skills.MatrixRecord;
 import net.swordie.ms.connection.packet.WvsContext;
 import net.swordie.ms.constants.GameConstants;
 import net.swordie.ms.enums.BaseStat;
+import net.swordie.ms.enums.ChatType;
 import net.swordie.ms.life.mob.Mob;
 import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.VCoreData;
@@ -19,57 +20,54 @@ import net.swordie.ms.util.Util;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static net.swordie.ms.enums.AccountType.Player;
-import static net.swordie.ms.enums.ChatType.*;
+import static net.swordie.ms.enums.ChatType.Expedition;
 
 public class PlayerCommands {
     private static final Logger log = LogManager.getLogger(PlayerCommands.class);
 
-    @Command(names = {"help"}, requiredType = Player)
-    public static class Help extends PlayerCommand {
+    public static ChatType playerChatType = Expedition;
+    public static String playerMsgPrefix = "[System] ";
 
+    @Command(names = { "help" }, requiredType = Player)
+    public static class Help extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
             for (Class clazz : PlayerCommands.class.getClasses()) {
                 Command cmd = (Command) clazz.getAnnotation(Command.class);
                 if (chr.getUser().getAccountType().ordinal() >= cmd.requiredType().ordinal()) {
-                    StringBuilder str = new StringBuilder(String.format("[%s] ", cmd.requiredType().toString()));
-                    for (String cmdName : cmd.names()) {
+                    StringBuilder str = new StringBuilder(String.format("[%s] ", cmd.requiredType()));
+                    String[] names = cmd.names();
+                    for (int i = 0; i < names.length; i++) {
+                        String cmdName = names[i];
                         str.append(cmdName);
-                        str.append(", ");
+                        if (i != names.length - 1) {
+                            str.append(", ");
+                        }
                     }
-                    chr.chatMessage(Expedition, str.toString());
+                    if (!cmd.description().isEmpty()) {
+                        String description = cmd.description();
+                        str.append(": " + description);
+                    }
+                    chr.chatMessage(Expedition, playerMsgPrefix + str.toString());
                 }
             }
         }
     }
 
-
-    @Command(names = {"sell"}, requiredType = Player)
+    @Command(names = { "sellitem" }, requiredType = Player)
     public static class SellItem extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
             ScriptManagerImpl smi = chr.getScriptManager();
             smi.startScript(0, "inv-seller", ScriptType.Npc);
-        }
-    }
-
-
-    @Command(names = {"instance"}, requiredType = Player)
-    public static class Instance extends PlayerCommand {
-
-        public static void execute(Char chr, String[] args) {
-            // For testing purposes only.
-            if (chr.getInstance() != null) {
-                chr.chatMessage(chr.getInstance().toString());
-                chr.chatMessage("If you're stuck, Relogging will remove your instance!");
-            } else {
-                chr.chatMessage("You are not in an instance.");
-            }
         }
     }
 
@@ -136,62 +134,47 @@ public class PlayerCommands {
         }
     }
 
-
-    @Command(names = {"job"}, requiredType = Player)
-    public static class jobAdvance extends PlayerCommand {
-
-        public static void execute(Char chr, String[] args) {
-            chr.getScriptManager().startScript(0, "job_advance", ScriptType.Npc);
-        }
-    }
-
-    @Command(names = {"marvel"}, requiredType = Player)
-    public static class marvel extends PlayerCommand {
-
-        public static void execute(Char chr, String[] args) {
-            chr.getScriptManager().startScript(0, "marvel", ScriptType.Npc);
-        }
-    }
-
-    @Command(names = {"check"}, requiredType = Player)
-    public static class check extends PlayerCommand {
+    @Command(names = { "check", "dispose" }, requiredType = Player)
+    public static class Check extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
             User user = chr.getUser();
-            chr.chatMessage(AdminChat, "DP: " + user.getDonationPoints()
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            chr.chatMessage(playerChatType, playerMsgPrefix + "DP: " + user.getDonationPoints()
                     + "  VP: " + user.getVotePoints()
-                    + "  NX: " + user.getNxPrepaid()
                     + "  PQ Points: " + chr.getPQPoints()
                     + "  Dojo Points: " + chr.getDojoPoints());
-            chr.chatMessage(AdminChat, "DROP: " + chr.getTotalStat(BaseStat.dropR) + "%" + "  EXP: " + chr.getTotalStat(BaseStat.expR) + "%"
-                    + "  MESO: " + chr.getTotalStat(BaseStat.mesoR) + "%"
-                    + "  ATT: " + chr.getTotalStat(BaseStat.pad)
-                    + "  MATT: " + chr.getTotalStat(BaseStat.mad)
-                    + "  Attack Speed: " + chr.getTotalStat(BaseStat.booster));
-        }
-    }
-
-    @Command(names = {"dispose", "save"}, requiredType = Player)
-    public static class save extends PlayerCommand {
-        public static void execute(Char chr, String[] args) {
+            chr.chatMessage(playerChatType, playerMsgPrefix + "Exp: " + chr.getTotalStat(BaseStat.expR) + "%"
+                    + "  Meso: " + chr.getTotalStat(BaseStat.mesoR) + "%"
+                    + "  Drop: " + chr.getTotalStat(BaseStat.dropR) + "%");
+            chr.chatMessage(playerChatType, playerMsgPrefix
+                    + "Server Time: %s", dateFormat.format(date) );
             ScriptManagerImpl smi = chr.getScriptManager();
-            // all but field
+            // All but field
             smi.stop(ScriptType.Portal);
             smi.stop(ScriptType.Npc);
             smi.stop(ScriptType.Reactor);
             smi.stop(ScriptType.Quest);
             smi.stop(ScriptType.Item);
             chr.dispose();
-            if (args[0].equalsIgnoreCase("@save")) {
-                chr.chatMessage("Saved Data and Disposed");
-            } else {
-                chr.chatMessage("Disposed");
-            }
         }
     }
 
-    @Command(names = {"mobinfo"}, requiredType = Player)
-    public static class MobInfo extends PlayerCommand {
+    @Command(names = { "stats" }, requiredType = Player)
+    public static class Stats extends PlayerCommand {
+        public static void execute(Char chr, String[] args) {
+            chr.chatMessage(playerChatType, playerMsgPrefix + "Str: " + chr.getTotalStat(BaseStat.strR) + "%"
+                    + "  Dex: " + chr.getTotalStat(BaseStat.dexR) + "%"
+                    + "  Int: " + chr.getTotalStat(BaseStat.intR) + "%"
+                    + "  Luk: " + chr.getTotalStat(BaseStat.lukR) + "%");
+            chr.chatMessage(playerChatType, playerMsgPrefix + "Att: " + chr.getTotalStat(BaseStat.padR) + "%"
+                    + "  Matt: " + chr.getTotalStat(BaseStat.madR) + "%"
+                    + "  Att Speed: " + chr.getTotalStat(BaseStat.booster));
+        }
+    }
 
+    @Command(names = { "mobinfo" }, requiredType = Player)
+    public static class MobInfo extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
             Rect rect = new Rect(
                     chr.getPosition().deepCopy().getX() - 200,
@@ -202,17 +185,14 @@ public class PlayerCommands {
             Mob mob = chr.getField().getMobs().stream().filter(m -> rect.hasPositionInside(m.getPosition())).findFirst().orElse(null);
             Char controller = chr.getField().getLifeToControllers().getOrDefault(mob, null);
             if (mob != null) {
-                chr.chatMessage(SpeakerChannel, String.format("Mob ID: %s | Template ID: %s | Level: %d | HP: %s/%s " +
-                                        "| MP: %s/%s | Left: %s | PDR: %s | MDR: %s " +
+                chr.chatMessage(playerChatType, playerMsgPrefix + String.format("[Mob Info] Level: %d | HP: %s/%s " +
+                                        "| MP: %s/%s | PDR: %s | MDR: %s " +
                                         "| Controller: %s | Exp : %s | NX: %s",
-                                NumberFormat.getNumberInstance(Locale.US).format(mob.getObjectId()),
-                                NumberFormat.getNumberInstance(Locale.US).format(mob.getTemplateId()),
                                 mob.getLevel(),
                                 NumberFormat.getNumberInstance(Locale.US).format(mob.getHp()),
                                 NumberFormat.getNumberInstance(Locale.US).format(mob.getMaxHp()),
                                 NumberFormat.getNumberInstance(Locale.US).format(mob.getMp()),
                                 NumberFormat.getNumberInstance(Locale.US).format(mob.getMaxMp()),
-                                mob.isLeft(),
                                 mob.getPdr(),
                                 mob.getMdr(),
                                 controller == null ? "null" : chr.getName(),
@@ -221,20 +201,19 @@ public class PlayerCommands {
                         )
                 );
             } else {
-                chr.chatMessage(SpeakerChannel, "Could not find mob.");
+                chr.chatMessage(playerChatType, playerMsgPrefix + "Could not find mob.");
             }
         }
     }
 
-    @Command(names = {"v", "5th", "5thjob"}, requiredType = Player)
+    @Command(names = { "fifthJob" }, requiredType = Player)
     public static class FifthJob extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
             if (chr.getLevel() >= 200 && !chr.getQuestManager().hasQuestCompleted(1460)) {
                 chr.getQuestManager().addQuest(1460);
             } else {
-                chr.chatMessage("You must be at least level 200, and not have 5th job already!");
+                chr.chatMessage(playerChatType, playerMsgPrefix + "You must be at least level 200, and not have 5th job already.");
             }
         }
     }
-
 }
