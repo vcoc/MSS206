@@ -1,6 +1,7 @@
 package net.swordie.ms.client.character.commands;
 
 
+import net.swordie.ms.Server;
 import net.swordie.ms.client.User;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.items.Item;
@@ -216,4 +217,12 @@ public class PlayerCommands {
             }
         }
     }
+
+    @Command(names = { "uptime" }, requiredType = Player)
+    public static class UpTime extends PlayerCommand {
+        public static void execute(Char chr, String[] args) {
+            chr.chatMessage(playerChatType, playerMsgPrefix + "Server is online for %s.", Server.getInstance().getUpTimeToString());
+        }
+    }
+
 }

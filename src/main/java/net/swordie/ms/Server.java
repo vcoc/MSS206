@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created on 2/18/2017.
@@ -48,7 +49,7 @@ public class Server extends Properties {
 
 	private static final Server server = new Server();
 
-	public long upTime;
+	private long upTime;
 	public boolean MAINTENANCE_MODE = false;
 	public boolean MAINTENANCE_ACTIVE = false;
 
@@ -128,6 +129,7 @@ public class Server extends Properties {
 		}).start();
 
 		this.online = true;
+		this.upTime = startNow;
 	}
 
 	public ScheduledFuture getShutdownTimer() {
@@ -320,6 +322,20 @@ public class Server extends Properties {
 		} else {
 			return value.getLeft();
 		}
+	}
+
+	public long getUpTime() {
+		return System.currentTimeMillis() - this.upTime;
+	}
+
+	public String getUpTimeToString() {
+		long days = TimeUnit.MILLISECONDS.toDays(Server.getInstance().getUpTime());
+		long hours = TimeUnit.MILLISECONDS.toHours(Server.getInstance().getUpTime()) % TimeUnit.DAYS.toHours(1);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(Server.getInstance().getUpTime()) % TimeUnit.HOURS.toMinutes(1);
+		long seconds = TimeUnit.MILLISECONDS.toSeconds(Server.getInstance().getUpTime()) % TimeUnit.MINUTES.toSeconds(1);
+		return "" + (days > 0 ? days + " day(s) " : "") + (hours > 0 ? hours + " hour(s) " : "") +
+				(minutes > 0 ? minutes + " minute(s) " : "") +
+				(seconds > 0 ? seconds + " second(s)" : "");
 	}
 
 	public static void main(String[] args) {
