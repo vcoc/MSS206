@@ -48,6 +48,8 @@ public class GameConstants {
     // Custom Currency
     public static final int MAX_VOTE_POINTS = 999_999_999;
     public static final int MAX_DONATION_POINTS = 999_999_999;
+    public static final int MAX_PQ_POINTS = 999_999_999;
+    public static final int MAX_DOJO_POINTS = 999_999_999;
 
     // Custom
     public static final int PLAYER_START_MAP = 4000011; // Maple Tree Hill

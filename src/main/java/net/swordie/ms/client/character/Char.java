@@ -5643,6 +5643,7 @@ public class Char {
             quest.setProperty("point", 0);
             getQuestManager().addQuest(quest);
         }
+        dojoPoints = Math.min(GameConstants.MAX_DOJO_POINTS, dojoPoints);
         quest.setProperty("point", dojoPoints);
         write(WvsContext.questRecordExMessage(quest));
     }
@@ -5657,14 +5658,15 @@ public class Char {
         return Integer.parseInt(quest.getProperty("count"));
     }
 
-    public void setPQPoints(int PQPoints) {
+    public void setPQPoints(int pqPoints) {
         Quest quest = getQuestManager().getQuestById(QuestConstants.PQPOINT_COUNT);
         if (quest == null) {
             quest = QuestData.createQuestFromId(QuestConstants.PQPOINT_COUNT);
             quest.setProperty("count", 0);
             getQuestManager().addQuest(quest);
         }
-        quest.setProperty("count", PQPoints);
+        pqPoints = Math.min(GameConstants.MAX_PQ_POINTS, pqPoints);
+        quest.setProperty("count", pqPoints);
         write(WvsContext.questRecordExMessage(quest));
     }
 
@@ -5714,8 +5716,6 @@ public class Char {
         }
         return Integer.parseInt(quest.getProperty("wepRank"));
     }
-
-
 
     public void addNodeShards(int shards) {
         setNodeShards(getNodeShards() + shards);

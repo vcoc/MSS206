@@ -1860,6 +1860,58 @@ public class AdminCommands {
         }
     }
 
+    @Command(names = { "pqpoints" }, requiredType = Admin)
+    public static class PqPoints extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !pqpoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.addPqPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d PQ points by %s.", amount, chr.getName());
+            } else {
+                target.setPQPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your PQ points have changed to %d by %s.", amount, chr.getName());
+            }
+        }
+    }
+
+    @Command(names = { "dojopoints" }, requiredType = Admin)
+    public static class DojoPoints extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            if (args.length < 4) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !dojopoints <0 or 1> <player name> <amount>");
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Type 0 to GIVE or 1 to SET an amount.");
+                return;
+            }
+            int type = Integer.parseInt(args[1]);
+            String name = args[2];
+            int amount = Integer.parseInt(args[3]);
+            Char target = chr.getWorld().getCharByName(name);
+            if (target == null) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Could not find player '%s'.", name);
+                return;
+            }
+            if (type == 0) {
+                target.addDojoPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "You have gained %d dojo points by %s.", amount, chr.getName());
+            } else {
+                target.setDojoPoints(amount);
+                target.chatMessage(adminChatType, adminMsgPrefix + "Your dojo points have changed to %d by %s.", amount, chr.getName());
+            }
+        }
+    }
+
     @Command(names = {"goto"}, requiredType = Tester)
     public static class GoTo extends AdminCommand {
         public static void execute(Char chr, String[] args) {
