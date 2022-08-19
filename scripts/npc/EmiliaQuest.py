@@ -1,4 +1,5 @@
 # Style Room NPC
+# Custom server script
 
 sm.setSpeakerID(2007) # Maple Administrator
 

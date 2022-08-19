@@ -1,4 +1,5 @@
 # Vote Points & Donation Points NPC
+# Custom server script
 
 import math
 
@@ -8,10 +9,8 @@ sm.setSpeakerID(2007) # Maple Administrator
 # VP Items
 # ======================================================================================================================
 
-# Format to follow for items
-# ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-
 vp_exp = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [2022461, 1, 1, 0],
     [2022463, 1, 1, 0],
     [5211048, 240, 1, 1],
@@ -22,6 +21,7 @@ vp_exp = [
 ]
 
 vp_cosmetics = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [5062400, 10, 1, 0],
 	[2430182, 10, 1, 0],
 	[2210010, 10, 1, 0],
@@ -32,11 +32,13 @@ vp_cosmetics = [
 ]
 
 vp_game_changers = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [5680047, 120, 1, 1], # Pvac
 	[2630793, 1, 1, 0] # Fury Totem
 ]
 
 vp_pet_shop = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [5190000, 1, 1, 0],
     [5190001, 1, 1, 0],
     [5190006, 1, 1, 0],
@@ -54,16 +56,15 @@ vp_pet_shop = [
 # DP Items
 # ======================================================================================================================
 
-# Format to follow for items
-# ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-
 dp_exp = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [2450015, 1, 1, 0], # 3x Exp 30 Min
     [2450016, 1, 1, 0], # 3x Exp 60 Min
     [2023722, 1, 1, 0] # [Dice Master] Meso Drop Rate Buff
 ]
 
 dp_cosmetics = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [5552000, 1, 1, 0], # Hair Slot
     [5553000, 1, 1, 0], # Face Slot
 	[5155000, 1, 1, 0], # Carta's Indigo Pearl
@@ -72,6 +73,7 @@ dp_cosmetics = [
 ]
 
 dp_game_changers = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
     [5680047, 10080, 1, 1], # Pvac
     [1202236, 10080, 1, 1], # Frenzy Totem
     [4034803, 1, 1, 0], # Name Change Coupon
@@ -86,6 +88,7 @@ dp_game_changers = [
 ]
 
 dp_surprise_box = [
+    # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
 	[2435163, 1, 1, 0], # Random Damage Skin Box
 	[2437025, 1, 1, 0] # Random Planet Chair Box
 ]
@@ -121,8 +124,6 @@ def transform_minutes(total_minutes):
 
     return out
 
-# ======================================================================================================================
-# Sub-Menu
 # ======================================================================================================================
 
 option = ""
@@ -161,13 +162,13 @@ def exchange(opt, items, donation):
     if timed:
         durOrQty = "(#b" + str(transform_minutes(qty)) + "#k)"
     else:
-        durOrQty = "(#b" + str(qty) + "#kx)"
+        durOrQty = "(x#b" + str(qty) + "#k)"
 
     timeMsg = ""
     if timed == 1:
         timeMsg = "\r\n\r\n(#rThis is a time-sensitive item, duration until expire will start as soon as item is in your inventory!!#k)"
 
-    if sm.sendAskYesNo("You currently have #b" + str(currency) + " " + currencyName + "#k.\r\nAre you sure you want the following item(s)?\r\n\r\n " + durOrQty + " of #b#z " + str(name) + "##k #i" + str(name) + "# for #r" + str(cost) + "#k " + currencyName + "?" + timeMsg):
+    if sm.sendAskYesNo("You currently have #b" + str(currency) + " " + currencyName + "#k.\r\nAre you sure you want the following item(s)?\r\n\r\n#i" + str(name) + "# #b#z" + str(name) + "##k " + durOrQty + " for #r" + str(cost) + "#k " + currencyName + "?" + timeMsg):
         if currency >= cost:
             if sm.canHold(name):
                 if timed == 1: # is time sensitive
@@ -184,6 +185,8 @@ def exchange(opt, items, donation):
                 sm.sendNext("Please make sure you have enough space in your inventory.")
         else:
             sm.sendNext("You don't have enough " + currencyName + ". You need #r" + str(cost) + "#k " + currencyName + ".")
+
+# ======================================================================================================================
 
 def showAndExchange(msg, items, donation):
      selection = showOptions(msg, items)
@@ -224,6 +227,8 @@ def donationPointOptions():
         showAndExchange("What would you like from the Game Changers shop?", dp_game_changers, type)
     elif selection == 3:
         showAndExchange("What would you like from the Surprise Box shop?", dp_surprise_box, type)
+    else:
+        sm.sendSayOkay("An error has occurred. Please report to admins.")
 
 # ======================================================================================================================
 # Start Menu

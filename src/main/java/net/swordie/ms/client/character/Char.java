@@ -6005,7 +6005,7 @@ public class Char {
     }
 
     public void deductNX(int nx) {
-        getUser().addNXPrepaid(nx);
+        getUser().addNXPrepaid(-nx);
         if (nx != 0) {
             write(UserPacket.scriptProgressMessage(String.format("You have lost %,d NX.", nx)));
             write(WvsContext.setMaplePoints(getUser().getNxPrepaid()));
