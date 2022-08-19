@@ -1,4 +1,4 @@
-# Portal to FM from Ludibrium (220000000)
+# Portal to FM from El Nath (211000100)
 
 FREE_MARKET = 910000000
 FREE_MARKET_PORTAL = 7

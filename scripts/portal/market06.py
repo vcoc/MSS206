@@ -1,4 +1,7 @@
-# 221000000 - Omega Sector FM
+# Portal to FM from Omega Sector (221000000)
+
+FREE_MARKET = 910000000
+FREE_MARKET_PORTAL = 7
+
 sm.setReturnField()
-sm.warp(910000000, 2)
-sm.dispose()
+sm.warp(FREE_MARKET, FREE_MARKET_PORTAL)

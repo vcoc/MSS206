@@ -1,4 +1,7 @@
-# 120000100 - Nautilus FM
+# Portal to FM from Nautilus (120000100) / Rien (140000000)
+
+FREE_MARKET = 910000000
+FREE_MARKET_PORTAL = 7
+
 sm.setReturnField()
-sm.warp(910000000, 2)
-sm.dispose()
+sm.warp(FREE_MARKET, FREE_MARKET_PORTAL)

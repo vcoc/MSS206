@@ -1,9 +1,11 @@
-# Fredrick and quick move NPC
+# Fredrick and Quick Move NPC
 
-Freemarket = 910000000
+sm.setSpeakerID(9030000) # Fredrick
 
-if sm.getFieldID() == Freemarket:
-    sm.getItemsFromTrunkEmployee()
-elif sm.sendAskYesNo("Would you like to be teleported to the Free Market?\r\n#b"):
+FREE_MARKET = 910000000
+
+if sm.getFieldID() == FREE_MARKET:
+    sm.sendSayOkay("I'm Fredrick, The Store Banker.")
+elif sm.sendAskYesNo("Would you like to be teleported to the #bFree Market#k?"):
     sm.setReturnField()
-    sm.warp(910000000)
+    sm.warp(FREE_MARKET)

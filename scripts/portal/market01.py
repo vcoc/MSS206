@@ -1,2 +1,7 @@
-# 100000100 - henesys fm portal
-sm.warp(910000000, 36)
+# Portal to FM from Henesys (100000100)
+
+FREE_MARKET = 910000000
+FREE_MARKET_PORTAL = 7
+
+sm.setReturnField()
+sm.warp(FREE_MARKET, FREE_MARKET_PORTAL)
