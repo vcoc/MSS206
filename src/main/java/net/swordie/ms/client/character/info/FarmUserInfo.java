@@ -6,7 +6,7 @@ import net.swordie.ms.connection.OutPacket;
  * Created on 12/20/2017.
  */
 public class FarmUserInfo {
-    private String farmName = "v206";
+    private String farmName = "Farm";
     private int farmPoint;
     private int farmLevel;
     private int farmExp;

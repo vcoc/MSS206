@@ -110,6 +110,29 @@ public class ItemConstants {
         }
     }
 
+    public static boolean isTravelingMerchantCSItem(int itemID) {
+        switch (itemID) {
+            case 5450000: // Miu Miu the Traveling Merchant
+            case 5450003: // Miu Miu the Rookie Traveling Merchant
+            case 5450004: // Traveling Merchant (30-day)
+            case 5450006: // Traveling Merchant (1-day)
+            case 5450007: // (7-Day) Miu Miu the Traveling Merchant
+            case 5450013: // (3-Day) Miu Miu the Traveling Merchant
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isPortableStorageCSItem(int itemID) {
+        switch (itemID) {
+            case 5450005: // Portable Storage (30-day)
+            case 5450008: // Portable Storage (1-day)
+                return true;
+            default:
+                return false;
+        }
+    }
 
     private static final Integer[] soulPotList = new Integer[]{32001, 32002, 32003, 32004, 32005, 32006, 32011, 32012, // flat
             32041, 32042, 32043, 32044, 32045, 32046, 32051, 32052}; // rate

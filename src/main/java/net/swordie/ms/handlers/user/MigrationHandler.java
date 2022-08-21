@@ -287,6 +287,7 @@ public class MigrationHandler {
         c.write(CCashShop.categoryInfo(cs));
         c.write(CCashShop.bannerMsg(cs, new ArrayList<>(Arrays.asList(ServerConfig.CS_SLIDE_MSG))));
         c.write(CCashShop.oneTen(cs));
+        c.write(WvsContext.broadcastMessage(4, c.getChannel(), "", false));
     }
 
     @Handler(op = InHeader.USER_MAP_TRANSFER_REQUEST)

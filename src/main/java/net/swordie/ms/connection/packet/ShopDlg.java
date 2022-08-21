@@ -1,6 +1,7 @@
 package net.swordie.ms.connection.packet;
 
 import net.swordie.ms.client.character.Char;
+import net.swordie.ms.client.character.commands.AdminCommands;
 import net.swordie.ms.connection.OutPacket;
 import net.swordie.ms.handlers.header.OutHeader;
 import net.swordie.ms.world.shop.NpcShopDlg;
@@ -20,6 +21,9 @@ public class ShopDlg {
             outPacket.encodeInt(petTemplateID);
         }
         nsd.encode(outPacket, chr.getBuyBack());
+        if (chr.isDebugMode()) {
+            chr.chatMessage(AdminCommands.adminChatType, "ShopID: %d", nsd.getNpcTemplateID());
+        }
 
         return outPacket;
     }

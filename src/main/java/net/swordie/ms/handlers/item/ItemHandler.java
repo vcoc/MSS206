@@ -276,7 +276,6 @@ public class ItemHandler {
                     return;
             }
 
-
         } else if (itemID / 10000 == 512) { // Weather Effects
             String text = inPacket.decodeString();
             Field field = c.getChr().getField();
@@ -324,6 +323,15 @@ public class ItemHandler {
             }
             petItem.updateToChar(chr);
             chr.consumeItem(item);
+
+        } else if (ItemConstants.isTravelingMerchantCSItem(itemID)) {
+            chr.getScriptManager().openShop(1011100);
+            return;
+
+        } else if (ItemConstants.isPortableStorageCSItem(itemID)) {
+            chr.getScriptManager().openTrunk(1012009);
+            return;
+
         } else {
 
             Equip medal = (Equip) chr.getEquippedInventory().getFirstItemByBodyPart(BodyPart.Medal);
@@ -387,7 +395,6 @@ public class ItemHandler {
                         }
                     }
                     break;
-
                 case ItemConstants.RED_CUBE: // Red Cube
                 case ItemConstants.BLACK_CUBE: // Black cube
                     short ePos = (short) inPacket.decodeInt();
@@ -548,7 +555,7 @@ public class ItemHandler {
                             (byte) chr.getClient().getChannelInstance().getChannelId(), whisperIcon, chr);
                     world.broadcastPacket(WvsContext.broadcastMsg(smega));
                     break;
-                case 5170000:
+                case 5170000: // Pet Name Tag
                     int petID = inPacket.decodeInt();
                     inPacket.decodeInt(); //??
                     String petName = inPacket.decodeString();
@@ -582,7 +589,7 @@ public class ItemHandler {
                     return;
             }
         }
-        if (itemID != 5040004) {
+        if (itemID != ItemConstants.HYPER_TELEPORT_ROCK) {
             chr.consumeItem(item);
         }
         chr.dispose();

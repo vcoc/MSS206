@@ -44,8 +44,7 @@ create table cs_items (
     primary key (id)
 );
 
-insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('2000000', 'Favourite', '0', '100'),
-
+insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('2000000', 'Favorite', '0', '100'),
 
 ('1010000', 'Special Promotions', '0', '100'),
 ('1010100', 'New Arrivals', '0', '100'),
@@ -55,13 +54,11 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1010500', 'Daily Deals', '0', '100'),
 ('1010600', 'Maple Rewards Shop', '0', '100'),
 
-
 ('1020000', 'Time Savers', '0', '100'),
 ('1020100', 'Teleport Rocks', '0', '100'),
 ('1020200', 'Item Stores', '0', '100'),
 ('1020300', 'Quest Helpers', '0', '100'),
 ('1020400', 'Dungeon Passes', '0', '100'),
-
 
 ('1030000', 'Random Rewards', '0', '100'),
 ('1030100', 'Gachapon Tickets', '0', '100'),
@@ -69,19 +66,15 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1030300', 'Special Items', '0', '100'),
 ('1030400', 'Meso Sacks', '0', '100'),
 
-
 ('1040000', 'Equipment Modifications', '0', '100'),
 ('1040100', 'Miracle Cubes', '0', '100'),
 ('1040200', 'Scrolls', '0', '100'),
 ('1040300', 'Upgrade Slots', '0', '100'),
 ('1040400', 'Trade', '0', '100'),
 ('1040500', 'Other', '0', '100'),
-('1040501', 'Item Tag', '0', '100'),
-('1040502', 'Item Guards', '0', '100'),
 ('1040600', 'Duration', '0', '100'),
 ('1040700', 'Bypass Keys', '0', '100'),
 ('1040800', 'Fusion Anvils', '0', '100'),
-
 
 ('1050000', 'Character Modifications', '0', '100'),
 ('1050100', 'SP/AP modifications', '0', '100'),
@@ -93,7 +86,6 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1050700', 'Wedding', '0', '100'),
 ('1050800', 'Other', '0', '100'),
 ('1050900', 'Mount', '0', '100'),
-
 
 ('1060000', 'Equipment', '0', '100'),
 ('1060100', 'Weapon', '0', '100'),
@@ -131,10 +123,7 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1063300', 'Cape', '0', '100'),
 ('1063400', 'Cape 2', '0', '100'),
 ('1063500', 'Cape 3', '0', '100'),
-
-
 ('1064000', 'Transparent', '0', '100'),
-
 
 ('1070000', 'Appearance', '0', '100'),
 ('1070100', 'Beauty Parlor', '0', '100'),
@@ -146,7 +135,6 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1070400', 'Transformations', '0', '100'),
 ('1070500', 'Special', '0', '100'),
 
-
 ('1080000', 'Pet', '0', '100'),
 ('1080100', 'Pets', '0', '100'),
 ('1080200', 'Pets 2', '0', '100'),
@@ -156,123 +144,102 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1080600', 'Pet Food', '0', '100'),
 ('1080700', 'Pet Skills', '0', '100'),
 
-
 ('1090000', 'Messenger and Social', '0', '100'),
 ('1090100', 'Megaphones', '0', '100'),
 ('1090200', 'Messengers', '0', '100'),
 ('1090300', 'Weather Effects', '0', '100'),
-('1090301', 'Stats', '0', '100'),
-('1090302', 'Non-Stat', '0', '100'),
 ('1090400', 'Other', '0', '100');
-
-
-
 
 
 /*		TIME SAVERS		*/
 
+
+/* Teleport Rocks */
 /*Page 1*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5040004', '9900', 'Teleport Rocks'),      /*Hyper Teleport Rock*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5040004', '9900', 'Teleport Rocks'), /*Hyper Teleport Rock*/
 
-
-
+/* Dungeon Passes */
 /*Page 1*/
-('5450004', '1000', 'Item Stores'),      /*Traveling Merchant (30-day)*/
-('5450005', '1000', 'Item Stores'),      /*Portable Storage (30-day)*/
-('5450006', '400', 'Item Stores'),      /*Traveling Merchant (1-day)*/
-('5450008', '400', 'Item Stores'),      /*Portable Storage (1-day)*/
-
-
-
-/*Page 1*/
-('5252030', '300', 'Dungeon Passes');      /*Monster Park Additional Entry Ticket*/
-
-
-
+('5252030', '300', 'Dungeon Passes'); /*Monster Park Additional Entry Ticket*/
 
 
 /*		RANDOM REWARDS		*/
 
+
+/* Gachapon Tickets */
 /*Page 1*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5680021', '2500', 'Gachapon Tickets');      /*Chair Gachapon Ticket*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5680021', '25000', 'Gachapon Tickets', '11');      /*Chair Gachapon Ticket (11)*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5451000', '1050', 'Gachapon Tickets');      /*Remote Gachapon Ticket*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5451000', '10500', 'Gachapon Tickets', '11');      /*Remote Gachapon Ticket (11)*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5220000', '10000', 'Gachapon Tickets', '11');      /*Gachapon Ticket (11)*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5220000', '1000', 'Gachapon Tickets'),      /*Gachapon Ticket*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5680021', '2500', 'Gachapon Tickets'); /*Chair Gachapon Ticket*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5680021', '25000', 'Gachapon Tickets', '11'); /*Chair Gachapon Ticket (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5451000', '1050', 'Gachapon Tickets'); /*Remote Gachapon Ticket*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5451000', '10500', 'Gachapon Tickets', '11'); /*Remote Gachapon Ticket (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5220000', '10000', 'Gachapon Tickets', '11'); /*Gachapon Ticket (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5220000', '1000', 'Gachapon Tickets'), /*Gachapon Ticket*/
 
-
-
+/* Surprise Boxes */
 /*Page 1*/
-('5222060', '3400', 'Surprise Boxes');      /*Premium Surprise Style Box*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5222060', '34000', 'Surprise Boxes', '11');      /*Premium Surprise Style Box (11)*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5222006', '2100', 'Surprise Boxes');      /*Surprise Style Box*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5222006', '21000', 'Surprise Boxes', '11');      /*Surprise Style Box (11)*/
+('5222060', '3400', 'Surprise Boxes'); /*Premium Surprise Style Box*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5222060', '34000', 'Surprise Boxes', '11'); /*Premium Surprise Style Box (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5222006', '2100', 'Surprise Boxes'); /*Surprise Style Box*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5222006', '21000', 'Surprise Boxes', '11'); /*Surprise Style Box (11)*/
 
-
-
+/* Meso Sacks */
 /*Page 1*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '1000', 'Meso Sacks'),      /*Rare Meso Sack*/
-('5202001', '3000', 'Meso Sacks'),      /*Unique Meso Sack*/
-('5202002', '2000', 'Meso Sacks'),      /*Epic Meso Sack*/
-
-
-
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '1000', 'Meso Sacks'), /*Rare Meso Sack*/
+('5202001', '3000', 'Meso Sacks'), /*Unique Meso Sack*/
+('5202002', '2000', 'Meso Sacks'); /*Epic Meso Sack*/
 
 
 /*		EQUIPMENT MODIFICATIONS		*/
 
 
-/* CUBES */
-
+/* Miracle Cubes */
 /*Page 1*/
-('5062009', '1000', 'Miracle Cubes'), 	# Red Cube
-('5062010', '3000', 'Miracle Cubes'), 	# Black Cube
-('5062024', '10000', 'Miracle Cubes'), 	# Violet Cube
-('5062500', '5000', 'Miracle Cubes'), 	# Bonus Potential Cube
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5062009', '1200', 'Miracle Cubes'); /*Red Cube*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5062009', '12000', 'Miracle Cubes', '11'); /*Red Cube (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5062010', '2200', 'Miracle Cubes'); /*Black Cube*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5062010', '22000', 'Miracle Cubes', '11'); /*Black Cube (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5062500', '2400', 'Miracle Cubes'); /*Bonus Potential Cube*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5062500', '24000', 'Miracle Cubes', '11'); /*Bonus Potential Cube (11)*/
 
-# Scrolls
-
-# Upgrade Slots
-
-# Trade
-
-# Other
-
+/* Trade */
 /*Page 1*/
-('5700000', '1200', 'Other'),      /*Android Naming Coupon*/
-('5060000', '1800', 'Other'),      /*Item Tag*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5520000', '1500', 'Trade'), /*Scissors of Karma*/
+('5520001', '4000 ', 'Trade'), /*Platinum Scissors of Karma*/
 
-# Other -> Item Tag
-
+/* Other */
 /*Page 1*/
-('5700000', '1200', 'Item Tag'),      /*Android Naming Coupon*/
-('5060000', '1800', 'Item Tag'),      /*Item Tag*/
+('5700000', '1200', 'Other'), /*Android Naming Coupon*/
+('5060000', '1800', 'Other'), /*Item Tag*/
 
-# Other -> Item Guards
-
-# Duration
-
-# Bypass Keys
-
-# Fusion Anvils
+/* Fusion Anvils */
+/*Page 1*/
+('5062400', '2700', 'Fusion Anvils'), /*Fusion Anvil*/
+('5062402', '2500', 'Fusion Anvils'), /*Medal Fusion Anvil*/
 
 
 /*		CHARACTER MODIFICATIONS		*/
 
+
+/* Inventory Slots */
 /*Page 1*/
-('5430000', '6900', 'Inventory slots'),      /*Extra Character Slot Coupon*/
-('9110000', '5000', 'Inventory slots'),      /*Add Storage Slots*/
-('9111000', '5000', 'Inventory slots'),      /*Add Equip Slots*/
-('9112000', '5000', 'Inventory slots'),      /*Add Use Slots*/
-('9114000', '5000', 'Inventory slots'),      /*Add ETC Slots*/
-('9113000', '5000', 'Inventory slots'),      /*Add Set-up Slots*/
+('5430000', '6900', 'Inventory slots'), /*Extra Character Slot Coupon*/
+('9110000', '5000', 'Inventory slots'), /*Add Storage Slots*/
+('9111000', '5000', 'Inventory slots'), /*Add Equip Slots*/
+('9112000', '5000', 'Inventory slots'),	/*Add Use Slots*/
+('9114000', '5000', 'Inventory slots'),	/*Add ETC Slots*/
+('9113000', '5000', 'Inventory slots'),	/*Add Set-up Slots*/
 
+/* Skill Modifications */
+/*Page 1*/
+('5062800', '1900', 'Skill Modifications'), /*Miracle Circulator*/
 
-
+/* Protection */
+/*Page 1*/
+('5130000', '700', 'Protection'), /*Safety Charm*/
 
 
 /*		EQUIPMENT		*/
+
 
 /*  Weapon  */
 /*Page 1*/
@@ -560,8 +527,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1702299', '4700', 'Weapon'),	/*Chocolate Dipped Stick*/
 ('1702301', '5000', 'Weapon'),	/*Rabbit Weapon*/
 
-
-
+/*  Weapon 2 */
 /*Page 1*/
 ('1702303', '3400', 'Weapon 2'),	/*Baby Bottle*/
 ('1702302', '5600', 'Weapon 2'),	/*Alien Mug*/
@@ -847,8 +813,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1702602', '7100', 'Weapon 2'),	/*Hamburger*/
 ('1702605', '8800', 'Weapon 2'),	/*Donut*/
 
-
-
+/*  Weapon 3 */
 /*Page 1*/
 ('1702604', '6400', 'Weapon 3'),	/*Parfait*/
 ('1702607', '8800', 'Weapon 3'),	/*Cheese 'n' Carrots Stick*/
@@ -1134,8 +1099,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1702898', '5600', 'Weapon 3'),	/*Gamboling CONY*/
 ('1702901', '4000', 'Weapon 3'),	/*Crystalline Wand*/
 
-
-
+/*  Weapon 4 */
 /*Page 1*/
 ('1702900', '4900', 'Weapon 4'),	/*Azure Sunset Sword*/
 ('1702903', '6000', 'Weapon 4'),	/*Sunny Songbird Weapon*/
@@ -1164,10 +1128,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1702915', '6000', 'Weapon 4'),	/*Fox Fire Familiar*/
 ('1702917', '4700', 'Weapon 4'),	/*Blue Flame Whip*/
 ('1702916', '6300', 'Weapon 4'),	/*Springtime Sprout Greenery*/
-
-
-
-
 
 /*  Hat  */
 /*Page 1*/
@@ -1455,8 +1415,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1002296', '7600', 'Hat'),	/*Slime Hat*/
 ('1002295', '7100', 'Hat'),	/*Chef's Hat*/
 
-
-
+/*  Hat 2 */
 /*Page 1*/
 ('1002294', '8800', 'Hat 2'),	/*Red Frill Pajama Hat*/
 ('1002293', '4700', 'Hat 2'),	/*Blue Pajama Hat*/
@@ -1742,8 +1701,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1002756', '5000', 'Hat 2'),	/*Hero's Casket*/
 ('1002755', '3800', 'Hat 2'),	/*Hero's Beret*/
 
-
-
+/*  Hat 3 */
 /*Page 1*/
 ('1002754', '7100', 'Hat 3'),	/*Orange Mushroom Scholar*/
 ('1002753', '3800', 'Hat 3'),	/*Stylish Pink Cotton Cap*/
@@ -2029,8 +1987,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1003495', '6300', 'Hat 3'),	/*Tangy Fish Egg Nigiri*/
 ('1003494', '3800', 'Hat 3'),	/*Chewy Octopus Nigiri*/
 
-
-
+/*  Hat 4 */
 /*Page 1*/
 ('1003493', '3600', 'Hat 4'),	/*Fresh Salmon Nigiri*/
 ('1003492', '6000', 'Hat 4'),	/*Crisp Egg Nigiri*/
@@ -2300,7 +2257,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1004036', '8800', 'Hat 4'),	/*Mr. K's Cat Hat*/
 ('1004035', '4900', 'Hat 4'),	/*Snake Snapback Hat*/
 ('1004034', '6400', 'Hat 4'),	/*Study Break*/
-
 /*Page 28*/
 ('1004048', '5600', 'Hat 4'),	/*Rudi's Hat*/
 ('1004074', '7400', 'Hat 4'),	/*Year of Horse Hat (Blue)*/
@@ -2310,14 +2266,11 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1004092', '6400', 'Hat 4'),	/*Cutie Horse Hat*/
 ('1004091', '7100', 'Hat 4'),	/*Deer Headband*/
 ('1004090', '7600', 'Hat 4'),	/*Explorer Cap*/
-
 /*Page 29*/
-
 ('1004081', '6300', 'Hat 4'),	/*Dawn Bear Hoodie*/
 ('1004111', '6000', 'Hat 4'),	/*Red Ribbon Hairband*/
 
-
-
+/*  Hat 5 */
 /*Page 1*/
 ('1004110', '4000', 'Hat 5'),	/*Blue Ribbon Hairband*/
 ('1004109', '4000', 'Hat 5'),	/*Transparent Hat*/
@@ -2603,8 +2556,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1004600', '6400', 'Hat 5'),	/*British Marine Hat*/
 ('1004599', '3800', 'Hat 5'),	/*Black Ursus Hat*/
 
-
-
+/*  Hat 6 */
 /*Page 1*/
 ('1004598', '3200', 'Hat 6'),	/*Brown Ursus Hat*/
 ('1004597', '6400', 'Hat 6'),	/*White Ursus Hat*/
@@ -2624,11 +2576,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1004635', '7600', 'Hat 6'),	/*Festive Gumball*/
 ('1004634', '7100', 'Hat 6'),	/*Midnight Black Cat*/
 ('1004633', '3400', 'Hat 6'),	/*Ghost Fedora*/
-
 /*Page 3*/
-
-
-
 ('1004643', '6400', 'Hat 6'),	/*Blue Marine Cap*/
 ('1004642', '6000', 'Hat 6'),	/*Shining Light*/
 ('1004641', '6400', 'Hat 6'),	/*Fairy's Flower Bud*/
@@ -2890,8 +2838,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1004974', '6000', 'Hat 6'),	/*Maple Galaxy Helmet*/
 ('1004973', '7100', 'Hat 6'),	/*Steely Meow Helmet*/
 
-
-
+/*  Hat 7 */
 /*Page 1*/
 ('1004972', '5600', 'Hat 7'),	/*Steely Blue Kitty Ears*/
 ('1004971', '6400', 'Hat 7'),	/*Steely Pink Kitty Ears*/
@@ -3049,7 +2996,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1005111', '5200', 'Hat 7'),	/*Plum Blossom Bonnet*/
 ('1005110', '7100', 'Hat 7'),	/*Plum Blossom Petals*/
 ('1005135', '8800', 'Hat 7'),	/*Mochi Puppy*/
-
 ('1005131', '5200', 'Hat 7'),	/*Alchemist Gem*/
 ('1005130', '4900', 'Hat 7'),	/*Treasure Ship Kemdi Mask*/
 /*Page 17*/
@@ -3119,7 +3065,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1005190', '3400', 'Hat 7'),	/*Kitty Planet Posh Hat*/
 ('1005189', '6300', 'Hat 7'),	/*Summer Story Hat (M)*/
 ('1005188', '7100', 'Hat 7'),	/*Summer Story Hat (F)*/
-
 ('1005186', '6000', 'Hat 7'),	/*Ballpark Buddies Hat*/
 ('1005185', '7400', 'Hat 7'),	/*Guardian Knight Hat*/
 /*Page 24*/
@@ -3166,7 +3111,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1005261', '5000', 'Hat 7'),	/*Glided Veil*/
 ('1005260', '5600', 'Hat 7'),	/*Gilded Cap*/
 ('1005259', '6300', 'Hat 7'),	/*Tri-color Hat (M)*/
-
 ('1005257', '7100', 'Hat 7'),	/*Warm Winter Bear Hat*/
 ('1005256', '6000', 'Hat 7'),	/*Warm Winter Bunny Hat*/
 ('1005255', '6300', 'Hat 7'),	/*Warm Winter Penguin Hat*/
@@ -3177,8 +3121,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1005279', '6000', 'Hat 7'),	/*Lunar New Year Pudgy Piggy Hat*/
 ('1005278', '6000', 'Hat 7'),	/*Cobalt Filigree Comb (F)*/
 
-
-
+/*  Hat 8 */
 /*Page 1*/
 ('1005277', '7400', 'Hat 8'),	/*Cobalt Filigree Pin (M)*/
 ('1005276', '3800', 'Hat 8'),	/*Silly Blue Pajama Hat (M)*/
@@ -3251,10 +3194,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1005352', '5600', 'Hat 8'),	/*Fox Fire Ears*/
 /*Page 8*/
 ('1005363', '4000', 'Hat 8'),	/*Red Lotus Spirit Walker's Flower*/
-
-
-
-
 
 /*  Face  */
 /*Page 1*/
@@ -3542,10 +3481,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1012672', '3200', 'Face'),	/*Grapefruit Glow*/
 ('1012690', '6300', 'Face'),	/*Mopey Face*/
 
-
-
-
-
 /*  Eye  */
 /*Page 1*/
 ('1020000', '5600', 'Eye'),	/*Aqua Toy Shades*/
@@ -3680,7 +3615,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 /*Page 14*/
 ('1022266', '5600', 'Eye'),	/*Strange Uncle Glasses*/
 ('1022265', '3400', 'Eye'),	/*Black Diamond*/
-('1022263', '7100', 'Eye'),	/* Sleepy Eye Patch*/
+('1022263', '7100', 'Eye'),	/*Sleepy Eye Patch*/
 ('1022262', '5600', 'Eye'),	/*Scouter*/
 ('1022259', '6000', 'Eye'),	/*Bandage Blindfold*/
 ('1022258', '8800', 'Eye'),	/*Bat Wing Monocle*/
@@ -3695,10 +3630,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1022276', '3800', 'Eye'),	/*Banana Peel Specs*/
 ('1022275', '4900', 'Eye'),	/*Polar Explorer Sunglasses*/
 ('1022274', '4000', 'Eye'),	/*Purple Rose Eye Patch*/
-
-
-
-
 
 /*  Earrings  */
 /*Page 1*/
@@ -3733,10 +3664,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1032310', '6000', 'Earrings'),	/*EVA Android Hat*/
 /*Page 4*/
 ('1033000', '4000', 'Earrings'),	/*Lucid's Earrings*/
-
-
-
-
 
 /*  Overall  */
 /*Page 1*/
@@ -4645,7 +4572,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1052331', '8800', 'Overall 4'),	/*Red Mage Gear*/
 ('1052332', '6400', 'Overall 4'),	/*Christmas Casual Outfit*/
 ('1052368', '7100', 'Overall 4'),	/*Starling Suit*/
-('1052369', '6300', 'Overall 4'),	/* MSE 4 Years & Unstoppable Overall*/
+('1052369', '6300', 'Overall 4'),	/*MSE 4 Years & Unstoppable Overall*/
 ('1052370', '5200', 'Overall 4'),	/*Victorian Vampire Suit*/
 ('1052372', '6000', 'Overall 4'),	/*Blue Arabian Outfit*/
 ('1052373', '3400', 'Overall 4'),	/*Red Arabian Outfit*/
@@ -5218,10 +5145,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1053423', '7600', 'Overall 6'),	/*Starry Light Gown*/
 ('1053441', '3800', 'Overall 6'),	/*Red Lotus Spirit Walker's Attire*/
 
-
-
-
-
 /*  Top  */
 /*Page 1*/
 ('1049000', '3600', 'Top'),	/*Friendship Shirt*/
@@ -5676,10 +5599,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1048001', '3400', 'Top 2'),	/*Bunny Love T-Shirt*/
 ('1048000', '7400', 'Top 2'),	/*Couple Shirt*/
 
-
-
-
-
 /*  Bottom  */
 /*Page 1*/
 ('1060001', '5000', 'Bottom'),	/*Black Suit Pants*/
@@ -6008,10 +5927,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1062250', '5000', 'Bottom 2'),	/*Tennis Bottom (M)*/
 ('1062251', '8800', 'Bottom 2'),	/*Tennis Bottom (F)*/
 ('1062252', '8800', 'Bottom 2'),	/*Scallion Leggings*/
-
-
-
-
 
 /*  Shoes  */
 /*Page 1*/
@@ -6753,10 +6668,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1073354', '6000', 'Shoes 3'),	/*Fox Fire Anklet*/
 ('1073357', '6400', 'Shoes 3'),	/*Red Lotus Spirit Walker's Geta*/
 
-
-
-
-
 /*  Glove  */
 /*Page 1*/
 ('1082040', '7600', 'Glove'),	/*Red Boxing Gloves*/
@@ -6934,10 +6845,6 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1081004', '8800', 'Glove'),	/*Black Cat Gloves*/
 ('1081006', '4900', 'Glove'),	/*Elizabeth Gloves*/
 ('1081007', '5200', 'Glove'),	/*Elizabeth Gloves*/
-
-
-
-
 
 /*  Ring  */
 /*Page 1*/
@@ -7376,14 +7283,9 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1113171', '3800', 'Ring 2'),	/*Grin Ring*/
 ('1113298', '7100', 'Ring 2'),	/*Spirit Ring*/
 ('1113299', '7600', 'Ring 2'),	/*Determination Ring*/
-
 /*Page 16*/
 ('1113289', '5600', 'Ring 2'),	/*Busy Penguin Ring*/
 ('1114000', '5200', 'Ring 2'),	/*Kinship Ring*/
-
-
-
-
 
 /*  Cape  */
 /*Page 1*/
@@ -8769,7 +8671,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('5000652', '9600', 'Pets 2'),      /*Baby Nero*/
 
 
-
+/*  Pet Appearance  */
 /*Page 1*/
 ('1802000', '2700', 'Pet Appearance'),      /*Red Ribbon*/
 ('1802001', '7400', 'Pet Appearance'),      /*Yellow Hat*/
@@ -9055,8 +8957,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1802536', '6300', 'Pet Appearance'),      /*Cookiebear Fork*/
 ('1802537', '7400', 'Pet Appearance'),      /*Fancy Fox Mask*/
 
-
-
+/*  Pet Appearance 2 */
 /*Page 1*/
 ('1802538', '5000', 'Pet Appearance 2'),      /*Fox Mask*/
 ('1802539', '6300', 'Pet Appearance 2'),      /*Sailor Seal Star Glasses*/
@@ -9111,8 +9012,7 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('1802583', '3700', 'Pet Appearance 2'),      /*Witch's Pink Ribbon*/
 ('1802584', '7400', 'Pet Appearance 2'),      /*Red Bow Tie*/
 
-
-
+/*  Pet Use  */
 /*Page 1*/
 ('5380000', '2700', 'Pet Use'),      /*The Rock of Evolution*/
 ('5170000', '2700', 'Pet Use'),      /*Pet Name Tag*/
@@ -9133,14 +9033,12 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5202000', '10
 ('5781013', '5700', 'Pet Use'),      /*Chameleon Pet Dye Coupon*/
 ('5781014', '5700', 'Pet Use'),      /*Chubmunk Pet Dye Coupon*/
 
-
-
+/*  Pet Food  */
 /*Page 1*/
 ('5249000', '1000', 'Pet Food');      /*Premium Pet Food*/
 insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5249000', '5400', 'Pet Food', '6');      /*Premium Pet Food (6)*/
 
-
-
+/*  Pet Skills  */
 /*Page 1*/
 insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5190000', '6800', 'Pet Skills'),      /*Item Pick-up Skill*/
 ('5190001', '5000', 'Pet Skills'),      /*Auto HP Potion Skill*/
@@ -9153,16 +9051,26 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5190000', '68
 ('5190010', '3200', 'Pet Skills'),      /*Auto Buff Skill*/
 /*Page 2*/
 ('5190011', '7400', 'Pet Skills'),      /*Auto Feed and Movement Skill*/
-('5190012', '7400', 'Pet Skills'),      /*Fatten Up Skill*/
-
-
-
+('5190012', '7400', 'Pet Skills');      /*Fatten Up Skill*/
 
 
 /*		MESSENGER AND SOCIAL		*/
 
+
+/*Megaphones*/
 /*Page 1*/
-('5120000', '4300', 'Weather Effects'),      /*Snowy Snow*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5071000', '300', 'Megaphones'); /*Megaphone*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5071000', '3000', 'Megaphones', '11'); /*Megaphone (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5077000', '900', 'Megaphones'); /*Triple Megaphone*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5077000', '9000', 'Megaphones', '11'); /*Triple Megaphone (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5072000', '1300 ', 'Megaphones'); /*Super Megaphone*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5072000', '13000', 'Megaphones', '11'); /*Super Megaphone (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5076000', '2300', 'Megaphones'); /*Item Megaphone*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5076000', '23000', 'Megaphones', '11'); /*Item Megaphone (11)*/
+
+/* Weather Effects */
+/*Page 1*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5120000', '4300', 'Weather Effects'),      /*Snowy Snow*/
 ('5120001', '6800', 'Weather Effects'),      /*Sprinkled Flowers*/
 ('5120002', '4700', 'Weather Effects'),      /*Soap Bubbles*/
 ('5120003', '3700', 'Weather Effects'),      /*Snowflakes*/
@@ -9178,5 +9086,3 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5190000', '68
 ('5120012', '4700', 'Weather Effects'),      /*Holiday Sock*/
 ('5120014', '3200', 'Weather Effects'),      /*Christmas Socks*/
 ('5120015', '6800', 'Weather Effects');      /*Chinese Lantern Firecrackers*/
-
-

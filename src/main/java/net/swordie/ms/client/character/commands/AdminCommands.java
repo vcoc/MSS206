@@ -2364,9 +2364,13 @@ public class AdminCommands {
 
     @Command(names = {"shop"}, requiredType = Tester)
     public static class Shop extends AdminCommand {
-
         public static void execute(Char chr, String[] args) {
-            chr.getScriptManager().openShop(1011100);
+            if (args.length < 2) {
+                chr.chatMessage(adminChatType, adminMsgPrefix + "Syntax: !shop <shopId>");
+                return;
+            }
+            int shopID = Integer.parseInt(args[1]);
+            chr.getScriptManager().openShop(shopID);
         }
     }
 

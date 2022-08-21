@@ -11,45 +11,32 @@ sm.setSpeakerID(2007) # Maple Administrator
 
 vp_exp = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-    [2022461, 1, 1, 0],
-    [2022463, 1, 1, 0],
-    [5211048, 240, 1, 1],
-    [5360042, 240, 1, 1],
-    [5211046, 1440, 1, 1],
-    [5360000, 1440, 1, 1],
-    [2023380, 1, 1, 0]
+    [2022461, 1, 1, 0], # Cassandra's Reward 3
+    [2022463, 1, 1, 0], # Cassandra's Reward 5
+    [5211048, 240, 1, 1], # 4-hour 2x Exp Special Coupon
+    [5360042, 240, 1, 1], # 4-hour 2x Drop Special Coupon
+    [5211046, 1440, 1, 1], # 1-day 2x Exp Special Coupon
+    [5360000, 1440, 1, 1], # 1-day 2x Drop Special Coupon
+    [2023380, 1, 1, 0] # 2x Exp Coupon (30 min)
 ]
 
 vp_cosmetics = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-    [5062400, 10, 1, 0],
-	[2430182, 10, 1, 0],
-	[2210010, 10, 1, 0],
-	[5072000, 10, 1, 0],
-	[5073000, 10, 1, 0],
-	[5076000, 10, 1, 0],
-	[5077000, 10, 1, 0]
+	[2430182, 10, 1, 0], # Special Beauty Coupon
+	[2210010, 10, 1, 0] # Potion of Transformation
 ]
 
 vp_game_changers = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
+    [5450006, 1440, 1, 1], # Traveling Merchant (1-day)
+    [5450008, 1440, 1, 1], # Portable Storage (1-day)
     [5680047, 120, 1, 1], # Pvac
 	[2630793, 1, 1, 0] # Fury Totem
 ]
 
 vp_pet_shop = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-    [5190000, 1, 1, 0],
-    [5190001, 1, 1, 0],
-    [5190006, 1, 1, 0],
-    [5190009, 1, 1, 0],
-    [5190010, 1, 1, 0],
-    [5190011, 1, 1, 0],
-    [5190002, 1, 1, 0],
-    [5190003, 1, 1, 0],
-    [5190004, 1, 1, 0],
-    [5190005, 1, 1, 0],
-    [5190013, 1, 1, 0]
+    [5190013, 1, 1, 0] # Open Pet Shop Skill
 ]
 
 # ======================================================================================================================
@@ -74,6 +61,8 @@ dp_cosmetics = [
 
 dp_game_changers = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
+    [5450004, 43200, 1, 1], # Traveling Merchant (1-day)
+    [5450005, 43200, 1, 1], # Portable Storage (1-day)
     [5680047, 10080, 1, 1], # Pvac
     [1202236, 10080, 1, 1], # Frenzy Totem
     [4034803, 1, 1, 0], # Name Change Coupon
