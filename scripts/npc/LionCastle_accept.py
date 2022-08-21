@@ -51,4 +51,4 @@ if sm.getFieldID() == 211070000:
 
 elif sm.getFieldID() == 211070100 or sm.getFieldID() == 211070102:
     if sm.sendAskYesNo("Are you sure you want to leave the battlefield?"):
-        sm.WarpInstanceOut(211070000)
+        sm.warpInstanceOut(211070000)
