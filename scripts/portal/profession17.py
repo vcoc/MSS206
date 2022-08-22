@@ -1,4 +1,4 @@
-# Portal from Edelstein (310000000) to Ardentmill
+# Portal from Rien (140000000) to Ardentmill
 
 ARDENTMILL = 910001000
 ARDENTMILL_PORTAL = 6
