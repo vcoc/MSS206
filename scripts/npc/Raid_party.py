@@ -28,8 +28,6 @@ vp_cosmetics = [
 
 vp_game_changers = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-    [5450006, 1440, 1, 1], # Traveling Merchant (1-day)
-    [5450008, 1440, 1, 1], # Portable Storage (1-day)
     [5680047, 120, 1, 1], # Pvac
 	[2630793, 1, 1, 0] # Fury Totem
 ]
@@ -61,8 +59,6 @@ dp_cosmetics = [
 
 dp_game_changers = [
     # ItemID, Quantity/Duration, Cost, Time-sensitive (0 : false | 1 : enabled)
-    [5450004, 43200, 1, 1], # Traveling Merchant (1-day)
-    [5450005, 43200, 1, 1], # Portable Storage (1-day)
     [5680047, 10080, 1, 1], # Pvac
     [1202236, 10080, 1, 1], # Frenzy Totem
     [4034803, 1, 1, 0], # Name Change Coupon

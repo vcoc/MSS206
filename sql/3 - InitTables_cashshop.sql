@@ -46,24 +46,24 @@ create table cs_items (
 
 insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('2000000', 'Favorite', '0', '100'),
 
-('1010000', 'Special Promotions', '0', '100'),
+/*('1010000', 'Special Promotions', '0', '100'),
 ('1010100', 'New Arrivals', '0', '100'),
 ('1010200', 'Discounted', '0', '100'),
 ('1010300', 'Limited Time', '0', '100'),
 ('1010400', 'Limited Quantity', '0', '100'),
 ('1010500', 'Daily Deals', '0', '100'),
-('1010600', 'Maple Rewards Shop', '0', '100'),
+('1010600', 'Maple Rewards Shop', '0', '100'),*/
 
 ('1020000', 'Time Savers', '0', '100'),
 ('1020100', 'Teleport Rocks', '0', '100'),
 ('1020200', 'Item Stores', '0', '100'),
-('1020300', 'Quest Helpers', '0', '100'),
+/*('1020300', 'Quest Helpers', '0', '100'),*/
 ('1020400', 'Dungeon Passes', '0', '100'),
 
 ('1030000', 'Random Rewards', '0', '100'),
 ('1030100', 'Gachapon Tickets', '0', '100'),
 ('1030200', 'Surprise Boxes', '0', '100'),
-('1030300', 'Special Items', '0', '100'),
+/*('1030300', 'Special Items', '0', '100'),*/
 ('1030400', 'Meso Sacks', '0', '100'),
 
 ('1040000', 'Equipment Modifications', '0', '100'),
@@ -72,20 +72,22 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1040300', 'Upgrade Slots', '0', '100'),
 ('1040400', 'Trade', '0', '100'),
 ('1040500', 'Other', '0', '100'),
+/*('1040501', 'Item Tag', '0', '100'),
+('1040502', 'Item Guards', '0', '100'),
 ('1040600', 'Duration', '0', '100'),
-('1040700', 'Bypass Keys', '0', '100'),
+('1040700', 'Bypass Keys', '0', '100'),*/
 ('1040800', 'Fusion Anvils', '0', '100'),
 
 ('1050000', 'Character Modifications', '0', '100'),
-('1050100', 'SP/AP modifications', '0', '100'),
-('1050200', 'EXP Coupons', '0', '100'),
-('1050300', 'Drop Coupons', '0', '100'),
-('1050400', 'Inventory slots', '0', '100'),
+('1050100', 'SP/AP Modifications', '0', '100'),
+/*('1050200', 'EXP Coupons', '0', '100'),
+('1050300', 'Drop Coupons', '0', '100'),*/
+('1050400', 'Inventory Slots', '0', '100'),
 ('1050500', 'Skill Modifications', '0', '100'),
 ('1050600', 'Protection', '0', '100'),
-('1050700', 'Wedding', '0', '100'),
+/*('1050700', 'Wedding', '0', '100'),
 ('1050800', 'Other', '0', '100'),
-('1050900', 'Mount', '0', '100'),
+('1050900', 'Mount', '0', '100'),*/
 
 ('1060000', 'Equipment', '0', '100'),
 ('1060100', 'Weapon', '0', '100'),
@@ -126,14 +128,14 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 ('1064000', 'Transparent', '0', '100'),
 
 ('1070000', 'Appearance', '0', '100'),
-('1070100', 'Beauty Parlor', '0', '100'),
+/*('1070100', 'Beauty Parlor', '0', '100'),
 ('1070101', 'Hair', '0', '100'),
 ('1070102', 'Face', '0', '100'),
-('1070103', 'Skin', '0', '100'),
+('1070103', 'Skin', '0', '100'),*/
 ('1070200', 'Facial Expressions', '0', '100'),
 ('1070300', 'Effect', '0', '100'),
-('1070400', 'Transformations', '0', '100'),
-('1070500', 'Special', '0', '100'),
+/*('1070400', 'Transformations', '0', '100'),
+('1070500', 'Special', '0', '100'),*/
 
 ('1080000', 'Pet', '0', '100'),
 ('1080100', 'Pets', '0', '100'),
@@ -146,9 +148,11 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 
 ('1090000', 'Messenger and Social', '0', '100'),
 ('1090100', 'Megaphones', '0', '100'),
-('1090200', 'Messengers', '0', '100'),
-('1090300', 'Weather Effects', '0', '100'),
-('1090400', 'Other', '0', '100');
+/*('1090200', 'Messengers', '0', '100'),*/
+('1090300', 'Weather Effects', '0', '100');
+/*('1090301', 'Stats', '0', '100'),
+('1090302', 'Non-Stat', '0', '100'),
+('1090400', 'Other', '0', '100');*/
 
 
 /*		TIME SAVERS		*/
@@ -156,7 +160,18 @@ insert into `cs_categories` (`idx`, `name`, `parentIdx`, `stock`) values ('20000
 
 /* Teleport Rocks */
 /*Page 1*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5040000', '300', 'Teleport Rocks'); /*Teleport Rock*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5040000', '3000', 'Teleport Rocks', '11'); /*Teleport Rock*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5041000', '500', 'Teleport Rocks'); /*Vip Teleport Rock*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5041000', '5000', 'Teleport Rocks', '11'); /*Vip Teleport Rock*/
 insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5040004', '9900', 'Teleport Rocks'), /*Hyper Teleport Rock*/
+
+/* Item Stores */
+/*Page 1*/
+('5450006', '400', 'Item Stores'), /*Traveling Merchant (1-day)*/
+('5450004', '1000', 'Item Stores'), /*Traveling Merchant (30-day)*/
+('5450008', '400', 'Item Stores'), /*Portable Storage (1-day)*/
+('5450005', '1000', 'Item Stores'), /*Portable Storage (30-day)*/
 
 /* Dungeon Passes */
 /*Page 1*/
@@ -201,14 +216,28 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) valu
 insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5062500', '2400', 'Miracle Cubes'); /*Bonus Potential Cube*/
 insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5062500', '24000', 'Miracle Cubes', '11'); /*Bonus Potential Cube (11)*/
 
+/* Scrolls */
+/*Page 1*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5064000', '5500', 'Scrolls'), /*Shielding Ward*/
+('5064100', '2800', 'Scrolls'), /*Shield Scroll*/
+('5064300', '2400', 'Scrolls'), /*Guardian Scroll*/
+('5064400', '5520', 'Scrolls'); /*Return Scroll*/
+
+/* Upgrade Slots */
+/*Page 1*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5530344', '4900', 'Upgrade Slots'); /*Golden Hammer Coupon*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5530344', '49000', 'Upgrade Slots', '11'); /*Golden Hammer Coupon (11)*/
+
 /* Trade */
 /*Page 1*/
-insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5520000', '1500', 'Trade'), /*Scissors of Karma*/
-('5520001', '4000 ', 'Trade'), /*Platinum Scissors of Karma*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5520000', '1500', 'Trade'); /*Scissors of Karma*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5520000', '15000', 'Trade', '11'); /*Scissors of Karma (11)*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5520001', '4000 ', 'Trade'); /*Platinum Scissors of Karma*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`, `bundleQuantity`) values ('5520001', '40000', 'Trade', '11'); /*Platinum Scissors of Karma (11)*/
 
 /* Other */
 /*Page 1*/
-('5700000', '1200', 'Other'), /*Android Naming Coupon*/
+insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5700000', '1200', 'Other'), /*Android Naming Coupon*/
 ('5060000', '1800', 'Other'), /*Item Tag*/
 
 /* Fusion Anvils */
@@ -219,15 +248,25 @@ insert into `cs_items` (`itemID`, `newPrice`, `category`) values ('5520000', '15
 
 /*		CHARACTER MODIFICATIONS		*/
 
+/* SP/AP Modifications */
+/*Page 1*/
+('5050000', '500', 'SP/AP Modifications'), /*AP Reset*/
+('5050100', '4000', 'SP/AP Modifications'), /*AP Reset Scroll*/
+('5051001', '4000', 'SP/AP Modifications'), /*SP Reset Scroll*/
+('5050001', '750', 'SP/AP Modifications'), /*Job Adv 1 Skill SP Reset Scroll*/
+('5050002', '2000', 'SP/AP Modifications'), /*Job Adv 2 Skill SP Reset Scroll*/
+('5050003', '2500', 'SP/AP Modifications'), /*Job Adv 3 Skill SP Reset Scroll*/
+('5050004', '2500', 'SP/AP Modifications'), /*Job Adv 4 Skill SP Reset Scroll*/
+('5050015', '1000', 'SP/AP Modifications'), /*Beast Tamer Animal SA Reset Scroll*/
 
 /* Inventory Slots */
 /*Page 1*/
-('5430000', '6900', 'Inventory slots'), /*Extra Character Slot Coupon*/
-('9110000', '5000', 'Inventory slots'), /*Add Storage Slots*/
-('9111000', '5000', 'Inventory slots'), /*Add Equip Slots*/
-('9112000', '5000', 'Inventory slots'),	/*Add Use Slots*/
-('9114000', '5000', 'Inventory slots'),	/*Add ETC Slots*/
-('9113000', '5000', 'Inventory slots'),	/*Add Set-up Slots*/
+('5430000', '6900', 'Inventory Slots'), /*Extra Character Slot Coupon*/
+('9110000', '5000', 'Inventory Slots'), /*Add Storage Slots*/
+('9111000', '5000', 'Inventory Slots'), /*Add Equip Slots*/
+('9112000', '5000', 'Inventory Slots'),	/*Add Use Slots*/
+('9114000', '5000', 'Inventory Slots'),	/*Add ETC Slots*/
+('9113000', '5000', 'Inventory Slots'),	/*Add Set-up Slots*/
 
 /* Skill Modifications */
 /*Page 1*/
