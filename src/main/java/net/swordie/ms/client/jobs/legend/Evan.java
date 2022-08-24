@@ -521,8 +521,6 @@ public class Evan extends Job {
                 break;
             case 30:
                 job = JobConstants.JobEnum.EVAN_2.getJobId();
-                chr.addHotTimeReward(2435851, HotTimeRewardType.GAME_ITEM, 1, 0, 0,0,"Gift for reaching level 30."); // Pearl Weapon
-                chr.addHotTimeReward(2438907, HotTimeRewardType.GAME_ITEM, 1, 0,0,0,"Gift for reaching level 30."); // Pearl Armor
                 break;
             case 60:
                 job = JobConstants.JobEnum.EVAN_3.getJobId();
@@ -535,7 +533,6 @@ public class Evan extends Job {
                 chr.chatMessage("You've unlocked the V Matrix!");
                 chr.chatMessage("I've given you some Nodestones to help you on your adventure!");
                 chr.getQuestManager().completeQuest(QuestConstants.FIFTH_JOB_QUEST);
-                chr.addHotTimeReward(2435902, HotTimeRewardType.GAME_ITEM, 100, 0,0,0,"Gift for reaching level 200."); // Nodestones
                 break;
 
         }

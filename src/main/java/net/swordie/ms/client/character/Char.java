@@ -446,7 +446,7 @@ public class Char {
     @Transient
     private boolean skillInfoMode = false;
     @Transient
-    private boolean debugMode = true;
+    private boolean debugMode = false;
     @Transient
     private List<NpcShopItem> buyBack = new ArrayList<>();
     @Transient
@@ -6579,10 +6579,8 @@ public class Char {
     }
 
     public void giveStartingItems() {
-        addHotTimeReward(2436226, HotTimeRewardType.GAME_ITEM, 1, 0, 0,0,"A gift from the Admin of Elite.");
-        addHotTimeReward(2436226, HotTimeRewardType.MESO, 1, 10000000,0, 0,"A gift from the Admin of Elite.");
-        addHotTimeReward(2436226, HotTimeRewardType.EXPERIENCE, 1, 0, 1000,0,"A gift from the Admin of Elite.");
-        addHotTimeReward(2436226, HotTimeRewardType.MAPLE_POINT, 1, 0, 0,10000,"A gift from the Admin of Elite.");
+        addHotTimeReward(2000005, HotTimeRewardType.GAME_ITEM, 100, 0, 0,0,"A starter gift from " + ServerConfig.SERVER_NAME + " team."); // Power Elixir
+        addHotTimeReward(ItemConstants.HYPER_TELEPORT_ROCK, HotTimeRewardType.GAME_ITEM, 1, 0, 0,0,"A starter gift from " + ServerConfig.SERVER_NAME + " team."); // Hyper Teleport Rock
     }
 
     public void addHotTimeReward(int itemID, HotTimeRewardType type, int quantity, int meso, int exp, int maplepoint, String description) {

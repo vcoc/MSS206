@@ -1558,8 +1558,6 @@ public abstract class Job {
                 chr.chatMessage("Character potential unlocked.");
                 chr.getQuestManager().completeQuest(12396);
                 chr.addHonorExp(1000);
-                chr.addHotTimeReward(2435851, HotTimeRewardType.GAME_ITEM, 1, 0, 0, 0,"Gift for reaching level 30."); // Pearl Weapon
-                chr.addHotTimeReward(2438907, HotTimeRewardType.GAME_ITEM, 1, 0,0,0,"Gift for reaching level 30."); // Pearl Armor
                 jobAdvance = true;
                 break;
             }
@@ -1593,7 +1591,6 @@ public abstract class Job {
                     handleJobAdvance(nextJobId);
                 }
                 chr.addSpToJobByCurrentJob(3);
-                chr.addHotTimeReward(2433444, HotTimeRewardType.GAME_ITEM, 1, 0, 0, 0,"Gift for reaching level 100."); // Legendary Cryptic Chest
                 jobAdvance = true;
                 break;
             }
@@ -1603,7 +1600,6 @@ public abstract class Job {
                 message += "You've unlocked the V Matrix!\r\n\r\n";
                 message += "I've given you some Nodestones to help you on your adventure!\r\n\r\n";
                 chr.getQuestManager().completeQuest(QuestConstants.FIFTH_JOB_QUEST);
-                chr.addHotTimeReward(2435902, HotTimeRewardType.GAME_ITEM, 100, 0, 0,0,"Gift for reaching level 200."); // Nodestones
                 jobAdvance = true;
                 break;
             }
@@ -1741,14 +1737,8 @@ public abstract class Job {
                     chr.setStatAndSendPacket(Stat.mmp, 350);
                     break;
             }
-
             chr.heal(chr.getMaxHP());
             chr.healMP(chr.getMaxMP());
         }
-
-        // starter consumables
-        Item powerElixir = ItemData.getItemDeepCopy(2000005);
-        powerElixir.setQuantity(200);
-        chr.addItemToInventory(powerElixir);
     }
 }

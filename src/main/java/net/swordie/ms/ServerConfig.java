@@ -13,12 +13,21 @@ public class ServerConfig {
 
     // Message
     public static String SLIDE_MSG = "Welcome to MapleStory!!"; // Message that is shown at the top of in-game screen.
-    public static String[] CS_SLIDE_MSG = {"Welcome to MapleStory!!", "Happy Mapling!!"}; // Message that is shown inside cash shop.
-    public static String EVENT_MSG = String.format("Buffed Channels: %d-%d\r\nOnline Players: ",
-            GameConstants.BUFFED_CH_ST, GameConstants.BUFFED_CH_END); // Message that is shown on channel selection.
+    public static String[] CS_SLIDE_MSG = { "Welcome to MapleStory!!", "Happy Mapling!!" }; // List of messages that is shown inside cash shop.
+    public static String EVENT_MSG = getEventMsg(); // Message that is shown on channel selection.
     public static String RECOMMEND_MSG = "A Recommended Message."; // Message that is shown when viewing recommended.
     public static String BUFFED_CH_MSG = "Beware! You entered a buffed channel."; // Message that is shown when you enter a buffed channel.
 
     // Other
     public static final String HEAP_DUMP_DIR = "../heapdumps";
+
+    public static String getEventMsg() {
+        if (GameConstants.BUFFED_CH_ST == 0 && GameConstants.BUFFED_CH_END == 0) {
+            return String.format("#b%s#k v%s.%s\r\nOnline Players:#b ", ServerConfig.SERVER_NAME, ServerConstants.VERSION,
+                    ServerConstants.MINOR_VERSION);
+        } else {
+            return String.format("Buffed Channels: #b%d-%d#k\r\nOnline Players:#b ",
+                    GameConstants.BUFFED_CH_ST, GameConstants.BUFFED_CH_END);
+        }
+    }
 }

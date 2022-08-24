@@ -238,7 +238,6 @@ public class Zero extends Job {
         if (chr.getLevel() == 200) {
             chr.addSkill(FOCUSED_TIME, 1, 1);
             chr.getQuestManager().completeQuest(QuestConstants.FIFTH_JOB_QUEST);
-            chr.addHotTimeReward(2435902, HotTimeRewardType.GAME_ITEM, 100, 0, 0,0,"Gift for reaching level 200."); // Nodestones
         }
         chr.addStat(Stat.mhp, 500);
         chr.addStat(Stat.ap, 5);

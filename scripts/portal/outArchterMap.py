@@ -1,3 +1,6 @@
-# 100000201
-sm.warp(100000000, 16)
-sm.dispose()
+# Bowman Instructional School (100000201)
+
+HENESYS = 100000000
+HENESYS_PORTAL = 17
+
+sm.warp(HENESYS, HENESYS_PORTAL)

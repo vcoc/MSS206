@@ -330,7 +330,7 @@ public class CustomConstants {
 
     public static void sendSmegaToDiscord(String medalString, String chrName, String text) {
         if (!ServerConstants.LOCAL_HOST_SERVER && !Server.getInstance().MAINTENANCE_MODE) {
-            DiscordWebhook smegaForward = new DiscordWebhook("https://discordapp.com/api/webhooks/663920713568223233/fmzWx9D_9MNOWLu4Q9BtkvxoujOpZbcJY8oJ_rLyyZ8GD75aE9VggsINJSCtGP8WxwR0");
+            DiscordWebhook smegaForward = new DiscordWebhook("YOUR WEBHOOK LINK HERE.");
             smegaForward.setUsername(medalString + chrName);
             smegaForward.setContent(text.replace("@", "@\u200B"));
             try {
@@ -343,7 +343,7 @@ public class CustomConstants {
     public static void sendTripleSmegaToDiscord(String medalString, String chrName, List<String> stringList) {
         if (!ServerConstants.LOCAL_HOST_SERVER && !Server.getInstance().MAINTENANCE_MODE) {
             stringList.forEach(s -> {
-                DiscordWebhook smegaForward = new DiscordWebhook("https://discordapp.com/api/webhooks/663920713568223233/fmzWx9D_9MNOWLu4Q9BtkvxoujOpZbcJY8oJ_rLyyZ8GD75aE9VggsINJSCtGP8WxwR0");
+                DiscordWebhook smegaForward = new DiscordWebhook("YOUR WEBHOOK LINK HERE.");
                 smegaForward.setUsername(medalString + chrName);
                 smegaForward.setContent(s.replace(medalString, "").replace(chrName, "").replace("@", "@\u200B"));
                 try {
