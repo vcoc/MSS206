@@ -63,6 +63,7 @@ public class NpcHandler {
         int templateID = npc.getTemplateId();
         if (npc.getTrunkGet() > 0 || npc.getTrunkPut() > 0) {
             chr.write(FieldPacket.trunkDlg(new TrunkOpen(templateID, chr.getAccount().getTrunk())));
+            chr.chatDebugMessage("[NpcHandler] TrunkID: " + templateID);
             return;
         }
         String script = npc.getScripts().get(0);
@@ -72,6 +73,7 @@ public class NpcHandler {
                 chr.getScriptManager().stop(ScriptType.Npc); // reset contents before opening shop?
                 chr.setShop(nsd);
                 chr.write(ShopDlg.openShop(chr, 0, nsd));
+                chr.chatDebugMessage("[NpcHandler] ShopID: " + nsd.getNpcTemplateID());
                 return;
             } else {
                 script = GameConstants.DEFAULT_SHOP_SCRIPT;

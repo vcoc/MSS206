@@ -62,7 +62,7 @@ public class AttackHandler {
         }
         if (SkillConstants.isDelayedCooldownSkill(skillID) ||  attackInfo.byUnreliableMemory || noCoolTimeAttackHeader || multiAttack || chr.hasSkillCDBypass() || (SkillConstants.isKeyDownSkill(skillID) || chr.checkAndSetSkillCooltime(skillID)) || extraSkills) {
             int slv = attackInfo.slv;
-//            //chr.chatMessage(Mob, "SkillID: " + skillID); // removed for now
+            chr.chatDebugMessage("[AttackHandler] SkillID: " + skillID);
             Job sourceJobHandler = chr.getJobHandler();
             SkillInfo si = SkillData.getSkillInfoById(skillID);
             if (si != null && si.getExtraSkillInfo().size() > 0) {

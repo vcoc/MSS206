@@ -13,6 +13,7 @@ import net.swordie.ms.client.character.avatar.AvatarData;
 import net.swordie.ms.client.character.avatar.AvatarLook;
 import net.swordie.ms.client.character.avatar.BeautyAlbum;
 import net.swordie.ms.client.character.cards.MonsterBookInfo;
+import net.swordie.ms.client.character.commands.AdminCommands;
 import net.swordie.ms.client.character.damage.DamageCalc;
 import net.swordie.ms.client.character.damage.DamageSkinSaveData;
 import net.swordie.ms.client.character.info.*;
@@ -2750,11 +2751,7 @@ public class Char {
      * @param msg The message to display.
      */
     public void chatMessage(ChatType clr, String msg) {
-        if (isDebugMode() || clr != ChatType.Mob) {
-            // As most debug info is printed in ChatType  Mob,
-            // this is a hacky way to turn 'debug' mode  on/off
-            write(UserLocal.chatMsg(clr, msg));
-        }
+        write(UserLocal.chatMsg(clr, msg));
     }
 
     /**
@@ -2765,13 +2762,20 @@ public class Char {
      * @param args The format arguments
      */
     public void chatMessage(ChatType clr, String msg, Object... args) {
-        if (isDebugMode() || clr != ChatType.Mob) {
-            // As most debug info is printed in ChatType  Mob,
-            // this is a hacky way to turn 'debug' mode  on/off
-            write(UserLocal.chatMsg(clr, String.format(msg, args)));
-        }
+        write(UserLocal.chatMsg(clr, String.format(msg, args)));
     }
 
+    /**
+     * Sends a debug message to this Char.
+     *
+     * @param msg The message to display.
+     */
+    public void chatDebugMessage(String msg) {
+        if (isDebugMode()) {
+            write(UserLocal.chatMsg(AdminCommands.adminChatType, msg));
+            log.debug(msg);
+        }
+    }
 
     /**
      * Unequips an {@link Item}. Ensures that the hairEquips and both inventories get updated.

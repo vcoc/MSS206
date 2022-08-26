@@ -2871,12 +2871,11 @@ public class AdminCommands {
         }
     }
 
-    @Command(names = {"debug", "debugmode"}, requiredType = Tester)
+    @Command(names = { "debugmode" }, requiredType = Admin)
     public static class DebugMode extends AdminCommand {
-
         public static void execute(Char chr, String[] args) {
             chr.setDebugMode(!chr.isDebugMode());
-            chr.chatMessage(AdminChat, "skill info: " + chr.isDebugMode());
+            chr.chatMessage(adminChatType, "Your debug mode has changed to " + chr.isDebugMode() + ".");
         }
     }
 

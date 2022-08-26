@@ -336,8 +336,7 @@ public class SkillHandler {
                     chr.write(UserRemote.effect(copy.getId(), Effect.skillUse(skillID, chr.getLevel(), slv, 0)));
                 }
             }
-            log.debug("SkillID: " + skillID);
-            c.getChr().chatMessage(ChatType.Mob, "SkillID: " + skillID); //removed for now
+            c.getChr().chatDebugMessage("[SkillHandler] SkillID:" + skillID);
             Job sourceJobHandler = c.getChr().getJobHandler();
             SkillInfo si = SkillData.getSkillInfoById(skillID);
             if (chr.getParty() != null && si != null && (si.isMassSpell() && si.getRects().size() > 0) && !SkillConstants.isAuraSkill(skillID)) {

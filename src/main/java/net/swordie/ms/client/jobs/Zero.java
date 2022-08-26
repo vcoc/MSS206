@@ -26,7 +26,6 @@ import net.swordie.ms.connection.packet.WvsContext;
 import net.swordie.ms.constants.JobConstants;
 import net.swordie.ms.constants.QuestConstants;
 import net.swordie.ms.constants.SkillConstants;
-import net.swordie.ms.enums.HotTimeRewardType;
 import net.swordie.ms.enums.MoveAbility;
 import net.swordie.ms.enums.Stat;
 import net.swordie.ms.life.AffectedArea;
