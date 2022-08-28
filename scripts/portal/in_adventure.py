@@ -1,3 +1,7 @@
+# Portal to Adventure Island
+
+MAP = 993080000 # Adventure Island
+PORTAL = 31
+
 sm.setReturnField()
-sm.warp(993080000, 2)
-sm.dispose()
+sm.warp(MAP, PORTAL)

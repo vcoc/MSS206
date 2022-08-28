@@ -79,16 +79,15 @@ public class Magician extends Beginner {
             o1.setInMillis(true);
             tsm.putCharacterStatValue(Infinity, o1, true);
             tsm.sendSetStatPacket();
-
-            chr.heal((int) (chr.getMaxHP() / ((double) 100 / si.getValue(y, slv))));
-            chr.healMP((int) (chr.getMaxMP() / ((double) 100 / si.getValue(y, slv))));
-
+            if (chr.getHP() > 0) {
+                chr.heal((int) (chr.getMaxHP() / ((double) 100 / si.getValue(y, slv))));
+                chr.healMP((int) (chr.getMaxMP() / ((double) 100 / si.getValue(y, slv))));
+            }
             infinityTimer = EventManager.addEvent(() -> infinity(skillId), 5, TimeUnit.SECONDS);
         } else {
             tsm.removeStatsBySkill(skillId);
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 

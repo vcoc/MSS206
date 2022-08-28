@@ -636,6 +636,13 @@ public class AdminCommands {
         }
     }
 
+    @Command(names = { "whereami" }, requiredType = Admin)
+    public static class WhereAmI extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            chr.chatMessage(adminChatType, adminMsgPrefix + "MapID: " + chr.getField().getId());
+        }
+    }
+
     @Command(names = {"stats"}, requiredType = Tester)
     public static class Stats extends AdminCommand {
         public static void execute(Char chr, String[] args) {
@@ -1263,13 +1270,12 @@ public class AdminCommands {
         }
     }
 
-    @Command(names = {"invincible", "god", "godmode"}, description = "Toggles invincibility.", requiredType = Tester)
-    public static class Godmode extends AdminCommand {
-
+    @Command(names = { "invincible" }, requiredType = Admin)
+    public static class Invincible extends AdminCommand {
         public static void execute(Char chr, String[] args) {
             TemporaryStatManager tsm = chr.getTemporaryStatManager();
             chr.setInvincible(!chr.isInvincible());
-            chr.chatMessage("Invincibility: " + chr.isInvincible());
+            chr.chatMessage(adminChatType, adminMsgPrefix + "Your invincible mode has changed to " + chr.isInvincible());
             if (chr.isInvincible()) {
                 Option o = new Option();
                 o.nOption = 3;
