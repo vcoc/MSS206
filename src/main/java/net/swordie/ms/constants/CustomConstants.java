@@ -27,7 +27,7 @@ public class CustomConstants {
     public static final int DOJO_MAPS_PREFFIX = 925;
     public static final int COMMERCI_MAPS_PREFFIX = 865000;
     public static final int MIN_LEVEL_FOR_PQ = 120;
-    public static final boolean MAX_SKILLS = false;
+    public static final boolean MAX_SKILLS = true; // Maximize all job skills when job advancing.
 
     public static final int EXTRA_NX_PERC_FOR_FIRST_PT_MEMBER = 10;
     public static final double EXTRA_NX_PERC_FOR_PT_MEMBER = 2.5;

@@ -32,10 +32,7 @@ import net.swordie.ms.client.party.Party;
 import net.swordie.ms.client.party.PartyMember;
 import net.swordie.ms.connection.InPacket;
 import net.swordie.ms.connection.packet.*;
-import net.swordie.ms.constants.GameConstants;
-import net.swordie.ms.constants.JobConstants;
-import net.swordie.ms.constants.QuestConstants;
-import net.swordie.ms.constants.SkillConstants;
+import net.swordie.ms.constants.*;
 import net.swordie.ms.enums.*;
 import net.swordie.ms.handlers.EventManager;
 import net.swordie.ms.life.AffectedArea;
@@ -1704,6 +1701,28 @@ public abstract class Job {
 
         chr.chatMessage("[Job Advancement] Congratulations, you are now a(n) %s!", JobConstants.getJobEnumById(jobId).getJobName());
         chr.chatMessage("[Job Advancement] You've gained (%d) ability points.", apToAdd);
+
+        if (CustomConstants.MAX_SKILLS) {
+            setMaxSkillsToJob(jobId);
+            chr.chatMessage("[Job Advancement] Your skills have been maxed out.");
+        }
+    }
+
+    /**
+     * Maximize all skills from the given jobId.
+     *
+     * @param jobId The given job to maximize skills.
+     */
+    public void setMaxSkillsToJob(short jobId) {
+        List<Skill> listOfSkills = new ArrayList<>();
+        for (Skill skill : SkillData.getSkillsByJob(jobId)) {
+            byte maxLevel = (byte) skill.getMaxLevel();
+            skill.setCurrentLevel(maxLevel);
+            skill.setMasterLevel(maxLevel);
+            listOfSkills.add(skill);
+            chr.addSkill(skill);
+            chr.getClient().write(WvsContext.changeSkillRecordResult(listOfSkills, true, false, false, false));
+        }
     }
 
     /**
