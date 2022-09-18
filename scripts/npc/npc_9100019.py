@@ -1,5 +1,5 @@
 # A NPC script based on 'Swordie NX Shop NPC'
-# Custom server script
+# Custom Server Script
 
 cubes = [
     # ItemID, Cost

@@ -41,13 +41,11 @@ public class Hero extends Warrior {
     public static final int COMBO_FURY = 1101012;
     public static final int COMBO_FURY_DOWN = 1100012;
 
-
     public static final int COMBO_SYNERGY = 1110013;
     public static final int SELF_RECOVERY = 1110000;
     public static final int PANIC = 1111003;
     public static final int SHOUT = 1111008;
     public static final int SHOUT_DOWN = 1111014;
-
 
     public static final int ADVANCED_FINAL_ATTACK = 1120013;
     public static final int PUNCTURE = 1121015;
@@ -60,8 +58,7 @@ public class Hero extends Warrior {
     public static final int CRY_VALHALLA = 1121054; //Lv150
     public static final int EPIC_ADVENTURE_HERO = 1121053; //Lv200
 
-
-    // V skills
+    // V Skills
     public static final int BURNING_SOUL_BLADE = 400011001;
     public static final int BURNING_SOUL_BLADE_STATIONARY = 400011002;
     public static final int WORLDREAVER = 400011027;
@@ -70,15 +67,14 @@ public class Hero extends Warrior {
     public static final int COMBO_INSTINCT_SLASH_DOWN = 400011075;
     public static final int COMBO_INSTINCT_SLASH_UP = 400011074;
 
-
     private static final List<Integer> comboInstinctAttack = Arrays.asList(
             COMBO_INSTINCT_SLASH_DOWN,
             COMBO_INSTINCT_SLASH_UP,
             COMBO_INSTINCT_SLASH_STRAIGHT
     );
+
     private long soulBladeTime;
     private ScheduledFuture selfRecoveryTimer;
-
 
     public Hero(Char chr) {
         super(chr);
@@ -90,12 +86,10 @@ public class Hero extends Warrior {
         }
     }
 
-
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isHero(id);
     }
-
 
     private void addCombo() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -442,7 +436,6 @@ public class Hero extends Warrior {
         return 0;
     }
 
-
     private boolean isComboIgnoreSkill(int skillID) {
         return skillID == SHOUT ||
                 skillID == SHOUT_DOWN ||
@@ -454,7 +447,6 @@ public class Hero extends Warrior {
                 skillID == COMBO_INSTINCT_SLASH_UP ||
                 skillID == COMBO_INSTINCT_SLASH_STRAIGHT;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -605,32 +597,29 @@ public class Hero extends Warrior {
         }
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.CRUSADER.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.HERO.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.CRUSADER.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.HERO.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
-
         if (selfRecoveryTimer != null) {
             selfRecoveryTimer.cancel(false);
         }

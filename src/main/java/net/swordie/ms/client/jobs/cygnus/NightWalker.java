@@ -42,7 +42,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class NightWalker extends Noblesse {
-
     public static final int ELEMENTAL_HARMONY_LUK = 10000249;
 
     public static final int LUCKY_SEVEN = 14001020;
@@ -51,7 +50,6 @@ public class NightWalker extends Noblesse {
     public static final int DARK_SIGHT = 14001023; //Buff
 
     public static final int THROWING_BOOSTER = 14101022; //Buff
-
 
     public static final int DARK_SERVANT = 14111024; //Buff
     public static final int SPIRIT_PROJECTION = 14111025; //Buff
@@ -71,15 +69,14 @@ public class NightWalker extends Noblesse {
     public static final int SHADOW_ILLUSION = 14121054;
     public static final int DOMINION = 14121052;
 
-    // V Skill
+    // V Skills
     public static final int SHADOW_SPEAR = 400041008;
     public static final int SHADOW_SPEAR_AA_SMALL = 400040008;
     public static final int SHADOW_SPEAR_AA_LARGE = 400041019;
     public static final int GREATER_DARK_SERVANT = 400041028;
     public static final int SHADOW_BITE = 400041037;
 
-
-    //Bats
+    // Bats
     public static final int SHADOW_BAT_SKILL = 14000027;
     public static final int SHADOW_BAT = 14001027; //Buff (Shadow Bats) (ON/OFF)
     public static final int SHADOW_BAT_ATOM = 14000028;
@@ -88,12 +85,12 @@ public class NightWalker extends Noblesse {
     public static final int BAT_AFFINITY_II = 14110029; //Summon Upgrade
     public static final int BAT_AFFINITY_III = 14120008; //Summon Upgrade
 
-    //Dark Elemental
+    // Dark Elemental
     public static final int ADAPTIVE_DARKNESS = 14100026;
     public static final int ADAPTIVE_DARKNESS_II = 14110028;
     public static final int ADAPTIVE_DARKNESS_III = 14120007;
 
-    //Attacks
+    // Attacks
     public static final int QUINTUPLE_STAR = 14121001;
     public static final int QUINTUPLE_STAR_FINISHER = 14121002;
 
@@ -103,8 +100,8 @@ public class NightWalker extends Noblesse {
     public static final int TRIPLE_THROW = 14101020;
     public static final int TRIPLE_THROW_FINISHER = 14101021;
 
-    private static final int[] addedSkills = new int[]{
-            ELEMENTAL_HARMONY_LUK,
+    private static final int[] addedSkills = new int[] {
+            ELEMENTAL_HARMONY_LUK
     };
 
     private static final int[] darkEleSkills = new int[]{
@@ -132,8 +129,10 @@ public class NightWalker extends Noblesse {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -143,7 +142,6 @@ public class NightWalker extends Noblesse {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isNightWalker(id);
     }
-
 
     private void applyDarkServant() {
         Skill skill = chr.getSkill(DARK_SERVANT);
@@ -194,7 +192,6 @@ public class NightWalker extends Noblesse {
 
         return super.alterCooldownSkill(skillId);
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -733,7 +730,6 @@ public class NightWalker extends Noblesse {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -863,7 +859,6 @@ public class NightWalker extends Noblesse {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -923,15 +918,15 @@ public class NightWalker extends Noblesse {
         super.handleLevelUp();
         short level = chr.getLevel();
         switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_4.getJobId());
-//                break;
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.NIGHT_WALKER_4.getJobId());
+                break;
             case 120:
                 giveCallOfCygnus(CALL_OF_CYGNUS_NW);
                 break;
@@ -939,17 +934,12 @@ public class NightWalker extends Noblesse {
     }
 
     @Override
-    public void handleJobStart() {
-        super.handleJobStart();
-    }
-
-    @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Thief Wrist Guards
         Item garnier = ItemData.getItemDeepCopy(1472061);
         chr.addItemToInventory(garnier);
-
+        // Throwing Stars
         for (int i = 0; i < 3; i++) {
             Item subi = ItemData.getItemDeepCopy(2070000);
             subi.setQuantity(500);

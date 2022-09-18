@@ -60,6 +60,7 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
 import static net.swordie.ms.client.jobs.adventurer.warrior.DarkKnight.FINAL_PACT_INFO;
 import static net.swordie.ms.client.jobs.adventurer.warrior.Paladin.PARASHOCK_GUARD;
 
+// TODO: Add SP gain individually inside each job.class when jobAdvancing (2nd, 3rd and 4th job).
 
 /**
  * Created on 1/2/2018.
@@ -521,7 +522,6 @@ public abstract class Job {
         return -1;
     }
 
-
     /**
      * Gets called when Character receives a debuff from a Mob Skill
      *
@@ -889,9 +889,6 @@ public abstract class Job {
         o1.tOption = si.getValue(cooltime, slv) - si.getValue(time, slv);
         tsm.putCharacterStatValue(Overdrive, o1);
         tsm.sendSetStatPacket();
-    }
-
-    public void addMissingSkills(Char chr) {
     }
 
     private void summonSengokuForces() {
@@ -1421,7 +1418,6 @@ public abstract class Job {
      */
     public void handleLevelUp() {
         short level = chr.getLevel();
-        short jobId = chr.getJob();
 
         Map<Stat, Object> stats = new HashMap<>();
         if (level > 10) {
@@ -1449,7 +1445,7 @@ public abstract class Job {
         if (JobConstants.isExtendSpJob(chr.getJob())) {
             stats.put(Stat.sp, chr.getAvatarData().getCharacterStat().getExtendSP());
         } else {
-            stats.put(Stat.sp, (short) chr.getAvatarData().getCharacterStat().getSp());
+            stats.put(Stat.sp, chr.getAvatarData().getCharacterStat().getSp());
         }
         int linkSkill = SkillConstants.getLinkSkillByJob(chr.getJob());
         byte linkSkillLevel = (byte) SkillConstants.getLinkSkillLevelByCharLevel(level);
@@ -1470,7 +1466,6 @@ public abstract class Job {
                 ls.setOriginID(chr.getId());
             }
         }
-
         // Add server-sided increments for hp/mp then modify based on job passives
         int[][] incVal = GameConstants.getIncValArray(chr.getJob());
         if (incVal != null) {
@@ -1484,23 +1479,24 @@ public abstract class Job {
         } else {
             chr.chatMessage("Unhandled HP/MP job " + chr.getJob());
         }
-
         if (c.getWorld().isReboot()) {
             Skill skill = SkillData.getSkillDeepCopyById(REBOOT2);
-            skill.setCurrentLevel(level);
-            chr.addSkill(skill);
+            if (skill != null) {
+                skill.setCurrentLevel(level);
+                chr.addSkill(skill);
+            }
         }
-
         boolean jobAdvance = false;
         String message = "";
         switch (level) {
-            case 10:
+            case 10: {
                 message += "#b[Level 10] 1st Job Advancement#k\r\n\r\n";
                 message += "You've reached level 10, and are ready for your #b[1st Job Advancement]#k!\r\n\r\n";
                 message += "Complete the #r[Job Advancement]#k quest and unlock your 1st job advancement!\r\n";
                 jobAdvance = true;
                 break;
-            case 20:
+            }
+            case 20: {
                 if (chr.getJob() == JobConstants.JobEnum.THIEF.getJobId() && chr.getSubJob() == 1) { // dual blade
                     message += "#b[Level 20] 1.5th Job Advancement#k\r\n\r\n";
                     message += "Congratulations on reaching level 20!#k\r\n\r\n";
@@ -1508,67 +1504,26 @@ public abstract class Job {
                     jobAdvance = true;
                 }
                 break;
+            }
             case 30: {
                 message += "#b[Level 30] 2nd Job Advancement#k\r\n\r\n";
                 message += "Congratulations on reaching level 30!#k\r\n\r\n";
                 message += "You've unlocked your next job advancement!\r\n\r\n";
-                message += "I've given you an equipment box to help further your progress!\r\n\r\n";
-                chr.addCharacterPotentials();
-                chr.chatMessage("Character potential unlocked.");
-                chr.getQuestManager().completeQuest(12396);
-                chr.addHonorExp(1000);
-                // check for explorer, else you will advance to something random
-                if (!JobConstants.isExplorer(jobId) && !JobConstants.isDualBlade(jobId) && !JobConstants.isBeastTamer(jobId) && !JobConstants.isEvan(jobId)) {
-                    short nextJobId = (short) (jobId + 10);
-                    chr.addSpToJobByCurrentJob(5);
-                    handleJobAdvance(nextJobId);
-                } else if (JobConstants.isPathFinder(jobId)) {
-                    short nextJobId = (JobConstants.JobEnum.PATHFINDER_2.getJobId());
-                    chr.addSpToJobByCurrentJob(5);
-                    handleJobAdvance(nextJobId);
-                }
-                if (JobConstants.isKaiser(jobId) || (JobConstants.isKanna(jobId))) {
-                    chr.addSpToJobByCurrentJob(5);
-                }
-                if (JobConstants.isJett(jobId)) {
-                    short nextJobId = (JobConstants.JobEnum.JETT_2.getJobId());
-                    handleJobAdvance(nextJobId);
-                    chr.addSkill(228, 1, 1);
-                    chr.addSkill(1227, 1, 1);
-                }
-                if (JobConstants.isCannonShooter(jobId)) { // Cannonneer
-                    short nextJobId = (JobConstants.JobEnum.CANNONEER.getJobId());
-                    handleJobAdvance(nextJobId);
-                }
-                if (JobConstants.isDemonAvenger(jobId)) {
-                    short nextJobId = (JobConstants.JobEnum.DEMON_AVENGER_2.getJobId());
-                    chr.addSkill(31011000, 20, 20);
-                    chr.addSkill(31011001, 20, 20);
-                    chr.addSkill(31010002, 10, 10);
-                    chr.addSkill(31010003, 15, 15);
-                    handleJobAdvance(nextJobId);
-                    chr.addSpToJobByCurrentJob(5);
-                }
-                chr.addCharacterPotentials();
-                chr.chatMessage("Character potential unlocked.");
-                chr.getQuestManager().completeQuest(12396);
-                chr.addHonorExp(1000);
                 jobAdvance = true;
+                break;
+            }
+            case 50: {
+                message = "#b[Guide] Ability#k\r\n";
+                message += "You've reached level 50 and unlocked #b[Abilities]#k!\r\n\r\n";
+                chr.addCharacterPotentials();
+                chr.getQuestManager().completeQuest(12396);
+                chr.write(UserLocal.addPopupSay(9010000, 6000, message, "FarmSE.img/boxResult"));
                 break;
             }
             case 60: {
                 message += "#b[Level 60] 3rd Job Advancement#k\r\n\r\n";
                 message += "Congratulations on reaching level 60!#k\r\n\r\n";
                 message += "You've unlocked your next job advancement!\r\n\r\n";
-                if (!JobConstants.isDualBlade(jobId) && !JobConstants.isBeastTamer(jobId) && !JobConstants.isEvan(jobId)) {
-                    short nextJobId = (short) (jobId + 1);
-                    handleJobAdvance(nextJobId);
-                }
-                if (JobConstants.isJett(jobId)) {
-                    short nextJobId = (JobConstants.JobEnum.JETT_3.getJobId());
-                    handleJobAdvance(nextJobId);
-                }
-                chr.addSpToJobByCurrentJob(10);
                 jobAdvance = true;
                 break;
             }
@@ -1576,16 +1531,6 @@ public abstract class Job {
                 message += "#b[Level 100] 4th Job Advancement#k\r\n\r\n";
                 message += "Congratulations on reaching level 100!#k\r\n\r\n";
                 message += "You've unlocked your next job advancement!\r\n\r\n";
-                message += "I've given you an equipment box to help further your progress!\r\n\r\n";
-                if (!JobConstants.isDualBlade(jobId) && !JobConstants.isBeastTamer(jobId) && !JobConstants.isEvan(jobId)) {
-                    short nextJobId = (short) (jobId + 1);
-                    handleJobAdvance(nextJobId);
-                }
-                if (JobConstants.isJett(jobId)) {
-                    short nextJobId = (JobConstants.JobEnum.JETT_4.getJobId());
-                    handleJobAdvance(nextJobId);
-                }
-                chr.addSpToJobByCurrentJob(3);
                 jobAdvance = true;
                 break;
             }
@@ -1593,28 +1538,15 @@ public abstract class Job {
                 message += "#b[Level 200] V Matrix Unlocked#k\r\n\r\n";
                 message += "Congratulations on reaching level 200!#k\r\n\r\n";
                 message += "You've unlocked the V Matrix!\r\n\r\n";
-                message += "I've given you some Nodestones to help you on your adventure!\r\n\r\n";
                 chr.getQuestManager().completeQuest(QuestConstants.FIFTH_JOB_QUEST);
+                chr.getQuestManager().completeQuest(QuestConstants.ARCANE_SYMBOL_MAX_SLOTS_UNLOCKER);
                 jobAdvance = true;
                 break;
             }
-                /* OLD EXAMPLE MESSAGE
-                String message = "#b[Guide] 2nd Job Advancement#k\r\n\r\n";
-                message += "You've reached level 30, and are ready for your #b[2nd Job Advancement]#k!\r\n\r\n";
-                message += "Complete the #r[Job Advancement]#k quest to unlock your 2nd job advancement!\r\n";
-                chr.write(UserLocal.addPopupSay(9010000, 6000, message, "FarmSE.img/boxResult"));
-
-                message = "#b[Guide] Ability#k\r\n\r\n";
-                message += "You've reached level 30 and can now unlock #b[Abilities]#k!\r\n\r\n";
-                message += "Accept the quest #bFirst Ability - The Eye Opener#k from the Quest Notifier!\r\n";
-                chr.write(UserLocal.addPopupSay(9010000, 6000, message, "FarmSE.img/boxResult"));
-                */
         }
-
         if (jobAdvance && (JobConstants.isExplorer(chr.getJob())) || JobConstants.isCygnusKnight(chr.getJob())) {
             chr.write(UserLocal.addPopupSay(9010000, 6000, message, "FarmSE.img/boxResult"));
         }
-
         handleLevelUpEnd(stats);
     }
 
@@ -1666,24 +1598,20 @@ public abstract class Job {
      * @param chr The character to modify.
      */
     public void setCharCreationStats(Char chr) {
-        CharacterStat characterStat = chr.getAvatarData().getCharacterStat();
-
-        // standardize all classes to level 10 with 70 total ap
-        // hp and mp will depend on main stat
-        characterStat.setLevel(10);
-        characterStat.setAp(54);
-        characterStat.setStr(4);
-        characterStat.setDex(4);
-        characterStat.setInt(4);
-        characterStat.setLuk(4);
-        characterStat.setMaxHp(100);
-        characterStat.setHp(100);
-        characterStat.setMaxMp(100);
-        characterStat.setMp(100);
-
-        // player hub map
-        characterStat.setPosMap(GameConstants.PLAYER_START_MAP);
-
+        CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        // Standardize all classes to level 10 with 70 total ap
+        // HP and MP will depend on main stat
+        cs.setLevel(10);
+        cs.setAp(54);
+        cs.setStr(4);
+        cs.setDex(4);
+        cs.setInt(4);
+        cs.setLuk(4);
+        cs.setMaxHp(100);
+        cs.setHp(100);
+        cs.setMaxMp(100);
+        cs.setMp(100);
+        cs.setPosMap(CustomConstants.PLAYER_START_MAP);
     }
 
     /**
@@ -1701,11 +1629,6 @@ public abstract class Job {
 
         chr.chatMessage("[Job Advancement] Congratulations, you are now a(n) %s!", JobConstants.getJobEnumById(jobId).getJobName());
         chr.chatMessage("[Job Advancement] You've gained (%d) ability points.", apToAdd);
-
-        if (CustomConstants.MAX_SKILLS) {
-            setMaxSkillsToJob(jobId);
-            chr.chatMessage("[Job Advancement] Your skills have been maxed out.");
-        }
     }
 
     /**
@@ -1752,6 +1675,9 @@ public abstract class Job {
                 case luk:
                     chr.setStatAndSendPacket(Stat.mhp, 350);
                     chr.setStatAndSendPacket(Stat.mmp, 350);
+                    break;
+                case mhp:
+                    chr.setStatAndSendPacket(Stat.mhp, 1200);
                     break;
             }
             chr.heal(chr.getMaxHP());

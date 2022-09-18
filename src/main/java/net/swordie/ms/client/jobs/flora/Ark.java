@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.flora;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -38,7 +39,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 6/25/2018.
  */
 public class Ark extends Job {
-
     public static final int SPELL_BULLETS = 155001103;
     public static final int SPECTER_STATE = 155000007;
     public static final int CORRUPTION_COOLDOWN = 155001008;
@@ -89,7 +89,7 @@ public class Ark extends Job {
     public static final int CHARGE_SPELL_AMPLIFIER = 155121043;
     public static final int ENDLESS_AGONY = 155121341;
 
-    // V skills
+    // V Skills
     public static final int ABYSSAL_RECALL = 400051334;
     public static final int INFINITY_SPELL = 400051036;
     public static final int NIGHTMARES_ESCAPE = 400051047;
@@ -97,6 +97,7 @@ public class Ark extends Job {
 
     private ScheduledFuture spectraEnergyTimer;
     List<CharacterTemporaryStat> spellCasts = Arrays.asList(AbyssalCast, GustCast, ScarletCast, BasicCast);
+
     private int[] addedSkills = new int[]{
 
     };
@@ -128,8 +129,10 @@ public class Ark extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (spectraEnergyTimer != null && !spectraEnergyTimer.isDone()) {
@@ -676,7 +679,6 @@ public class Ark extends Job {
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -691,39 +693,44 @@ public class Ark extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        // cs.setPosMap(100000000); // default: 402090000
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(402090000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.ARK_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.ARK_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.ARK_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.ARK_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.ARK_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.ARK_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
+        handleJobAdvance(JobConstants.JobEnum.ARK_1.getJobId());
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        handleJobAdvance(JobConstants.JobEnum.ARK_1.getJobId());
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353600)); // Initial Path (2ndary)
-        chr.addSpToJobByCurrentJob(3);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Steel Knuckler
+        Item steelKnuckler = ItemData.getItemDeepCopy(1482110);
+        chr.addItemToInventory(steelKnuckler);
+        // Sub-Weapon: Initial Path
+        Item initialPath = ItemData.getItemDeepCopy(1353600);
+        chr.forceUpdateSecondary(null, initialPath);
     }
 }

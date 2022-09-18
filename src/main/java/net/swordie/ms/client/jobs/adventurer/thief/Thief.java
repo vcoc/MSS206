@@ -34,13 +34,11 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Thief extends Beginner {
-
     // Rogue
     public static final int HASTE = 4001005; //Buff
     public static final int DARK_SIGHT = 4001003; //Buff
 
-
-    // V Skill
+    // V Skills
     public static final int SHADOW_WALKER = 400001023;
 
     private int darkSightCount = 0;
@@ -80,7 +78,6 @@ public class Thief extends Beginner {
         }
     }
 
-
     private Skill getAdvDarkSightSkill() {
         Skill skill = null;
         if (chr.hasSkill(Shadower.ADVANCED_DARK_SIGHT_SHAD)) {
@@ -108,7 +105,6 @@ public class Thief extends Beginner {
             handleSkill(chr, tsm, DARK_SIGHT, chr.getSkillLevel(DARK_SIGHT), null, new SkillUseInfo());
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -226,12 +222,10 @@ public class Thief extends Beginner {
         }
     }
 
-
     @Override
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -345,10 +339,8 @@ public class Thief extends Beginner {
             int totalCooltime = (si.getValue(cooltime, slv) * 1000) * darkSightCount;
             chr.addSkillCoolTime(DARK_SIGHT, totalCooltime);
         }
-
         super.handleRemoveCTS(cts);
     }
-
 
     // Hit related methods ---------------------------------------------------------------------------------------------
 
@@ -378,8 +370,8 @@ public class Thief extends Beginner {
         QuestManager qm = chr.getQuestManager();
         switch (level) {
             case 20:
-                if (chr.getSubJob() == 1) // Dual Blade Sub Job
-                handleJobAdvance(JobConstants.JobEnum.BLADE_RECRUIT.getJobId());
+                if (chr.getSubJob() == 1) // Dual Blade
+                    handleJobAdvance(JobConstants.JobEnum.BLADE_RECRUIT.getJobId());
                 break;
             case 30:
                 qm.completeQuest(1421);
@@ -401,17 +393,26 @@ public class Thief extends Beginner {
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        Item fruitKnife = ItemData.getItemDeepCopy(1332063);
-        chr.addItemToInventory(fruitKnife);
-
-        Item garnier = ItemData.getItemDeepCopy(1472061);
-        chr.addItemToInventory(garnier);
-
-        for (int i = 0; i < 3; i++) {
-            Item subi = ItemData.getItemDeepCopy(2070000);
-            subi.setQuantity(500);
-            chr.addItemToInventory(subi);
+        if (chr.getSubJob() == 1) { // Dual Blade
+            // Weapon: Beginner Thief's Short Sword
+            Item fruitKnife = ItemData.getItemDeepCopy(1332063);
+            chr.addItemToInventory(fruitKnife);
+            // Sub-Weapon: Champion Katara
+            Item championKatara = ItemData.getItemDeepCopy(1342000);
+            chr.addItemToInventory(championKatara);
+        } else {
+            // Weapon: Beginner Thief's Short Sword
+            Item fruitKnife = ItemData.getItemDeepCopy(1332063);
+            chr.addItemToInventory(fruitKnife);
+            // Weapon: Beginner Thief Wrist Guards
+            Item garnier = ItemData.getItemDeepCopy(1472061);
+            chr.addItemToInventory(garnier);
+            // Throwing Stars
+            for (int i = 0; i < 3; i++) {
+                Item subi = ItemData.getItemDeepCopy(2070000);
+                subi.setQuantity(500);
+                chr.addItemToInventory(subi);
+            }
         }
     }
 }

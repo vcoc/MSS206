@@ -47,7 +47,6 @@ import static net.swordie.ms.enums.MoveAbility.Fly;
  */
 
 public class Kanna extends Job {
-
     // Beginner Job
     public static final int HAKU = 40020109;
     public static final int RETURN_OF_THE_FIVE_PLANETS = 40021227;
@@ -64,7 +63,6 @@ public class Kanna extends Job {
     public static final int MANA_VEIN = 42001101;
     public static final int GHOST_YAKSHA_TRAINEE = 42001100;
 
-
     // 2nd Job
     public static final int SHIKIGAMI_HAUNTING_2_1 = 42101100;
     public static final int SHIKIGAMI_HAUNTING_2_2 = 42101101;
@@ -76,7 +74,6 @@ public class Kanna extends Job {
     public static final int EXORCIST_CHARM = 42101005;
     public static final int HAKU_REBORN = 42101002;
     public static final int SOUL_BOMB = 42100007;
-
 
     // 3rd Job
     public static final int SHIKIGAMI_ACTIVATION_SKILL = 42110013;
@@ -92,7 +89,6 @@ public class Kanna extends Job {
     public static final int MANA_BALANCE = 42111012;
     public static final int WARDING_BARRIER = 42110001;
 
-
     // 4th Job
     public static final int SHIKIGAMI_HAUNTING_4_1 = 42120026;
     public static final int SHIKIGAMI_HAUNTING_4_2 = 42120027;
@@ -105,11 +101,9 @@ public class Kanna extends Job {
     public static final int SHIKIGAMI_DOPPLEGANGER = 42121104;
     public static final int TENGU_RETURN = 42111100;
 
-
     // Hyper Skills
     public static final int GEOMANCY_SPREAD = 42120044;
     public static final int GEOMANCY_PERSIST = 42120050;
-
 
     // V Skills
     public static final int YUKI_MUSUME_SHOUKAN = 400021017;
@@ -120,11 +114,7 @@ public class Kanna extends Job {
     public static final int LIBERATED_SPIRIT_CIRCLE_SUMMON = 400021079;
     public static final int LIBERATED_SPIRIT_CIRCLE_SUMMON_2 = 400021081;
 
-
-
-
-
-    //Old Skills        ------------------------------------------------------------------------------------------------
+    // Old Skills ------------------------------------------------------------------------------------------------------
     public static final int KISHIN_SHOUKAN = 42111003; //summon
     public static final int LIFEBLOOD_RITUAL = 42110008;
     //public static final int BLOSSOM_BARRIER = 42111004; //AoE
@@ -151,7 +141,7 @@ public class Kanna extends Job {
     public static final int BURNING_SHIKIGAMI_ATTACK_COMBO = 42001000;
     public static final int FROZEN_SHIKIGAMI_ATTACK_COMBO = 42001005;
 
-    //Haku Buffs
+    // Haku Buffs
     public static final int HAKUS_GIFT = 42101020;
     public static final int FOXFIRE = 42101021;
     public static final int HAKUS_BLESSING = 42101022;
@@ -162,14 +152,28 @@ public class Kanna extends Job {
     public static final int HAKUS_BLESSING_2 = 42121022;
     public static final int BREATH_UNSEEN_2 = 42121023;
 
-
-
-    private static final int[] addedSkills = new int[]{};
+    private static final int[] addedSkills = new int[] {
+            RETURN_OF_THE_FIVE_PLANETS,
+            MANAFLOW,
+            BLESSING_OF_THE_FIVE_ELEMENTS,
+            HAKU
+    };
 
     public ScheduledFuture foxManTimer;
 
     public Kanna(Char chr) {
         super(chr);
+        if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
+            for (int id : addedSkills) {
+                if (!chr.hasSkill(id)) {
+                    Skill skill = SkillData.getSkillDeepCopyById(id);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -324,7 +328,6 @@ public class Kanna extends Job {
         tsm.putCharacterStatValue(BlessEnsenble, o1);
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -761,7 +764,6 @@ public class Kanna extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -1029,7 +1031,6 @@ public class Kanna extends Job {
         super.handleShootObj(chr, skillId, slv);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -1073,43 +1074,40 @@ public class Kanna extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-//        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-//        cs.setPosMap(993028000);
-//
-//        //Can remove these if yall want.
-//        Item whitePot = ItemData.getItemDeepCopy(2000002);
-//        whitePot.setQuantity(100);
-//        chr.addItemToInventory(whitePot);
-//        Item manaPot = ItemData.getItemDeepCopy(2000006);
-//        manaPot.setQuantity(100);
-//        chr.addItemToInventory(manaPot);
-//        Item hyperTp = ItemData.getItemDeepCopy(5040004);
-//        chr.addItemToInventory(hyperTp);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(807040000);
+    }
+
+    @Override
+    public void handleLevelUp() {
+        super.handleLevelUp();
+        switch (chr.getLevel()) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.KANNA_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.KANNA_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.KANNA_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
+        handleJobAdvance(JobConstants.JobEnum.KANNA_1.getJobId());
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-
-        handleJobAdvance(JobConstants.JobEnum.KANNA_1.getJobId());
-        chr.addSpToJobByCurrentJob(3);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Iron Fan
+        Item ironFan = ItemData.getItemDeepCopy(1552000);
+        chr.addItemToInventory(ironFan);
     }
-
-    @Override
-    public void addMissingSkills(Char chr) {
-        super.addMissingSkills(chr);
-        chr.addSkill(RETURN_OF_THE_FIVE_PLANETS, 1, 1);
-        chr.addSkill(BLESSING_OF_THE_FIVE_ELEMENTS, 1, 1);
-        chr.addSkill(MANAFLOW, 1, 1);
-        chr.addSkill(HAKU, 1, 1);
-    }
-
 }

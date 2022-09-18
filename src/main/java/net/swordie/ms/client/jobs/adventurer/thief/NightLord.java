@@ -40,14 +40,12 @@ public class NightLord extends Thief {
     public static final int NIGHTLORD_MARK_ATOM = 4120019;
     public static final int CLAW_BOOSTER = 4101003; //Buff
 
-
     public static final int SHADOW_STARS = 4111009; //Buff
     public static final int SHADOW_PARTNER_NL = 4111002; //Buff
     public static final int EXPERT_THROWING_STAR_HANDLING = 4110012;
     public static final int DARK_FLARE_NL = 4111007; //Summon
     public static final int SHADOW_WEB = 4111003; //Special Attack (Dot + Bind)
     public static final int VENOM_NL = 4110011; //Passive DoT
-
 
     public static final int MAPLE_WARRIOR_NL = 4121000; //Buff
     public static final int SHOWDOWN = 4121017; //Special Attack
@@ -63,8 +61,7 @@ public class NightLord extends Thief {
     public static final int BLEED_DART = 4121054;
     public static final int EPIC_ADVENTURE_NL = 4121053;
 
-
-    // V skills
+    // V Skills
     public static final int DARK_LORDS_OMEN = 400041038;
     public static final int THROWING_STAR_BARRAGE = 400041001;
 
@@ -76,7 +73,6 @@ public class NightLord extends Thief {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isNightLord(id);
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -316,7 +312,6 @@ public class NightLord extends Thief {
         }
     }
 
-
     @Override
     public int getFinalAttackSkill() {
         return 0;
@@ -405,32 +400,29 @@ public class NightLord extends Thief {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.HERMIT.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.NIGHT_LORD.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.HERMIT.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.NIGHT_LORD.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
-
         super.cancelTimers();
     }
 }

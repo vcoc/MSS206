@@ -41,7 +41,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class DawnWarrior extends Noblesse {
-
     public static final int ELEMENTAL_HARMONY_STR = 10000246;
 
     public static final int SOUL_ELEMENT = 11001022; //Buff  (Immobility Debuff)
@@ -80,10 +79,9 @@ public class DawnWarrior extends Noblesse {
     public static final int SOUL_ECLIPSE = 400011088;
     public static final int SOUL_ECLIPSE_BREAK = 400011089;
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             ELEMENTAL_HARMONY_STR,
-            SOLAR_PIERCE,
+            SOLAR_PIERCE
     };
 
     private ScheduledFuture willOfSteelTimer;
@@ -94,8 +92,10 @@ public class DawnWarrior extends Noblesse {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (willOfSteelTimer != null && !willOfSteelTimer.isDone()) {
@@ -109,7 +109,6 @@ public class DawnWarrior extends Noblesse {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isDawnWarrior(id);
     }
-
 
     private void willOfSteel() {
         int interval = 4;
@@ -409,7 +408,6 @@ public class DawnWarrior extends Noblesse {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -539,7 +537,6 @@ public class DawnWarrior extends Noblesse {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -560,15 +557,15 @@ public class DawnWarrior extends Noblesse {
         super.handleLevelUp();
         short level = chr.getLevel();
         switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_4.getJobId());
-//                break;
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.DAWN_WARRIOR_4.getJobId());
+                break;
             case 120:
                 giveCallOfCygnus(CALL_OF_CYGNUS_DW);
                 break;
@@ -576,14 +573,9 @@ public class DawnWarrior extends Noblesse {
     }
 
     @Override
-    public void handleJobStart() {
-        super.handleJobStart();
-    }
-
-    @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Warrior's Sword
         Item sword = ItemData.getItemDeepCopy(1302077);
         chr.addItemToInventory(sword);
     }

@@ -33,7 +33,6 @@ public class Marksman extends Archer {
     public static final int XBOW_BOOSTER = 3201002;
     public static final int SOUL_ARROW_XBOW = 3201004;
 
-
     public static final int PAIN_KILLER = 3211011;
     public static final int FREEZER = 3211005;
     public static final int MORTAL_BLOW_XBOW = 3210001;
@@ -41,7 +40,6 @@ public class Marksman extends Archer {
     public static final int EVASION_BOOST_XBOW = 3210007;
     public static final int HOOKSHOT_MM = 3211010;
     public static final int RECKLESS_HUNT_XBOW = 3211012;
-
 
     public static final int MAPLE_WARRIOR_XBOW = 3221000;
     public static final int ARROW_ILLUSION = 3221014;
@@ -54,24 +52,20 @@ public class Marksman extends Archer {
     public static final int BULLSEYE_SHOT = 3221054;
     public static final int EPIC_ADVENTURE_XBOW = 3221053;
 
-
-    // V skills
+    // V Skills
     public static final int PERFECT_SHOT = 400031006;
     public static final int PERFECT_SHOT_HIT = 400031010;
     public static final int SPLIT_SHOT = 400031015;
     public static final int SPLIT_SHOT_FINAL_ATTACK = 400031016;
 
-
     public Marksman(Char chr) {
         super(chr);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isMarksman(id);
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -197,7 +191,6 @@ public class Marksman extends Archer {
             super.handleAttack(c, attackInfo);
         }
     }
-
 
     private void giveAggressiveResistanceBuff(AttackInfo ai) {
         if (!chr.hasSkill(AGGRESSIVE_RESISTANCE)) {
@@ -362,27 +355,25 @@ public class Marksman extends Archer {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.SNIPER.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.MARKSMAN.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.SNIPER.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.MARKSMAN.getJobId());
+                break;
+        }
     }
 
     @Override

@@ -43,7 +43,7 @@ import static net.swordie.ms.client.character.skills.SkillStat.*;
  * Created on 12/14/2017.
  */
 public class AngelicBuster extends Job {
-    //AB Beginner Skills
+    // Beginner Skills
     public static final int DRESS_UP = 60011222;
     public static final int SOUL_BUSTER = 60011216;
     public static final int HYPER_COORDINATE = 60011221; // removed from wz?
@@ -54,24 +54,24 @@ public class AngelicBuster extends Job {
 
     public static final int AB_NORMAL_ATTACK = 60011216;
 
-    //1st Job
+    // 1st Job
     public static final int STAR_BUBBLE = 65001100;
     public static final int MELODY_CROSS = 65001002; //Buff
 
-    //2nd job
+    // 2nd job
     public static final int LOVELY_STING = 65101100;
     public static final int LOVELY_STING_EXPLOSION = 65101006;
     public static final int PINK_PUMMEL = 65101001;
     public static final int POWER_TRANSFER = 65101002; //Buff
 
-    //3rd Job
+    // 3rd Job
     public static final int SOUL_SEEKER = 65111100;
     public static final int SOUL_SEEKER_ATOM = 65111007;
     public static final int SHINING_STAR_BURST = 65111101;
     public static final int HEAVENLY_CRASH = 65111002;
     public static final int IRON_BLOSSOM = 65111004; //Buff
 
-    //4th Job
+    // 4th Job
     public static final int CELESTIAL_ROAR = 65121100;
     public static final int TRINITY = 65121101; //TODO Recharge Attack
     //65121101 - Trinity -combo count-
@@ -81,34 +81,30 @@ public class AngelicBuster extends Job {
     public static final int SOUL_SEEKER_EXPERT = 65121011; //ON/OFF Buff
     public static final int NOVA_TEMPERANCE_AB = 65121010;
 
-
-    //Hypers
+    // Hyper
     public static final int PRETTY_EXALTATION = 65121054;
     public static final int FINAL_CONTRACT = 65121053;
 
-
-    //Affinity Heart Passives
+    // Affinity Heart Passives
     public static final int AFFINITY_HEART_I = 65000003;
     public static final int AFFINITY_HEART_II = 65100005;
     public static final int AFFINITY_HEART_III = 65110006;
     public static final int AFFINITY_HEART_IV = 65120006;
 
-    // V skills
+    // V Skills
     public static final int SPARKLE_BURST = 400051011;
     public static final int SUPER_STAR_SPOTLIGHT = 400051018;
     public static final int SUPER_STAR_SPOTLIGHT_2 = 400051027; // number value
     public static final int MIGHTY_MASCOT = 400051046;
     private static final short INSTANT_RECHARGE_LEVEL = 140;
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             DRESS_UP,
             SOUL_BUSTER,
             GRAPPLING_HEART,
             DAY_DREAMER,
-            TRUE_HEART_INHERITANCE,
+            TRUE_HEART_INHERITANCE
     };
-
 
     private int affinityHeartIIcounter = 0;
     private int affinityHeartIIIcounter = 0;
@@ -136,8 +132,10 @@ public class AngelicBuster extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -195,7 +193,6 @@ public class AngelicBuster extends Job {
 
         super.handleRemoveCTS(cts);
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -648,7 +645,6 @@ public class AngelicBuster extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -794,55 +790,54 @@ public class AngelicBuster extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(400000000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.ANGELIC_BUSTER_1.getJobId());
-        chr.addSpToJobByCurrentJob(5);
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Skills
-        // Items
-        Item secondary = ItemData.getItemDeepCopy(1352601); // Pink Soul Ring (Secondary)
-        chr.forceUpdateSecondary(null, secondary);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Purple Haze
+        Item purpleHaze = ItemData.getItemDeepCopy(1222001);
+        chr.addItemToInventory(purpleHaze);
+        // Sub-Weapon: Pink Soul Ring
+        Item pinkSoul = ItemData.getItemDeepCopy(1352601);
+        chr.forceUpdateSecondary(null, pinkSoul);
     }
 }

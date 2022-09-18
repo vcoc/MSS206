@@ -45,7 +45,6 @@ public class Pathfinder extends Archer {
     public static final int ANCIENT_CURSE = 1298;
     public static final int RETURN_TO_PARTEM = 1297;
 
-
     public static final int CARDINAL_DELUGE = 3011004; // Cardinal Force
     public static final int ANCIENT_BOW_BOOSTER = 3301010;
     public static final int CARDINAL_BURST = 3301004;
@@ -54,7 +53,6 @@ public class Pathfinder extends Archer {
     public static final int BOUNTIFUL_DELUGE = 3300005;
     public static final int CARDINAL_DELUGE_AMPLIFICATION = 3300002;
     public static final int RELIC_CHARGE_I = 3300000;
-
 
     public static final int RAVEN = 3311009;
     public static final int EVASION_BOOST_ABOW = 3310005;
@@ -65,7 +63,6 @@ public class Pathfinder extends Archer {
     public static final int CARDINAL_TORRENT_SWEEP = 3311003;
     public static final int GUIDANCE_OF_THE_ANCIENTS = 3310006;
     public static final int CURSEBOUND_ENDURANCE = 3311012;
-
 
     public static final int AWAKENED_RELIC = 3321034;
     public static final int SHARP_EYES_ABOW = 3321022;
@@ -98,8 +95,7 @@ public class Pathfinder extends Archer {
     public static final int ANCIENT_ASTRA_BURST_HOLD = 3321038;
     public static final int ANCIENT_ASTRA_TORRENT = 3321040;
 
-
-    // V skills
+    // V Skills
     public static final int NOVA_BLAST = 400031034;
     public static final int RAVEN_TEMPEST = 400031036;
     public static final int OBSIDIAN_BARRIER_NONE = 400031037;
@@ -107,37 +103,35 @@ public class Pathfinder extends Archer {
     public static final int OBSIDIAN_BARRIER_BURST = 400031039;
     public static final int OBSIDIAN_BARRIER_DELUGE = 400031038;
 
-
     // Curse Dampening
     public static final int CURSE_DAMPENING_I = 3010001;
     public static final int CURSE_DAMPENING_II = 3300001;
     public static final int CURSE_DAMPENING_III = 3310000;
     public static final int CURSEWEAVER = 3320001;
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             ANCIENT_CURSE,
-            RETURN_TO_PARTEM,
+            RETURN_TO_PARTEM
     };
 
     private static final int[] ancientSkills = new int[]{
             SWARM_SHOT,
             TRIPLE_IMPACT,
-            GLYPH_OF_IMPALEMENT,
+            GLYPH_OF_IMPALEMENT
     };
 
-
     private int lastSkillID = 0;
-
 
     public Pathfinder(Char chr) {
         super(chr);
         if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
-            for (int skillId : addedSkills) {
-                if (!chr.hasSkill(skillId)) {
-                    Skill skill = SkillData.getSkillDeepCopyById(skillId);
-                    skill.setCurrentLevel(1);
-                    chr.addSkill(skill);
+            for (int id : addedSkills) {
+                if (!chr.hasSkill(id)) {
+                    Skill skill = SkillData.getSkillDeepCopyById(id);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -446,37 +440,37 @@ public class Pathfinder extends Archer {
         return tsm.hasStat(ExtraSkillCTS) ? tsm.getOptByCTSAndSkill(ExtraSkillCTS, BOUNTIFUL_TORRENT).nOption : 0;
     }
 
-        private void applyCurseweaver(AttackInfo attackInfo) {
-            boolean byCardinalTorrent = attackInfo.skillId == CARDINAL_TORRENT_ADVANCED || attackInfo.skillId == CARDINAL_TORRENT_SWEEP_ADVANCED;
-            Skill skill = chr.getSkill(CURSEWEAVER);
-            if (skill != null && (chr.hasSkill(BOUNTIFUL_TORRENT) || byCardinalTorrent)) {
-                Field field = chr.getField();
-                SkillInfo si = SkillData.getSkillInfoById(skill.getSkillId());
-                int slv = skill.getCurrentLevel();
-                Option o = new Option();
-                o.rOption = skill.getSkillId();
-                o.tOption = si.getValue(time, slv);
-                o.xOption = 1; // sniffs show xOption to always be encoded as 1.
+    private void applyCurseweaver(AttackInfo attackInfo) {
+        boolean byCardinalTorrent = attackInfo.skillId == CARDINAL_TORRENT_ADVANCED || attackInfo.skillId == CARDINAL_TORRENT_SWEEP_ADVANCED;
+        Skill skill = chr.getSkill(CURSEWEAVER);
+        if (skill != null && (chr.hasSkill(BOUNTIFUL_TORRENT) || byCardinalTorrent)) {
+            Field field = chr.getField();
+            SkillInfo si = SkillData.getSkillInfoById(skill.getSkillId());
+            int slv = skill.getCurrentLevel();
+            Option o = new Option();
+            o.rOption = skill.getSkillId();
+            o.tOption = si.getValue(time, slv);
+            o.xOption = 1; // sniffs show xOption to always be encoded as 1.
 
-                for (MobAttackInfo mai : attackInfo.mobAttackInfo) {
-                    Mob mob = (Mob) field.getLifeByObjectID(mai.mobId);
-                    if (mob != null && (byCardinalTorrent || (Util.succeedProp((chr.getSkillStatValue(prop, BOUNTIFUL_TORRENT) + chr.getSkillStatValue(x, CARDINAL_FORCE_BOUNTIFUL_ENHANCE))) && getBountifulTorrentStack() > 0))) {
-                        o.nOption = 1;
-                        MobTemporaryStat mts = mob.getTemporaryStat();
-                        if (mts.hasCurrentMobStat(MobStat.Curseweaver)) {
-                            o.nOption = mts.getCurrentOptionsByMobStat(MobStat.Curseweaver).nOption;
-                            if (o.nOption < si.getValue(x, slv)) {
-                                o.nOption++;
-                            }
+            for (MobAttackInfo mai : attackInfo.mobAttackInfo) {
+                Mob mob = (Mob) field.getLifeByObjectID(mai.mobId);
+                if (mob != null && (byCardinalTorrent || (Util.succeedProp((chr.getSkillStatValue(prop, BOUNTIFUL_TORRENT) + chr.getSkillStatValue(x, CARDINAL_FORCE_BOUNTIFUL_ENHANCE))) && getBountifulTorrentStack() > 0))) {
+                    o.nOption = 1;
+                    MobTemporaryStat mts = mob.getTemporaryStat();
+                    if (mts.hasCurrentMobStat(MobStat.Curseweaver)) {
+                        o.nOption = mts.getCurrentOptionsByMobStat(MobStat.Curseweaver).nOption;
+                        if (o.nOption < si.getValue(x, slv)) {
+                            o.nOption++;
                         }
-                        mts.addStatOptionsAndBroadcast(MobStat.Curseweaver, o);
-                        if (!byCardinalTorrent) {
-                            decrementBountifulTorrent();
-                        }
+                    }
+                    mts.addStatOptionsAndBroadcast(MobStat.Curseweaver, o);
+                    if (!byCardinalTorrent) {
+                        decrementBountifulTorrent();
                     }
                 }
             }
         }
+    }
 
     private void decrementAncientForceSkillCooltime() {
         Skill skill = getRelicChargeSkill();
@@ -825,7 +819,6 @@ public class Pathfinder extends Archer {
         chr.createForceAtom(fa);
     }
 
-
     public int alterCooldownSkill(int skillId) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         Skill skill = chr.getSkill(skillId);
@@ -845,12 +838,10 @@ public class Pathfinder extends Archer {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -860,12 +851,15 @@ public class Pathfinder extends Archer {
         short level = chr.getLevel();
         switch (level) {
             case 30:
+                handleJobAdvance(JobConstants.JobEnum.PATHFINDER_2.getJobId());
                 chr.addSkill(Pathfinder.ANCIENT_CURSE, 2, 4);
                 break;
             case 60:
+                handleJobAdvance(JobConstants.JobEnum.PATHFINDER_3.getJobId());
                 chr.addSkill(Pathfinder.ANCIENT_CURSE, 3, 4);
                 break;
             case 100:
+                handleJobAdvance(JobConstants.JobEnum.PATHFINDER_4.getJobId());
                 chr.addSkill(Pathfinder.ANCIENT_CURSE, 4, 4);
                 break;
         }
@@ -874,38 +868,18 @@ public class Pathfinder extends Archer {
     @Override
     public void cancelTimers() {
         super.cancelTimers();
-
-    }
-
-    @Override
-    public void setCharCreationStats(Char chr) {
-        super.setCharCreationStats(chr);
-//        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-//        cs.setPosMap(910090301);
-//        cs.setJob(JobConstants.JobEnum.BEGINNER.getJobId());
-//        cs.setDex(35);
-//        Item arrows = ItemData.getItemDeepCopy(2060000);
-//        arrows.setQuantity(9999);
-//        chr.addItemToInventory(arrows);
-    }
-
-    @Override
-    public void handleJobStart() {
-        super.handleJobStart();
-
-
-        handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-        handleJobAdvance(JobConstants.JobEnum.PATHFINDER_1.getJobId());
-        chr.addSpToJobByCurrentJob(3);
-
-        chr.addItemToInventory(ItemData.getItemDeepCopy(1592000)); // ancient bow
-        chr.addItemToInventory(ItemData.getItemDeepCopy(1353700)); // potential relic
-
+        // Weapon: Ancient Bow
+        Item ancientBow = ItemData.getItemDeepCopy(1592000);
+        chr.addItemToInventory(ancientBow);
+        // Weapon: Potential Relic
+        Item potentialRelic = ItemData.getItemDeepCopy(1353700);
+        chr.addItemToInventory(potentialRelic);
+        // Arrows
         Item arrows = ItemData.getItemDeepCopy(2060000);
         arrows.setQuantity(2000);
         chr.addItemToInventory(arrows);

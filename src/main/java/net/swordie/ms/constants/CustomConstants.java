@@ -16,25 +16,37 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CustomConstants {
-    //Buffed mobs
+    // Mob
+    public static final boolean AUTO_MOB_AGGRO = false;
+    public static final int EXTRA_MOB_SPEED = 80;
     public static final int BUFFED_MOB_HP_MULTIPLIER = 1000;
-    public static final int BUFFED_MOB_SCALE = 120; //Default scale is 100
+    public static final int BUFFED_MOB_SCALE = 120; // Default scale is 100
     public static final int BUFFED_MOB_DAMAGE_MULTIPLIER = 10;
 
-    public static final boolean AUTO_AGGRO = false;
-    public static final int EXTRA_MOB_SPEED = 80;
-    public static final int AFK_TIMEOUT = 1000 * 300; //5 minutes
+    // Player
+    public static final int PLAYER_START_MONEY = 500_000;
+    public static final int PLAYER_START_MAP = 4000011; // Maple Tree Hill
+    public static final int PLAYER_HUB_MAP = 100000000; // Henesys
+    public static final int PLAYER_HUB_PORTAL = 12;
+    public static final int[] PLAYER_START_ITEMS = new int[] {
+            1004427, 1102777, 1113169, 1012512, 1022240, 1032250, 1122302,
+            1132280, 1152175, 1142359, 2430404, 2430403, 2023380, 5530448,
+            5040004
+    };
+    public static final int PLAYER_AFK_TIMEOUT = 1000 * 300; // 5 minutes
+    public static final boolean PLAYER_MAX_JOB_SKILLS = false;
+
+    // Party Quest
     public static final int DOJO_MAPS_PREFFIX = 925;
     public static final int COMMERCI_MAPS_PREFFIX = 865000;
     public static final int MIN_LEVEL_FOR_PQ = 120;
-    public static final boolean MAX_SKILLS = true; // Maximize all job skills when job advancing.
 
+    // Party
+    public static final double PARTY_LEECHER_NX_PCT = 0.15;
     public static final int EXTRA_NX_PERC_FOR_FIRST_PT_MEMBER = 10;
     public static final double EXTRA_NX_PERC_FOR_PT_MEMBER = 2.5;
     public static final int EXTRA_EXP_PERC_FOR_FIRST_PT_MEMBER = 50;
     public static final double EXTRA_EXP_PERC_FOR_PT_MEMBER = 10;
-
-    public static final double PARTY_LEECHER_NX_PCT = 0.15;
 
     public static final boolean LEVEL_UP_SKILL_DISABLED = false;
     public static final boolean DISABLE_HITOKIRI_STRIKE_1_HIT = true;
@@ -47,8 +59,6 @@ public class CustomConstants {
 
     public static final boolean AUTOMATIC_CHARACTER_CARDS = true;
 
-
-    /* -------- PART OF DROP/MESO CAP -------- */
     public static final int MAX_MESODROP_RATE_PER_EQUIP = 50;
     public static final int MAX_MESODROP_RATE_ACROSS_EQUIPS_PRE_250 = 120;
     public static final int MAX_MESODROP_RATE_ACROSS_EQUIPS_POST_250_BASE = 215;
@@ -154,13 +164,6 @@ public class CustomConstants {
     public boolean canConsumeSharingTag(int itemId) {
         return Arrays.stream(YES_SHARING_TAG_ITEMS).anyMatch(i -> i == itemId);
     }
-
-    public static final int[] STARTING_ITEMS= new int[]{
-            1004427,1102777,1113169,1012512,1022240,1032250,1122302,1132280,1152175,
-            5680260,2430404,2430403,1142359,2023380,5530448,5040004
-    };
-
-    public static final int START_MONEY = 300000; //300k
 
     public static int SAFE_KEY = 0;
 

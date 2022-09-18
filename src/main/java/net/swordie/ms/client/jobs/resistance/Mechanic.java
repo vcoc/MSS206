@@ -53,7 +53,6 @@ import static net.swordie.ms.enums.ForceAtomEnum.*;
  * Created on 12/14/2017.
  */
 public class Mechanic extends Citizen {
-
     public static final int MECH_VEHICLE = 1932016;
 
     public static final int SECRET_ASSEMBLY = 30001281;
@@ -92,11 +91,10 @@ public class Mechanic extends Citizen {
     public static final int FULL_METAL_BARRAGE = 400051041;
     public static final int GIANT_ROBOT_SG_88 = 35121003;
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             SECRET_ASSEMBLY,
             MECHANIC_DASH,
-            HIDDEN_PEACE,
+            HIDDEN_PEACE
     };
 
     private static final int[] homingBeacon = new int[]{
@@ -114,8 +112,10 @@ public class Mechanic extends Citizen {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -126,7 +126,6 @@ public class Mechanic extends Citizen {
         return JobConstants.isMechanic(id);
     }
 
-
     public void healFromSupportUnit(Summon summon) {
         Char summonOwner = summon.getChr();
         if (summonOwner.hasSkill(ENHANCED_SUPPORT_UNIT) || summonOwner.hasSkill(SUPPORT_UNIT_HEX)) {
@@ -136,7 +135,6 @@ public class Mechanic extends Citizen {
             c.getChr().heal((int) (c.getChr().getMaxHP() * ((double) healrate / 100)));
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -323,7 +321,6 @@ public class Mechanic extends Citizen {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -559,12 +556,10 @@ public class Mechanic extends Citizen {
         return super.alterCooldownSkill(skillId);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -579,31 +574,28 @@ public class Mechanic extends Citizen {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.MECHANIC_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.MECHANIC_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.MECHANIC_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.MECHANIC_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.MECHANIC_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.MECHANIC_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Pistol
         Item pistol = ItemData.getItemDeepCopy(1492109);
         chr.addItemToInventory(pistol);
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352700)); // Magnum (Secondary)
-
-        Item bullet = ItemData.getItemDeepCopy(2330000);
-        bullet.setQuantity(1600);
-        chr.addItemToInventory(bullet);
+        // Sub-Weapon: Magnum
+        Item magnum = ItemData.getItemDeepCopy(1352700);
+        chr.forceUpdateSecondary(null, magnum);
     }
 }

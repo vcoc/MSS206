@@ -789,7 +789,7 @@ public class JobConstants {
         CADENA(19, JobFlag.ENABLED, JobEnum.CADENA),
         ILLIUM(20, JobFlag.ENABLED, JobEnum.ILLIUM),
         ARK(21, JobFlag.ENABLED, JobEnum.ARK),
-        PATHFINDER(22, JobFlag.ENABLED, JobEnum.PATHFINDER_1),
+        PATHFINDER(22, JobFlag.ENABLED, JobEnum.BEGINNER),
         JETT(1000, JobFlag.ENABLED, JobEnum.BEGINNER),
         HAYATO(1001, JobFlag.ENABLED, JobEnum.HAYATO),
         KANNA(1002, JobFlag.ENABLED, JobEnum.KANNA),

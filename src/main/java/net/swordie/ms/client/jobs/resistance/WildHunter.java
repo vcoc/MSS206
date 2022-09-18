@@ -47,8 +47,7 @@ import static net.swordie.ms.life.mob.MobStat.JaguarProvoke;
  * Created on 12/14/2017.
  */
 public class WildHunter extends Citizen {
-
-    //Jaguar Summon
+    // Jaguar Summon
     public static final int SUMMON_JAGUAR_GREY = 33001007;           //No Special Jaguar Stats
     public static final int SUMMON_JAGUAR_YELLOW = 33001008;         //No Special Jaguar Stats
     public static final int SUMMON_JAGUAR_RED = 33001009;            //No Special Jaguar Stats
@@ -62,7 +61,7 @@ public class WildHunter extends Citizen {
             SUMMON_JAGUAR_PURPLE, SUMMON_JAGUAR_BLUE, SUMMON_JAGUAR_JAIRA, SUMMON_JAGUAR_SNOW_WHITE, SUMMON_JAGUAR_ONYX,
             SUMMON_JAGUAR_CRIMSON};
 
-    //Jaguar Mount
+    // Jaguar Mount
     public static final int MOUNT_JAGUAR_GREY = 1932015;
     public static final int MOUNT_JAGUAR_YELLOW = 1932030;
     public static final int MOUNT_JAGUAR_RED = 1932031;
@@ -75,7 +74,6 @@ public class WildHunter extends Citizen {
     public static final int[] MOUNTS = new int[]{MOUNT_JAGUAR_GREY, MOUNT_JAGUAR_YELLOW, MOUNT_JAGUAR_RED,
             MOUNT_JAGUAR_PURPLE, MOUNT_JAGUAR_BLUE, MOUNT_JAGUAR_JAIRA, MOUNT_JAGUAR_SNOW_WHITE, MOUNT_JAGUAR_ONYX,
             MOUNT_JAGUAR_CRIMSON};
-
 
     public static final int SECRET_ASSEMBLY = 30001281;
     public static final int CAPTURE = 30001061;
@@ -107,7 +105,7 @@ public class WildHunter extends Citizen {
     public static final int MAPLE_WARRIOR_WH = 33121007; //Buff
     public static final int HEROS_WILL_WH = 33121008;
 
-    //Final Attack
+    // Final Attack
     public static final int FINAL_ATTACK_WH = 33100009;
     public static final int ADVANCED_FINAL_ATTACK_WH = 33120011;
 
@@ -116,16 +114,17 @@ public class WildHunter extends Citizen {
     public static final int JAGUAR_RAMPAGE = 33121255;
     public static final int EXPLODING_ARROWS = 33121155;
 
-
-    // V
+    // V Skills
     public static final int JAGUAR_STORM = 400031005;
     public static final int PRIMAL_FURY = 400031012;
     public static final int PRIMAL_FURY_2 = 400031013; // screen
     public static final int PRIMAL_FURY_MOUNT_REQUEST = 400031014;
     public static final int PRIMAL_GRENADE = 400031032;
 
-    private static final int[] addedSkills = new int[]{
-            SECRET_ASSEMBLY,
+    private static final int[] addedSkills = new int[] {
+            CAPTURE,
+            CALL_OF_THE_HUNTER,
+            SECRET_ASSEMBLY
     };
 
     private static final int[] jaguarSummons = new int[]{
@@ -166,7 +165,6 @@ public class WildHunter extends Citizen {
         return JobConstants.isWildHunter(id);
     }
 
-
     private void incrementPrimalGrenade() {
         primalGrenadeCountTimer = EventManager.addFixedRateEvent(this::increasePrimalGrenadeCount, 4500, 4500, TimeUnit.MILLISECONDS);
     }
@@ -194,7 +192,6 @@ public class WildHunter extends Citizen {
         tsm.putCharacterStatValue(PrimalGrenade, o);
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -390,7 +387,6 @@ public class WildHunter extends Citizen {
 
         return proc;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -697,7 +693,6 @@ public class WildHunter extends Citizen {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -729,23 +724,34 @@ public class WildHunter extends Citizen {
     }
 
     @Override
+    public void handleLevelUp() {
+        super.handleLevelUp();
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.WILD_HUNTER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.WILD_HUNTER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.WILD_HUNTER_4.getJobId());
+                break;
+        }
+    }
+
+    @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Skills
-        // TODO: Maybe move these to addedSkills for ALL jobs.
-        chr.addSkill(CAPTURE, 1 ,1);
-        chr.addSkill(CALL_OF_THE_HUNTER, 1, 1);
-
-        // Items
+        // Weapon: Beginner Crossbowman's Crossbow
         Item beginnerCrossbow = ItemData.getItemDeepCopy(1462092);
         chr.addItemToInventory(beginnerCrossbow);
-
+        // Sub-Weapon: Wild Beak
+        Item wildBeak = ItemData.getItemDeepCopy(1352960);
+        chr.forceUpdateSecondary(null, wildBeak);
+        // Arrow for Crossbow
         Item arrowCrossbow = ItemData.getItemDeepCopy(2061000);
         arrowCrossbow.setQuantity(2000);
         chr.addItemToInventory(arrowCrossbow);
-
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352910)); // Arrow Head (Secondary)
     }
 }

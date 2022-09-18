@@ -40,11 +40,9 @@ public class Corsair extends Pirate {
     public static final int SCURVY_SUMMONS = 5201012; //Summon
     public static final int GUN_BOOSTER = 5201003; //Buff
 
-
     public static final int ALL_ABOARD = 5210015; //Summon
     public static final int ROLL_OF_THE_DICE_SAIR = 5211007; //Buff
     public static final int OCTO_CANNON = 5211014; //Summon
-
 
     public static final int PARROTARGETTING = 5221015; //Special Attack
     public static final int NAUTILUS_STRIKE_SAIR = 5221013; //Special Attack
@@ -63,8 +61,7 @@ public class Corsair extends Pirate {
     public static final int JOLLY_ROGER = 5221018; //Buff
     public static final int QUICKDRAW = 5221021; //Buff
 
-
-    // V skills
+    // V Skills
     public static final int BULLET_BARRAGE = 400051006;
     public static final int TARGET_LOCK = 400051021;
     public static final int NAUTILUS_ASSAULT = 400051040;
@@ -81,7 +78,6 @@ public class Corsair extends Pirate {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isCorsair(id);
     }
-
 
     private void corsairSummons() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -173,7 +169,6 @@ public class Corsair extends Pirate {
             curDurationIncCount++;
         }
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -272,7 +267,6 @@ public class Corsair extends Pirate {
             super.handleAttack(c, attackInfo);
         }
     }
-
 
     private void activateQuickdraw() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -431,32 +425,29 @@ public class Corsair extends Pirate {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.OUTLAW.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.CORSAIR.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.OUTLAW.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.CORSAIR.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
         super.cancelTimers();
-
     }
 }

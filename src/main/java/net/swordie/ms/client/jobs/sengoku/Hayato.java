@@ -2,8 +2,8 @@ package net.swordie.ms.client.jobs.sengoku;
 
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
-import net.swordie.ms.client.character.CharacterStat;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
 import net.swordie.ms.client.character.skills.info.AttackInfo;
@@ -22,6 +22,7 @@ import net.swordie.ms.life.Summon;
 import net.swordie.ms.life.mob.Mob;
 import net.swordie.ms.life.mob.MobStat;
 import net.swordie.ms.life.mob.MobTemporaryStat;
+import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.SkillData;
 import net.swordie.ms.util.Util;
 
@@ -34,7 +35,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Hayato extends Job {
-
     //Blade Energy
     public static final int QUICK_DRAW = 40011288;
     public static final int NORMAL_STANCE_BONUS = 40011291;
@@ -64,18 +64,16 @@ public class Hayato extends Job {
     public static final int SUDDEN_STRIKE = 41121018;
     public static final int AKATSUKI_BLOSSOMS = 41121004;
 
-
     public static final int GOD_OF_BLADES = 41121054;
     public static final int PRINCESS_VOW_HAYATO = 41121053;
     public static final int FALCONS_HONOR = 41121052;
 
-    // V skills
+    // V Skills
     public static final int BATTOUJUTSU_ZANKOU = 400011026;
     public static final int IAIJUTSU_PHANTOM_BLADE = 400011029;
     public static final int BATTOUJUTSU_ULTIMATE_WILL = 400011104;
 
-
-    //BattouJutsu Linked Skills
+    // BattouJutsu Linked Skills
     public static final int SURGING_BLADE_BATTOUJUTSU = 41001014;
     public static final int SHOURYUUSEN_BATTOUJUTSU = 41001015;
     public static final int RISING_SLASH_BATTOUJUTSU = 41101014;
@@ -85,7 +83,7 @@ public class Hayato extends Job {
     public static final int TORNADO_BLADE_BATTOUJUTSU = 41121020;
     public static final int SUDDEN_STRIKE_BATTOUJUTSU = 41121021;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             QUICK_DRAW,
             SUMMER_RAIN,
             MASTER_OF_BLADES,
@@ -110,8 +108,10 @@ public class Hayato extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -121,7 +121,6 @@ public class Hayato extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isHayato(id);
     }
-
 
     private boolean isInQuickDrawStance() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -242,7 +241,6 @@ public class Hayato extends Job {
         tsm.putCharacterStatValue(Stance, o4);
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -491,7 +489,6 @@ public class Hayato extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -619,7 +616,6 @@ public class Hayato extends Job {
         setHayatoStanceBonus();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -633,7 +629,6 @@ public class Hayato extends Job {
         }
         super.handleHit(c, inPacket, hitInfo);
     }
-
 
     public void incrementWillowDodge() {
         Skill skill = chr.getSkill(WILLOW_DODGE);
@@ -680,35 +675,40 @@ public class Hayato extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-        cs.setPosMap(807100000);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(807100000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        switch (chr.getLevel()) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.HAYATO_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.HAYATO_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.HAYATO_4.getJobId());
-//                break;
-//        }
+        switch (chr.getLevel()) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.HAYATO_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.HAYATO_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.HAYATO_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
+        handleJobAdvance(JobConstants.JobEnum.HAYATO_1.getJobId());
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Simple Iron Sword
+        Item simpleIron = ItemData.getItemDeepCopy(1542000);
+        chr.addItemToInventory(simpleIron);
     }
 }

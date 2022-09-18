@@ -28,7 +28,7 @@ public class Noblesse extends Job {
     public static final int ELEMENTAL_SHIFT_HIGH = 10001253;
     public static final int ELEMENTAL_SHIFT_FLASH = 10001254;
 
-    // V Skill  KoC Common
+    // V Skills  KoC Common
     public static final int PHALANX_CHARGE = 400001018;
 
     private static final int[] addedSkills = {
@@ -36,7 +36,7 @@ public class Noblesse extends Job {
             ELEMENTAL_SLASH,
             ELEMENTAL_SHIFT_BASE,
             ELEMENTAL_SHIFT_HIGH,
-            ELEMENTAL_SHIFT_FLASH,
+            ELEMENTAL_SHIFT_FLASH
     };
 
     private static final int[] callOfCygnusQuests = {
@@ -54,7 +54,7 @@ public class Noblesse extends Job {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
                     if (skill != null) {
-                        skill.setCurrentLevel(1);
+                        skill.setCurrentLevel(skill.getMasterLevel());
                         chr.addSkill(skill);
                     }
                 }
@@ -64,19 +64,16 @@ public class Noblesse extends Job {
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
-
         super.handleAttack(c, attackInfo);
     }
 
     @Override
     public void handleSkill(Char chr, TemporaryStatManager tsm, int skillID, int slv, InPacket inPacket, SkillUseInfo skillUseInfo) {
         super.handleSkill(chr, tsm, skillID, slv, inPacket, skillUseInfo);
-
     }
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -98,56 +95,30 @@ public class Noblesse extends Job {
         Skill skill = SkillData.getSkillDeepCopyById(skillId);
         if (skill != null && !chr.hasSkill(skillId)) {
             chr.addSkill(skillId, 0, skill.getMasterLevel());
-        } else {
-            chr.chatMessage("Skill can't be found! - %d", skillId);
-        }
-    }
-
-    @Override
-    public void handleJobAdvance(short jobId) {
-        super.handleJobAdvance(jobId);
-    }
-
-    @Override
-    public void handleLevelUp() {
-        super.handleLevelUp();
-        short level = chr.getLevel();
-        switch (level) {
-            case 30:
-                chr.addSpToJobByCurrentJob(5);
-                break;
-            case 60:
-                chr.addSpToJobByCurrentJob(10);
-                break;
-            case 100:
-                chr.addSpToJobByCurrentJob(5);
-                break;
         }
     }
 
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(130030000);
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
-
-        handleJobEnd();
+        chr.getScriptManager().startScript(0, "job_cygnus", ScriptType.Npc);
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
+        // Chair: Noblesse Chair
         Item noblesseChair = ItemData.getItemDeepCopy(3010060);
         chr.addItemToInventory(noblesseChair);
-
-        // Medal of Knight-in-Training
-        Item medal = ItemData.getItemDeepCopy(1142066);
-        chr.addItemToInventory(medal);
-
-        chr.getScriptManager().startScript(0, "job_cygnus", ScriptType.Npc);
+        // Medal: Training Knight
+        Item trainingKnight = ItemData.getItemDeepCopy(1142066);
+        chr.addItemToInventory(trainingKnight);
     }
 }

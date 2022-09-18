@@ -32,25 +32,25 @@ import static net.swordie.ms.client.character.skills.SkillStat.*;
 import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat.*;
 
 public class Jett extends Pirate {
-    public static final int GALACTIC_MIGHT = 5081023; //Buff
+    // Beginner's Basics
+    public static final int RETRO_ROCKETS = 228;
+    public static final int RETURN_TO_SPACESHIP = 1227;
 
+    public static final int GALACTIC_MIGHT = 5081023; // Buff
 
-    public static final int STARLINE_TWO = 5701010; //Special Attack (Stun Debuff)
-    public static final int BOUNTY_CHASER = 5701013; //Buff
+    public static final int STARLINE_TWO = 5701010; // Special Attack (Stun Debuff)
+    public static final int BOUNTY_CHASER = 5701013; // Buff
 
-
-    public static final int SLIPSTREAM_SUIT = 5711024; //Buff
-    public static final int TURRET_DEPLOYMENT = 5711001; //Summon
-
+    public static final int SLIPSTREAM_SUIT = 5711024; // Buff
+    public static final int TURRET_DEPLOYMENT = 5711001; // Summon
 
     public static final int BIONIC_MAXIMIZER = 5721054;
-    public static final int HIGH_GRAVITY = 5721066; //Buff
-    public static final int MAPLE_WARRIOR_JETT = 5721000; //Buff
+    public static final int HIGH_GRAVITY = 5721066; // Buff
+    public static final int MAPLE_WARRIOR_JETT = 5721000; // Buff
     public static final int HEROS_WILL_JETT = 5721002;
     public static final int EPIC_ADVENTURER_JETT = 5721053;
 
-
-    // V skills
+    // V Skills
     public static final int ALLIED_FURY = 400051054;
     public static final int SUBORBITAL_SUMMON_SMALL_4 = 400051032;
     public static final int SUBORBITAL_SUMMON_SMALL_3 = 400051031;
@@ -58,7 +58,6 @@ public class Jett extends Pirate {
     public static final int SUBORBITAL_SUMMON_SMALL_1 = 400051029;
     public static final int SUBORBITAL_SUMMON_BIG = 400051028;
     public static final int GRAVITY_CRUSH = 400051014;
-
 
     private static final List<Integer> suborbitalSummons = new ArrayList<Integer>() {{
         add(SUBORBITAL_SUMMON_BIG);
@@ -68,18 +67,30 @@ public class Jett extends Pirate {
         add(SUBORBITAL_SUMMON_SMALL_4);
     }};
 
+    private static final int[] addedSkills = new int[] {
+            RETRO_ROCKETS,
+            RETURN_TO_SPACESHIP
+    };
 
     public Jett(Char chr) {
         super(chr);
+        if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
+            for (int id : addedSkills) {
+                if (!chr.hasSkill(id)) {
+                    Skill skill = SkillData.getSkillDeepCopyById(id);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
+                }
+            }
+        }
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isJett(id);
     }
-
-
 
     public void flipSuborbitalSummon(InPacket inPacket) {
         if (inPacket.getUnreadAmount() <= 0) {
@@ -95,7 +106,6 @@ public class Jett extends Pirate {
             summon.setHide(!summon.isHide());
         }
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -327,64 +337,32 @@ public class Jett extends Pirate {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.JETT_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.JETT_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.JETT_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.JETT_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.JETT_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.JETT_4.getJobId());
+                break;
+        }
     }
-
 
     @Override
     public void cancelTimers() {
         super.cancelTimers();
-
-    }
-
-    @Override
-    public void addMissingSkills(Char chr) {
-        super.addMissingSkills(chr);
-    }
-
-
-    @Override
-    public void setCharCreationStats(Char chr) {
-        super.setCharCreationStats(chr);
-    }
-
-    @Override
-    public void handleJobStart() {
-        super.handleJobStart();
-
-
-        addMissingSkills(chr);
-
-        handleJobEnd();
-    }
-
-    @Override
-    public void handleJobEnd() {
-        super.handleJobEnd();
-
-
     }
 }

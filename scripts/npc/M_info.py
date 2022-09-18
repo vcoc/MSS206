@@ -1,5 +1,5 @@
 # Warp NPC
-# Custom server script
+# Custom Server Script
 
 sm.setSpeakerID(2007) # Maple Administrator
 

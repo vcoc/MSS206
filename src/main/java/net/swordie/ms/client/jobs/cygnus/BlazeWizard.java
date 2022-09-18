@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.cygnus;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -38,7 +39,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class BlazeWizard extends Noblesse {
-
     public static final int ELEMENTAL_HARMONY_INT = 10000248;
 
     public static final int ORBITAL_FLAME = 12001020;
@@ -80,14 +80,14 @@ public class BlazeWizard extends Noblesse {
     public static final int SAVAGE_FLAME_FOX = 400021044;
     public static final int SAVAGE_FLAME_FOX_ATOM = 400021045;
 
-    //Flame Elements
+    // Flame Elements
     public static final int FLAME_ELEMENT = 12000022;
     public static final int GREATER_FLAME_ELEMENT = 12100026;
     public static final int GRAND_FLAME_ELEMENT = 12110024;
     public static final int FINAL_FLAME_ELEMENT = 12120007;
 
-    private static final int[] addedSkills = new int[]{
-            ELEMENTAL_HARMONY_INT,
+    private static final int[] addedSkills = new int[] {
+            ELEMENTAL_HARMONY_INT
     };
 
     boolean used;
@@ -110,8 +110,10 @@ public class BlazeWizard extends Noblesse {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -121,7 +123,6 @@ public class BlazeWizard extends Noblesse {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isBlazeWizard(id);
     }
-
 
     @Override
     public void handleSkillRemove(Char chr, int skillID) {
@@ -169,7 +170,6 @@ public class BlazeWizard extends Noblesse {
         }
         return skill;
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -285,7 +285,6 @@ public class BlazeWizard extends Noblesse {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -502,12 +501,10 @@ public class BlazeWizard extends Noblesse {
         chr.createForceAtom(fa);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -544,20 +541,28 @@ public class BlazeWizard extends Noblesse {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-        switch (chr.getLevel()) {
-            case 120 -> giveCallOfCygnus(CALL_OF_CYGNUS_BW);
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.BLAZE_WIZARD_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.BLAZE_WIZARD_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BLAZE_WIZARD_4.getJobId());
+                break;
+            case 120:
+                giveCallOfCygnus(CALL_OF_CYGNUS_BW);
+                break;
         }
-    }
-
-    @Override
-    public void handleJobStart() {
-        super.handleJobStart();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        chr.addItemToInventory(ItemData.getItemDeepCopy(1382100)); // beginner staff
+        // Weapon: Beginner Magician's Staff
+        Item beginnerStaff = ItemData.getItemDeepCopy(1382100);
+        chr.addItemToInventory(beginnerStaff);
     }
 }

@@ -8,6 +8,7 @@ import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.MatrixRecord;
 import net.swordie.ms.connection.packet.WvsContext;
 import net.swordie.ms.constants.GameConstants;
+import net.swordie.ms.constants.JobConstants;
 import net.swordie.ms.enums.BaseStat;
 import net.swordie.ms.enums.ChatType;
 import net.swordie.ms.life.mob.Mob;
@@ -207,17 +208,6 @@ public class PlayerCommands {
         }
     }
 
-    @Command(names = { "fifthJob" }, requiredType = Player)
-    public static class FifthJob extends PlayerCommand {
-        public static void execute(Char chr, String[] args) {
-            if (chr.getLevel() >= 200 && !chr.getQuestManager().hasQuestCompleted(1460)) {
-                chr.getQuestManager().addQuest(1460);
-            } else {
-                chr.chatMessage(playerChatType, playerMsgPrefix + "You must be at least level 200, and not have 5th job already.");
-            }
-        }
-    }
-
     @Command(names = { "uptime" }, requiredType = Player)
     public static class UpTime extends PlayerCommand {
         public static void execute(Char chr, String[] args) {
@@ -225,4 +215,17 @@ public class PlayerCommands {
         }
     }
 
+    @Command(names = { "job" }, requiredType = Player)
+    public static class Job extends PlayerCommand {
+        public static void execute(Char chr, String[] args) {
+            ScriptManagerImpl smi = chr.getScriptManager();
+            if (JobConstants.isExplorer(chr.getJob()) && chr.getLevel() <= 30) {
+                smi.startScript(0, "job_explorer", ScriptType.Npc);
+            } else if (JobConstants.isCygnusKnight(chr.getJob()) && chr.getLevel() <= 10) {
+                smi.startScript(0, "job_cygnus", ScriptType.Npc);
+            } else if (JobConstants.isResistance(chr.getJob()) && chr.getLevel() <= 10) {
+                smi.startScript(0, "job_resistance", ScriptType.Npc);
+            }
+        }
+    }
 }

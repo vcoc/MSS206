@@ -29,7 +29,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Blaster extends Citizen {
-
     public static final int SECRET_ASSEMBLY = 30001281;
 
     public static final int DETONATE_H = 37001004;
@@ -56,7 +55,7 @@ public class Blaster extends Citizen {
     public static final int GATLING_PUNCH = 400011028;
     public static final int BULLET_BLAST = 400011091;
 
-    //Revolving Cannon
+    // Revolving Cannon
     public static final int REVOLVING_CANNON_RELOAD = 37000010;
     public static final int REVOLVING_CANNON = 37001001;
     public static final int REVOLVING_CANNON_2 = 37100008;
@@ -72,21 +71,18 @@ public class Blaster extends Citizen {
     public static final int BUNKER_BUSTER_EXPLOSION_5 = 37000012;
     public static final int BUNKER_BUSTER_EXPLOSION_6 = 37000013;
 
-
-    //Blast Shield
+    // Blast Shield
     public static final int BLAST_SHIELD = 37000006;
     public static final int SHIELD_TRAINING = 37110008;
     public static final int SHIELD_TRAINING_II = 37120009;
     public static final int VITALITY_SHIELD = 37121005;
 
-
-    //Combo Training
+    // Combo Training
     public static final int COMBO_TRAINING = 37110009;
     public static final int COMBO_TRAINING_II = 37120012;
 
-
-    private static final int[] addedSkills = new int[]{
-            SECRET_ASSEMBLY,
+    private static final int[] addedSkills = new int[] {
+            SECRET_ASSEMBLY
     };
 
     private static final int[] ammoUsingSkills = new int[]{
@@ -108,8 +104,10 @@ public class Blaster extends Citizen {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -119,8 +117,6 @@ public class Blaster extends Citizen {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isBlaster(id);
     }
-
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -326,7 +322,6 @@ public class Blaster extends Citizen {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -398,7 +393,6 @@ public class Blaster extends Citizen {
         }
         tsm.sendSetStatPacket();
     }
-
 
     // Hit related methods ---------------------------------------------------------------------------------------------
 
@@ -485,30 +479,29 @@ public class Blaster extends Citizen {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.BLASTER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.BLASTER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.BLASTER_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.BLASTER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.BLASTER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BLASTER_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Hand Buster
+        // Weapon: Hand Buster
         Item handBuster = ItemData.getItemDeepCopy(1582000);
         chr.addItemToInventory(handBuster);
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353400)); // Charges (Secondary)
-
+        // Sub-Weapon: Charges
+        Item charges = ItemData.getItemDeepCopy(1353400);
+        chr.forceUpdateSecondary(null, charges);
         reloadCylinder();
     }
 }

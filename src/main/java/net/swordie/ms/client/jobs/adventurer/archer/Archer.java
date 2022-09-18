@@ -34,7 +34,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Archer extends Beginner {
-
     // V Skills
     public static final int FURY_OF_THE_WILD = 400001012;
 
@@ -114,7 +113,6 @@ public class Archer extends Beginner {
         }
         return skill;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -239,11 +237,8 @@ public class Archer extends Beginner {
     }
 
     public int alterCooldownSkill(int skillId) {
-        switch (skillId) {
-        }
         return super.alterCooldownSkill(skillId);
     }
-
 
     // Hit related methods ---------------------------------------------------------------------------------------------
 
@@ -252,14 +247,12 @@ public class Archer extends Beginner {
         if (hitInfo.hpDamage == 0 && hitInfo.mpDamage == 0) {
             chr.write(UserLocal.dodgeSkillReady());
         }
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-
         // hacks to bypass the quest glitch (accept but no packet)
         if (JobConstants.isPathFinder(chr.getJob())) {
             short level = chr.getLevel();
@@ -279,11 +272,6 @@ public class Archer extends Beginner {
     }
 
     @Override
-    public void setCharCreationStats(Char chr) {
-        super.setCharCreationStats(chr);
-    }
-
-    @Override
     public void cancelTimers() {
         super.cancelTimers();
     }
@@ -292,16 +280,17 @@ public class Archer extends Beginner {
     public void handleJobEnd() {
         super.handleJobEnd();
         if (!JobConstants.isPathFinder(chr.getJob())) {
+            // Weapon: Beginner Bowman's Bow
             Item beginnerBow = ItemData.getItemDeepCopy(1452051);
             chr.addItemToInventory(beginnerBow);
-
+            // Weapon: Beginner Crossbowman's Crossbow
             Item beginnerCrossbow = ItemData.getItemDeepCopy(1462092);
             chr.addItemToInventory(beginnerCrossbow);
-
+            // Arrow for Bow
             Item arrowBow = ItemData.getItemDeepCopy(2060000);
             arrowBow.setQuantity(2000);
             chr.addItemToInventory(arrowBow);
-
+            // Arrow for Crossbow
             Item arrowCrossbow = ItemData.getItemDeepCopy(2061000);
             arrowCrossbow.setQuantity(2000);
             chr.addItemToInventory(arrowCrossbow);

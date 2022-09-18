@@ -8,6 +8,7 @@ public class QuestConstants {
     public static final int WILD_HUNTER_JAGUAR_STORAGE_ID = 23008;
     public static final int WILD_HUNTER_JAGUAR_CHOSEN_ID = 23009;
     public static final int FIFTH_JOB_QUEST = 1465;
+    public static final int ARCANE_SYMBOL_MAX_SLOTS_UNLOCKER = 34478;
     public static final int NODESHARD_COUNT = 1477;
     public static final int PQPOINT_COUNT = 7907;
     public static final int DOJO_COUNT = 3887;

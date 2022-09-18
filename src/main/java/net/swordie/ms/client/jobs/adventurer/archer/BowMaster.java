@@ -40,7 +40,6 @@ public class BowMaster extends Archer {
     public static final int QUIVER_CARTRIDGE = 3101009;
     public static final int QUIVER_CARTRIDGE_ATOM = 3100010;
 
-
     public static final int PHOENIX = 3111005;
     public static final int FLAME_SURGE = 3111003;
     public static final int FOCUSED_FURY = 3110012;
@@ -49,7 +48,6 @@ public class BowMaster extends Archer {
     public static final int EVASION_BOOST = 3110007;
     public static final int HOOKSHOT_BM = 3111010;
     public static final int RECKLESS_HUNT_BOW = 3111011;
-
 
     public static final int SHARP_EYES_BOW = 3121002;
     public static final int SHARP_EYES_BOW_PERSIST = 3120043;
@@ -67,8 +65,7 @@ public class BowMaster extends Archer {
     public static final int CONCENTRATION = 3121054;
     public static final int GRITTY_GUST = 3121052;
 
-
-    // V skills
+    // V Skills
     public static final int STORM_OF_ARROWS = 400031002;
     public static final int STORM_OF_ARROWS_AA = 400030002;
     public static final int INHUMAN_SPEED = 400031020;
@@ -76,24 +73,19 @@ public class BowMaster extends Archer {
     public static final int QUIVER_BARRAGE = 400031028;
     public static final int QUIVER_BARRAGE_ATOM = 400031029;
 
-
-
     private int inhumanSpeedCounter = 0;
     private ScheduledFuture stormArrowTimer;
     private QuiverCartridge quiverCartridge;
     private long lastQuiverBarrage = Long.MIN_VALUE;
 
-
     public BowMaster(Char chr) {
         super(chr);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isBowMaster(id);
     }
-
 
     public void createInhumanSpeedForceAtom(int mobId) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -571,7 +563,6 @@ public class BowMaster extends Archer {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -582,15 +573,15 @@ public class BowMaster extends Archer {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.RANGER.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.BOWMASTER.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.RANGER.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BOWMASTER.getJobId());
+                break;
+        }
     }
 
     public void handleMobDebuffSkill(Char chr) {
@@ -720,5 +711,4 @@ public class BowMaster extends Archer {
         }
         return type == 3 ? num * 2 : num; // Magic Arrow has 2x as many arrows
     }
-
 }

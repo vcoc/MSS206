@@ -41,8 +41,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class WindArcher extends Noblesse {
-
-
     public static final int ELEMENTAL_HARMONY_DEX = 10000247;
 
     public static final int STORM_ELEMENTAL = 13001022; //Buff
@@ -80,13 +78,13 @@ public class WindArcher extends Noblesse {
     public static final int HOWLING_GALE_1 = 400031003; // takes 1 Wind Energy
     public static final int HOWLING_GALE_2 = 400031004; // takes 2 Wind Energy
     public static final int MERCILESS_WINDS = 400031022;
-        public static final int GALE_BARRIER = 400031030;
+    public static final int GALE_BARRIER = 400031030;
     public static final int GALE_BARRIER_ATOM = 400031031;
 
     private long lastGaleBarrierFA = Long.MIN_VALUE;
 
-    private static final int[] addedSkills = new int[]{
-            ELEMENTAL_HARMONY_DEX,
+    private static final int[] addedSkills = new int[] {
+            ELEMENTAL_HARMONY_DEX
     };
 
     public WindArcher(Char chr) {
@@ -95,20 +93,20 @@ public class WindArcher extends Noblesse {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             incrementWindEnergy();
         }
     }
 
-
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isWindArcher(id);
     }
-
 
     private void incrementWindEnergy() {
         EventManager.addFixedRateEvent(this::increaseWindEnergy, 20, 20, TimeUnit.SECONDS);
@@ -153,7 +151,6 @@ public class WindArcher extends Noblesse {
             tsm.sendSetStatPacket();
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -465,7 +462,6 @@ public class WindArcher extends Noblesse {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -640,7 +636,6 @@ public class WindArcher extends Noblesse {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -674,36 +669,31 @@ public class WindArcher extends Noblesse {
 
     @Override
     public void handleLevelUp() {
+        super.handleLevelUp();
         short level = chr.getLevel();
         switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_4.getJobId());
-//                break;
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.WIND_ARCHER_4.getJobId());
+                break;
             case 120:
                 giveCallOfCygnus(CALL_OF_CYGNUS_WA);
                 break;
         }
-        super.handleLevelUp();
-    }
-
-    @Override
-    public void handleJobStart() {
-        super.handleJobStart();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Bowman's Bow
         Item beginnerBow = ItemData.getItemDeepCopy(1452051);
         chr.addItemToInventory(beginnerBow);
-
+        // Arrow for Bow
         Item arrowBow = ItemData.getItemDeepCopy(2060000);
         arrowBow.setQuantity(2000);
         chr.addItemToInventory(arrowBow);

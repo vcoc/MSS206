@@ -43,7 +43,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Kaiser extends Job {
-
     public static final int GUARDIANS_RETURN = 60001296;
     public static final int VERTICAL_GRAPPLE = 60001218;
     public static final int TRANSFIGURATION = 60000219; //Morph Gauge (SmashStack)
@@ -69,7 +68,7 @@ public class Kaiser extends Job {
     public static final int FINAL_TRANCE = 61121053;
     public static final int KAISERS_MAJESTY = 61121054;
 
-    // V skills
+    // V Skills
     public static final int NOVA_GUARDIANS = 400011012;
     public static final int NOVA_GUARDIANS_2 = 400011013;
     public static final int NOVA_GUARDIANS_3 = 400011014;
@@ -84,8 +83,7 @@ public class Kaiser extends Job {
     public static final int DRACO_SURGE_SHOOTOBJ = 400011081;
     public static final int DRACO_SURGE_SHOOTOBJ_FF = 400011082;
 
-
-    //Attacking Skills
+    // Attacking Skills
     public static final int DRAGON_SLASH_1 = 61001000; //First Swing
     public static final int DRAGON_SLASH_2 = 61001004; //2nd Swing
     public static final int DRAGON_SLASH_3 = 61001005; //Last Swing
@@ -115,8 +113,7 @@ public class Kaiser extends Job {
     public static final int BLADE_BURST = 61121104;
     public static final int BLADE_BURST_FINAL_FORM = 61121221;
 
-
-    //Realign Skills
+    // Realign Skills
     public static final int REALIGN_ATTACKER_MODE = 60001217; //Unlimited Duration
     public static final int REALIGN_DEFENDER_MODE = 60001216; //Unlimited Duration
 
@@ -131,13 +128,13 @@ public class Kaiser extends Job {
 
     private ScheduledFuture selfRecoveryTimer;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             REALIGN_ATTACKER_MODE,
             REALIGN_DEFENDER_MODE,
             VERTICAL_GRAPPLE,
             TRANSFIGURATION,
             DRAGON_LINK,
-            GUARDIANS_RETURN,
+            GUARDIANS_RETURN
     };
 
     public Kaiser(Char chr) {
@@ -146,8 +143,10 @@ public class Kaiser extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (selfRecoveryTimer != null && !selfRecoveryTimer.isDone()) {
@@ -233,7 +232,6 @@ public class Kaiser extends Job {
         tsm.putCharacterStatValue(HayatoHPR, o3);
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -488,7 +486,6 @@ public class Kaiser extends Job {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -845,12 +842,10 @@ public class Kaiser extends Job {
         }
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -865,50 +860,43 @@ public class Kaiser extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        /*
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-        cs.setLevel(10);
-        cs.setJob(6100);
-        cs.setStr(70);
-        Item secondary = ItemData.getItemDeepCopy(1352500);
-        secondary.setBagIndex(10);
-        chr.getAvatarData().getAvatarLook().getHairEquips().put((byte) 10, secondary.getItemId());
-        chr.setSpToCurrentJob(5);
-        chr.getEquippedInventory().addItem(secondary);
-        */
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(400000000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        switch (chr.getLevel()) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.KAISER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.KAISER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.KAISER_4.getJobId());
-//                break;
-//        }
+        switch (chr.getLevel()) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.KAISER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.KAISER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.KAISER_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
         handleJobAdvance(JobConstants.JobEnum.KAISER_1.getJobId());
-        chr.addSpToJobByCurrentJob(5);
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Skills
-        // Items
-        Item secondary =  ItemData.getItemDeepCopy(1352500); // Nova's Essence (Secondary)
-        chr.forceUpdateSecondary(null, secondary);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Wooden Sword
+        Item woodenSword = ItemData.getItemDeepCopy(1402001);
+        chr.addItemToInventory(woodenSword);
+        // Sub-Weapon: Nova's Essence
+        Item novasEssence =  ItemData.getItemDeepCopy(1352500);
+        chr.forceUpdateSecondary(null, novasEssence);
     }
 }

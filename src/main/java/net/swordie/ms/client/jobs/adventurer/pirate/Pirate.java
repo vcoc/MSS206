@@ -34,14 +34,11 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Pirate extends Beginner {
-
     //Pirate
     public static final int DASH = 5001005; //Buff
 
-
-    // V skills
+    // V Skills
     public static final int PIRATES_BANNER = 400001017;
-
 
     public Pirate(Char chr) {
         super(chr);
@@ -93,7 +90,6 @@ public class Pirate extends Beginner {
         }
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -259,7 +255,6 @@ public class Pirate extends Beginner {
         return super.alterCooldownSkill(skillId);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -332,11 +327,21 @@ public class Pirate extends Beginner {
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        Item steelKnuckler = ItemData.getItemDeepCopy(1482110);
-        chr.addItemToInventory(steelKnuckler);
-
-        Item pistol = ItemData.getItemDeepCopy(1492109);
-        chr.addItemToInventory(pistol);
+        if (JobConstants.isCannonShooter(chr.getJob())) {
+            // Weapon: Novice Cannon
+            Item noviceCannon = ItemData.getItemDeepCopy(1532000);
+            chr.addItemToInventory(noviceCannon);
+        } else if (JobConstants.isJett(chr.getJob())) {
+            // Weapon: Gaussfield Mark 1
+            Item gaussfieldMark = ItemData.getItemDeepCopy(1492139);
+            chr.addItemToInventory(gaussfieldMark);
+        } else {
+            // Weapon: Steel Knuckler
+            Item steelKnuckler = ItemData.getItemDeepCopy(1482110);
+            chr.addItemToInventory(steelKnuckler);
+            // Weapon: Pistol
+            Item pistol = ItemData.getItemDeepCopy(1492109);
+            chr.addItemToInventory(pistol);
+        }
     }
 }

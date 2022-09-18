@@ -43,14 +43,12 @@ public class FirePoison extends Magician {
     public static final int MEDITATION_FP = 2101001;
     public static final int IGNITE_AA = 2100010;
 
-
     public static final int VIRAL_SLIME = 2111010;
     public static final int ELEMENTAL_ADAPTATION_FP = 2111011;
     public static final int BURNING_MAGIC = 2110000;
     public static final int POISON_MIST = 2111003;
     public static final int TELEPORT_MASTERY_FP = 2111007;
     public static final int ELEMENTAL_DECREASE_FP = 2111008;
-
 
     public static final int PARALYZE = 2121006;
     public static final int MIST_ERUPTION = 2121003;
@@ -72,12 +70,10 @@ public class FirePoison extends Magician {
     public static final int MEGIDDO_FLAME = 2121052;
     public static final int MEGIDDO_FLAME_ATOM = 2121055;
 
-
-    // V skills
+    // V Skills
     public static final int DOT_PUNISHER = 400021001;
     public static final int POISON_NOVA = 400021028;
     public static final int ELEMENTAL_FURY = 400021066;
-
 
     public static final List<Integer> unreliableMemFP = new ArrayList<Integer>() {{
         add(2001008);
@@ -95,7 +91,6 @@ public class FirePoison extends Magician {
         add(2121052);
         add(2121053);
     }};
-
 
     private List<Integer> explodeShootObjList;
     private int ferventDrainStack;
@@ -421,7 +416,6 @@ public class FirePoison extends Magician {
         this.ferventDrainStack = ferventDrainStack;
     }
 
-
     private void updateElementDrain() {
         if (!chr.hasSkill(ELEMENTAL_DRAIN)) {
             return;
@@ -543,27 +537,25 @@ public class FirePoison extends Magician {
         super.handleShootObj(chr, skillId, slv);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.FP_MAGE.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.FP_ARCHMAGE.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.FP_MAGE.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.FP_ARCHMAGE.getJobId());
+                break;
+        }
     }
 
     @Override

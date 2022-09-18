@@ -44,12 +44,10 @@ public class IceLightning extends Magician {
     public static final int CHILLING_STEP = 2201009;
     public static final int MEDITATION_IL = 2201001;
 
-
     public static final int ICE_STRIKE = 2211002;
     public static final int GLACIER_CHAIN = 2211010;
     public static final int TELEPORT_MASTERY_IL = 2211007;
     public static final int ELEMENTAL_DECREASE_IL = 2211008;
-
 
     public static final int CHAIN_LIGHTNING = 2221006;
     public static final int FREEZING_BREATH = 2221011;
@@ -67,15 +65,13 @@ public class IceLightning extends Magician {
     public static final int EPIC_ADVENTURE_IL = 2221053;
     public static final int ABSOLUTE_ZERO_AURA = 2221054;
 
-
-    // V skills
+    // V Skills
     public static final int ICE_AGE = 400021002;
     public static final int ICE_AGE_TILE = 400020002;
     public static final int BOLT_BARRAGE = 400021030;
     public static final int BOLT_BARRAGE_TILE = 400021040;
     public static final int BOLT_BARRAGE_TILE_2 = 400021031;
     public static final int SNOW_OF_CREATION = 400021067;
-
 
     public static final List<Integer> unreliableMemIL = new ArrayList<Integer>() {{
                 add(2001008);
@@ -96,7 +92,6 @@ public class IceLightning extends Magician {
     public IceLightning(Char chr) {
         super(chr);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -125,7 +120,6 @@ public class IceLightning extends Magician {
         }
         EventManager.addEvent(this::applyFreezeByAbsoluteZeroAura, 4, TimeUnit.SECONDS);
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -419,27 +413,25 @@ public class IceLightning extends Magician {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.IL_MAGE.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.IL_ARCHMAGE.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.IL_MAGE.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.IL_ARCHMAGE.getJobId());
+                break;
+        }
     }
 
     @Override

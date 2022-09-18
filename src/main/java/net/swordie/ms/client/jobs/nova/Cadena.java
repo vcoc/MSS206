@@ -2,7 +2,6 @@ package net.swordie.ms.client.jobs.nova;
 
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
-import net.swordie.ms.client.character.CharacterStat;
 import net.swordie.ms.client.character.info.HitInfo;
 import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.Option;
@@ -41,7 +40,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 6/25/2018.
  */
 public class Cadena extends Job {
-
     public static final int HAGGLE = 60020216;
     public static final int BACK_TO_HQ = 60021217;
     public static final int CHAIN_ARTS_TRASH = 60021278;
@@ -97,9 +95,9 @@ public class Cadena extends Job {
     public static final int CHAIN_ART_TRASH_IV = 64120000;
     public static final int CHAIN_ART_REIGN_OF_CHAINS = 64121002;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             HAGGLE,
-            BACK_TO_HQ,
+            BACK_TO_HQ
     };
 
     private static final int[] muscleMemoryBuff = new int[]{
@@ -147,8 +145,10 @@ public class Cadena extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -158,7 +158,6 @@ public class Cadena extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isCadena(id);
     }
-
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
@@ -411,7 +410,6 @@ public class Cadena extends Job {
         return 0;
     }
 
-
     @Override
     public void handleSkill(Char chr, TemporaryStatManager tsm, int skillID, int slv, InPacket inPacket, SkillUseInfo skillUseInfo) {
         super.handleSkill(chr, tsm, skillID, slv, inPacket, skillUseInfo);
@@ -495,49 +493,49 @@ public class Cadena extends Job {
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(940200500);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        switch (chr.getLevel()) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.CADENA_2.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.CADENA_3.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.CADENA_4.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//        }
+        switch (chr.getLevel()) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.CADENA_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.CADENA_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.CADENA_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.CADENA_1.getJobId());
-        chr.addSpToJobByCurrentJob(5);
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        Item secondary = ItemData.getItemDeepCopy(1353300);
-        chr.forceUpdateSecondary(null, secondary);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: De Mercurio
+        Item deMercurio = ItemData.getItemDeepCopy(1272000);
+        chr.forceUpdateSecondary(null, deMercurio);
+        // Sub-Weapon: Transmitter Type-D
+        Item transmitter = ItemData.getItemDeepCopy(1353300);
+        chr.forceUpdateSecondary(null, transmitter);
     }
 }

@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.adventurer;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
 import net.swordie.ms.client.character.skills.SkillStat;
@@ -28,6 +29,7 @@ import net.swordie.ms.life.Summon;
 import net.swordie.ms.life.mob.Mob;
 import net.swordie.ms.life.mob.MobStat;
 import net.swordie.ms.life.mob.MobTemporaryStat;
+import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.SkillData;
 import net.swordie.ms.util.Position;
 import net.swordie.ms.util.Rect;
@@ -66,9 +68,6 @@ public class BeastTamer extends Job {
     // Quest ID for Growth Spurt
     public static final int GROWTH_SPURT_QUEST_LEVEL = 59340;
     public static final int GROWTH_SPURT_QUEST_EXP = 59341;
-
-    public static final int MASTERY_MASTER_LEVEL = 10;
-    public static final int GROWTH_MASTER_LEVEL = 30;
 
     //Bear Mode
     public static final int LIL_FORT = 112001007;
@@ -114,11 +113,10 @@ public class BeastTamer extends Job {
     public static final int MEOW_CURE = 112121010;
     public static final int MEOW_REVIVE = 112121011;
 
-
-    //Hyper
+    // Hyper
     public static final int TEAM_ROAR = 112121056;
 
-    // V
+    // V Skills
     public static final int CHAMP_CHARGE_CAT_TILE = 400021039;
     public static final int CUB_CAVALRY = 400021055;
     public static final int CUB_CAVALRY_SUMMON_1 = 400021056;
@@ -128,7 +126,7 @@ public class BeastTamer extends Job {
     public static final int AERIAL_RELIEF = 400021082;
     public static final int AERIAL_RELIEF_SKILL_USE = 400021085;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             BEAR_MODE,
             SNOW_LEOPARD_MODE,
             HAWK_MODE,
@@ -194,8 +192,10 @@ public class BeastTamer extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -225,7 +225,6 @@ public class BeastTamer extends Job {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         return tsm.hasStat(BeastMode) && tsm.getOption(BeastMode).nOption == 4;
     }
-
 
     //  Buff related methods -------------------------------------------------------------------------------------------
 
@@ -384,7 +383,6 @@ public class BeastTamer extends Job {
         }
     }
 
-
     // Attack related methods ------------------------------------------------------------------------------------------
 
     @Override
@@ -511,10 +509,8 @@ public class BeastTamer extends Job {
             fortFollowUpAddAttack = 0;
             return FORT_FOLLOW_UP;
         }
-
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -817,12 +813,10 @@ public class BeastTamer extends Job {
         return super.alterCooldownSkill(skillId);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -842,67 +836,59 @@ public class BeastTamer extends Job {
         short level = chr.getLevel();
 
         // Beast Scepter Mastery
-        if (level >= 40 && level <= 40 + MASTERY_MASTER_LEVEL * 10) {
+        if (level >= 40 && level <= 40 + 10 * 10) {
             int bsmLevel = (level - 30) / 10;
-            addSkill(BEAST_SCEPTER_MASTERY , bsmLevel);
+            chr.addSkill(BEAST_SCEPTER_MASTERY , bsmLevel, 10);
         }
 
         // Growth Spurt
-        if (level >= 60 && level <= 60 + GROWTH_MASTER_LEVEL) {
+        if (level >= 60 && level <= 60 + 30) {
             int gsLevel = (level - 60);
-            addSkill(GROWTH_MASTER_LEVEL , gsLevel);
+            chr.addSkill(GROWTH_SPURT , gsLevel, 30);
             chr.getScriptManager().createQuestWithQRValue(GROWTH_SPURT_QUEST_LEVEL, Integer.toString(gsLevel));
         }
 
         switch (level) {
             case 30: { // Beast Scepter Mastery
-                addSkill(BEAST_SCEPTER_MASTERY , 0);
+                chr.addSkill(BEAST_SCEPTER_MASTERY, 0, 10);
                 break;
             }
             case 60: { // Growth Spurt
-                addSkill(GROWTH_SPURT, 0);
+                chr.addSkill(GROWTH_SPURT, 0, 30);
                 break;
             }
             case 120: { // Maple Guardian
-                addSkill(MAPLE_GUARDIAN , 30);
+                chr.addSkill(MAPLE_GUARDIAN, 30, 30);
                 break;
             }
             case 150: { // Beastly Resolve
-                addSkill(BEASTLY_RESOLVE , 5);
+                chr.addSkill(BEASTLY_RESOLVE, 5, 5);
                 break;
             }
-        }
-    }
-
-    private void addSkill(int skillId, int level) {
-        Skill skill = SkillData.getSkillDeepCopyById(skillId);
-        if (skill != null) {
-            int masterLevel = skill.getMasterLevel();
-            chr.addSkill(skillId, level, masterLevel);
-        } else {
-            chr.chatMessage("Can't find skill - %d!", skillId);
         }
     }
 
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(866101000);
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
         handleJobAdvance(JobConstants.JobEnum.BEAST_TAMER_4.getJobId());
-        chr.addSpToJobByCurrentJob(5);
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        addSkill(110001506, 1); // Guardian Leap
-        addSkill(110001510, 1); // Critter Select
-        addSkill(110001514, 1); // Homeward Bound
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Beast Tamer Scepter
+        Item btScepter = ItemData.getItemDeepCopy(1252001);
+        chr.addItemToInventory(btScepter);
     }
 }

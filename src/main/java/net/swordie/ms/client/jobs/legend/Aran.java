@@ -58,11 +58,11 @@ public class Aran extends Job {
     public static final int MAHAS_DOMAIN = 21121068; //AoE Effect
     public static final int MAHAS_DOMAIN_SKILL_USE = 21121057; //AoE Effect
 
-    //Final Attack
+    // Final Attack
     public static final int FINAL_ATTACK = 21100010;
     public static final int ADVANCED_FINAL_ATTACK = 21120012;
 
-    //Attacking Skills:
+    // Attacking Skills:
     public static final int SMASH_WAVE = 21001009;
     public static final int SMASH_WAVE_COMBO = 21000004;
 
@@ -98,8 +98,7 @@ public class Aran extends Job {
     public static final int BEYOND_BLADE_2 = 21121016;
     public static final int BEYOND_BLADE_3 = 21121017;
 
-
-    // V skill
+    // V Skills
     public static final int MAHAS_FURY_BUFF = 400011016;
     public static final int MAHAS_FURY_ATTACK = 400011020;
     public static final int MAHAS_CARNAGE = 400011031;
@@ -107,10 +106,9 @@ public class Aran extends Job {
     public static final int FENRIR_CRASH = 400010070;
     public static final int FENRIR_CRASH_ADRENALINE = 400010071;
 
-    //Finisher
+    // Finisher
     public static final int FINISHER_HUNTER_PREY = 21120019;
     public static final int FINISHER_STORM_OF_FEAR = 21120023;
-
 
     public static int getOriginalSkillByID(int skillID) {
         switch (skillID) {
@@ -125,12 +123,11 @@ public class Aran extends Job {
         return skillID; // no original skill linked with this one
     }
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             REGAINED_MEMORY,
             RETURN_TO_RIEN,
+            COMBAT_STEP
     };
-
 
     private int combo;
 
@@ -140,8 +137,10 @@ public class Aran extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -151,7 +150,6 @@ public class Aran extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isAran(id);
     }
-
 
     private void giveAdrenalinRushBuff(TemporaryStatManager tsm) {
         Skill skill = chr.getSkill(ADRENALINE_RUSH);
@@ -176,7 +174,6 @@ public class Aran extends Job {
             setComboCountAfterAdrenaline();
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -465,7 +462,6 @@ public class Aran extends Job {
         return skill;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -581,61 +577,54 @@ public class Aran extends Job {
         return super.alterCooldownSkill(skillId);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
-
-    // Job and Leveling methods
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-//        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-//        cs.setPosMap(914000000);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(914000000);
     }
-
-
+    
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.ARAN_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.ARAN_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.ARAN_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.ARAN_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.ARAN_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.ARAN_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.ARAN_1.getJobId());
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Add Skills
-        chr.addSkill(COMBAT_STEP, 1, 1);
-        chr.addSkill(RETURN_TO_RIEN, 1, 1);
-
-        // Medal - Awakened Aran
-        Item medal = ItemData.getItemDeepCopy(1142129);
-        chr.addItemToInventory(medal);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Polearm
+        Item polearm = ItemData.getItemDeepCopy(1442000);
+        chr.addItemToInventory(polearm);
+        // Medal: Awakened Aran
+        Item awakenedAran = ItemData.getItemDeepCopy(1142129);
+        chr.addItemToInventory(awakenedAran);
     }
 }

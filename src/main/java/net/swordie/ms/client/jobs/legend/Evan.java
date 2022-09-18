@@ -1,11 +1,9 @@
 package net.swordie.ms.client.jobs.legend;
 
-import net.swordie.ms.client.Account;
 import net.swordie.ms.client.Client;
-import net.swordie.ms.client.LinkSkill;
 import net.swordie.ms.client.character.Char;
-import net.swordie.ms.client.character.CharacterStat;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -15,26 +13,23 @@ import net.swordie.ms.client.character.skills.temp.TemporaryStatManager;
 import net.swordie.ms.client.jobs.Job;
 import net.swordie.ms.connection.InPacket;
 import net.swordie.ms.connection.packet.FieldPacket;
-import net.swordie.ms.connection.packet.WvsContext;
-import net.swordie.ms.constants.GameConstants;
 import net.swordie.ms.constants.JobConstants;
-import net.swordie.ms.constants.QuestConstants;
 import net.swordie.ms.constants.SkillConstants;
-import net.swordie.ms.enums.*;
+import net.swordie.ms.enums.ForceAtomEnum;
+import net.swordie.ms.enums.MoveAbility;
+import net.swordie.ms.enums.TSIndex;
 import net.swordie.ms.life.*;
 import net.swordie.ms.life.mob.Mob;
 import net.swordie.ms.life.mob.MobStat;
 import net.swordie.ms.life.mob.MobTemporaryStat;
+import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.SkillData;
 import net.swordie.ms.util.Position;
 import net.swordie.ms.util.Rect;
 import net.swordie.ms.util.Util;
 import net.swordie.ms.world.field.Field;
 
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static net.swordie.ms.client.character.skills.SkillStat.*;
 import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat.*;
@@ -43,7 +38,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Evan extends Job {
-
     public static final int INHERITED_WILL = 20010194;
     public static final int BACK_TO_NATURE = 20011293;
 
@@ -65,14 +59,13 @@ public class Evan extends Job {
     public static final int HEROS_WILL_EVAN = 22171004;
     public static final int DRAGON_FURY = 22170074;
 
-    //Returns
+    // Returns
     public static final int RETURN_FLASH = 22110013; // Return after Wind Skills (Mob Debuff)
     public static final int RETURN_DIVE = 22140013; // Return Dive (Buff)
     public static final int RETURN_FLAME = 22170064; // Return Flame (Flame  AoE)
     public static final int RETURN_FLAME_TILE = 22170093; // Return Flames Tile
 
-
-    //Evan Attacks
+    // Evan Attacks
     public static final int MANA_BURST_I = 22001010;
     public static final int MANA_BURST_II = 22110010;
     public static final int MANA_BURST_III = 22140010;
@@ -83,18 +76,17 @@ public class Evan extends Job {
     public static final int EARTH_CIRCLE = 22171062;
     public static final int DARK_FOG = 22171095;
 
-    //Final Attack
+    // Final Attack
     public static final int DRAGON_SPARK = 22000015;
     public static final int ADV_DRAGON_SPARK = 22110021;
 
     private int prevSkill = 0;
     private Dragon dragon;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             INHERITED_WILL,
-            BACK_TO_NATURE,
+            BACK_TO_NATURE
     };
-
 
     public Evan(Char chr) {
         super(chr);
@@ -102,8 +94,10 @@ public class Evan extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -131,12 +125,10 @@ public class Evan extends Job {
         return skillID;
     }
 
-
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isEvan(id);
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -190,7 +182,6 @@ public class Evan extends Job {
             tsm.sendSetStatPacket();
         }
     }
-
 
     private void createWreckageForceAtom() {
         Field field = chr.getField();
@@ -298,7 +289,6 @@ public class Evan extends Job {
         }
         return dragon;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -427,7 +417,6 @@ public class Evan extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -438,109 +427,41 @@ public class Evan extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-        cs.setPosMap(900010000);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(900010000);
     }
-
-
-
 
     @Override
     public void handleLevelUp() {
-        //   super.handleLevelUp();
+        super.handleLevelUp();
         short level = chr.getLevel();
-        Map<Stat, Object> stats = new HashMap<>();
-        if (level > 10) {
-            chr.addStat(Stat.ap, 5);
-            stats.put(Stat.ap, (short) chr.getStat(Stat.ap));
-        } else if (level < 10) {
-            if (level >= 6) {
-                chr.addStat(Stat.str, 4);
-                chr.addStat(Stat.dex, 1);
-            } else {
-                chr.addStat(Stat.str, 5);
-            }
-            stats.put(Stat.str, (short) chr.getStat(Stat.str));
-            stats.put(Stat.dex, (short) chr.getStat(Stat.dex));
-        }
-        if (level >= 50) {
-            chr.addHonorExp(700 + ((chr.getLevel() - 50) / 10) * 100);
-        }
-        int sp = SkillConstants.getBaseSpByLevel(level);
-        // Double SP gain on levels ending with 3/6/9 after level 100
-        if ((level % 10) % 3 == 0 && level > 100) {
-            sp *= 2;
-        }
-        chr.addSpToJobByCurrentLevel(sp);
-        if (JobConstants.isExtendSpJob(chr.getJob())) {
-            stats.put(Stat.sp, chr.getAvatarData().getCharacterStat().getExtendSP());
-        } else {
-            stats.put(Stat.sp, (short) chr.getAvatarData().getCharacterStat().getSp());
-        }
-        int linkSkill = SkillConstants.getLinkSkillByJob(chr.getJob());
-        byte linkSkillLevel = (byte) SkillConstants.getLinkSkillLevelByCharLevel(level);
-        int linkSkillID = SkillConstants.getOriginalOfLinkedSkill(linkSkill);
-        if (linkSkillID != 0 && linkSkillLevel > 0) {
-            Skill skill = chr.getSkill(linkSkillID, true);
-            if (skill.getCurrentLevel() != linkSkillLevel) {
-                chr.addSkill(linkSkillID, linkSkillLevel, 3);
-            }
-            Account acc = chr.getAccount();
-            LinkSkill ls = acc.getLinkSkillByLinkSkillId(linkSkill);
-            if (ls == null) {
-                ls = new LinkSkill(chr.getId(), 0, linkSkill, linkSkillLevel);
-                acc.getLinkSkills().add(ls);
-            } else if (ls.getLevel() < linkSkillLevel) {
-                ls.setLinkSkillID(linkSkill);
-                ls.setLevel(linkSkillLevel);
-                ls.setOriginID(chr.getId());
-            }
-        }
-
-        // Add server-sided increments for hp/mp then modify based on job passives
-        int[][] incVal = GameConstants.getIncValArray(chr.getJob());
-        if (incVal != null) {
-            chr.addStat(Stat.mhp, incVal[0][1]);
-            stats.put(Stat.mhp, chr.getStat(Stat.mhp));
-            if (!JobConstants.isNoManaJob(chr.getJob())) {
-                chr.addStat(Stat.mmp, incVal[3][0]);
-                stats.put(Stat.mmp, chr.getStat(Stat.mmp));
-            }
-            chr.recalcStats(EnumSet.of(BaseStat.mhp, BaseStat.mmp));
-        } else {
-            chr.chatMessage("Unhandled HP/MP job " + chr.getJob());
-        }
-        chr.write(WvsContext.statChanged(stats));
-        chr.heal(chr.getMaxHP());
-        chr.healMP(chr.getMaxMP());
-
-        short job = -1;
-        switch (chr.getLevel()) {
-            case 10:
-                job = JobConstants.JobEnum.EVAN_1.getJobId();
-                break;
+        switch (level) {
             case 30:
-                job = JobConstants.JobEnum.EVAN_2.getJobId();
+                handleJobAdvance(JobConstants.JobEnum.EVAN_2.getJobId());
                 break;
             case 60:
-                job = JobConstants.JobEnum.EVAN_3.getJobId();
+                handleJobAdvance(JobConstants.JobEnum.EVAN_3.getJobId());
                 break;
             case 100:
-                job = JobConstants.JobEnum.EVAN_4.getJobId();
+                handleJobAdvance(JobConstants.JobEnum.EVAN_4.getJobId());
                 break;
-            case 200:
-                chr.chatMessage("Congratulations on reaching level 200");
-                chr.chatMessage("You've unlocked the V Matrix!");
-                chr.chatMessage("I've given you some Nodestones to help you on your adventure!");
-                chr.getQuestManager().completeQuest(QuestConstants.FIFTH_JOB_QUEST);
-                break;
-
         }
-        if (job != -1) {
-            chr.setJob(job);
-            chr.setStatAndSendPacket(Stat.job, job);
-            chr.addSpToJobByCurrentJob(5);
-        }
+    }
 
+    @Override
+    public void handleJobStart() {
+        super.handleJobStart();
+        handleJobAdvance(JobConstants.JobEnum.EVAN_1.getJobId());
+        handleJobEnd();
+    }
+
+    @Override
+    public void handleJobEnd() {
+        super.handleJobEnd();
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Beginner Magician's Wand
+        Item beginnerWand = ItemData.getItemDeepCopy(1372107);
+        chr.addItemToInventory(beginnerWand);
     }
 }

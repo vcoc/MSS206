@@ -43,7 +43,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class BattleMage extends Citizen {
-
     public static final int SECRET_ASSEMBLY = 30001281;
 
     public static final int CONDEMNATION = 32001014; //Special Buff (ON/OFF)
@@ -77,11 +76,9 @@ public class BattleMage extends Citizen {
     public static final int ALTAR_OF_ANNIHILATION = 400021047;
     public static final int GRIM_HARVEST = 400021069;
 
-
-    private static final int[] addedSkills = new int[]{
-            SECRET_ASSEMBLY,
+    private static final int[] addedSkills = new int[] {
+            SECRET_ASSEMBLY
     };
-
 
     private static final int[] auras = new int[]{
             HASTY_AURA,
@@ -105,8 +102,10 @@ public class BattleMage extends Citizen {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             EventManager.addFixedRateEvent(this::incrementAltarAnnihilationCount, 25, 25, TimeUnit.SECONDS);
@@ -117,7 +116,6 @@ public class BattleMage extends Citizen {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isBattleMage(id);
     }
-
 
     private void activateAuraMPCost(int skillId, int slv) {
         if (mpCostPerSec != null && !mpCostPerSec.isDone()) {
@@ -403,7 +401,7 @@ public class BattleMage extends Citizen {
         o.nOption = killCount;
         o.rOption = getCondemnationSkillId();
         tsm.putCharacterStatValue(BMageDeath, o);
-        chr.chatMessage("killCount = " + o.nOption);
+        chr.chatDebugMessage("Condemnation Kill Count = " + o.nOption);
         tsm.sendSetStatPacket();
     }
 
@@ -576,7 +574,6 @@ public class BattleMage extends Citizen {
         }
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -799,7 +796,6 @@ public class BattleMage extends Citizen {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -815,7 +811,6 @@ public class BattleMage extends Citizen {
         super.cancelTimers();
     }
 
-
     public List<Summon> getAnnihilationAltarList() {
         return annihilationAltarList;
     }
@@ -827,27 +822,28 @@ public class BattleMage extends Citizen {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BATTLE_MAGE_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Magician's Staff
         Item beginnerStaff = ItemData.getItemDeepCopy(1382100);
         chr.addItemToInventory(beginnerStaff);
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352950)); // Magic Marble (Secondary)
+        // Sub-Weapon: Equalizer Ball
+        Item equalizerBall = ItemData.getItemDeepCopy(1352950);
+        chr.forceUpdateSecondary(null, equalizerBall);
     }
 }

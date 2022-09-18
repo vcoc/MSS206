@@ -23,7 +23,6 @@ public class OpenGate {
     private int duration; // seconds
     private ScheduledFuture openGateDuration;
 
-
     public OpenGate(Char chr, Position position, Party party, byte gateId, int duration) {
         this.chr = chr;
         this.position = position;
@@ -31,7 +30,6 @@ public class OpenGate {
         this.gateId = gateId;
         this.duration = duration;
     }
-
 
     public Char getChr() {
         return chr;
@@ -105,5 +103,4 @@ public class OpenGate {
     public void showOpenGate(Field field) {
         field.broadcastPacket(FieldPacket.openGateCreated(this));
     }
-
 }

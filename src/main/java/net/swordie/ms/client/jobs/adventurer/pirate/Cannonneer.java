@@ -38,19 +38,18 @@ import static net.swordie.ms.client.character.skills.SkillStat.*;
 import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat.*;
 
 public class Cannonneer extends Pirate {
-    public static final int BLAST_BACK = 5011002; //Special Attack
+    public static final int HOMEWARD_CANNON = 1283;
 
+    public static final int BLAST_BACK = 5011002; //Special Attack
 
     public static final int CANNON_BOOSTER = 5301002; //Buff
     public static final int MONKEY_MAGIC = 5301003; //Buff
-
 
     public static final int MONKEY_WAVE = 5311002; //Special Attack
     public static final int BARREL_ROULETTE_FA = 5310004;
     public static final int LUCK_OF_THE_DIE = 5311005; //Buff
     public static final int MONKEY_FURY = 5311010; // set DoT
     public static final int BARREL_ROULETTE = 5311004; //Buff
-
 
     public static final int LUCK_OF_THE_DIE_DD = 5320007;
     public static final int MONKEY_MALITIA_PERSIST = 5320044; //Summon
@@ -66,8 +65,7 @@ public class Cannonneer extends Pirate {
     public static final int MONKEY_MALITIA = 5321004; //Summon
     public static final int ANCHOR_AWEIGH = 5321003; //Summon
 
-
-    // V skills
+    // V Skills
     public static final int SPECIAL_MONKEY_SIDEKICK_3 = 400051053;
     public static final int SPECIAL_MONKEY_SIDEKICK_2 = 400051052;
     public static final int SPECIAL_MONKEY_SIDEKICK = 400051038;
@@ -76,23 +74,33 @@ public class Cannonneer extends Pirate {
     public static final int NUCLEAR_OPTION_EXPLOSION = 400051025;
     public static final int NUCLEAR_OPTION = 400051024;
 
-
     private static final List<Integer> specialMonkeySideKickIds = new ArrayList<Integer>() {{
         add(SPECIAL_MONKEY_SIDEKICK);
         add(SPECIAL_MONKEY_SIDEKICK_2);
         add(SPECIAL_MONKEY_SIDEKICK_3);
     }};
 
+    private static final int[] addedSkills = new int[] {
+            HOMEWARD_CANNON
+    };
 
     private ScheduledFuture cannonTimer;
 
     public Cannonneer(Char chr) {
         super(chr);
         if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
+            for (int id : addedSkills) {
+                if (!chr.hasSkill(id)) {
+                    Skill skill = SkillData.getSkillDeepCopyById(id);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
+                }
+            }
             incrementCannonOfMassDestruction();
         }
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -203,7 +211,6 @@ public class Cannonneer extends Pirate {
             }
         }
     }
-
 
     public void handleSkillRemove(Char chr, int skillID) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -491,27 +498,28 @@ public class Cannonneer extends Pirate {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.CANNON_BLASTER.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.CANNON_MASTER.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.CANNONEER.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.CANNON_BLASTER.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.CANNON_MASTER.getJobId());
+                break;
+        }
     }
 
     @Override
@@ -520,6 +528,5 @@ public class Cannonneer extends Pirate {
             cannonTimer.cancel(false);
         }
         super.cancelTimers();
-
     }
 }

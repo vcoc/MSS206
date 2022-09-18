@@ -20,7 +20,6 @@ public class Legend extends Job {
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
-
         super.handleAttack(c, attackInfo);
     }
 
@@ -30,9 +29,10 @@ public class Legend extends Job {
 
     }
 
+    // Hit related methods ---------------------------------------------------------------------------------------------
+
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 

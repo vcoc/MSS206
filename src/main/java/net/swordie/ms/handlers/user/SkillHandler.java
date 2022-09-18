@@ -321,12 +321,16 @@ public class SkillHandler {
             inPacket.decodeShort();
             inPacket.decodeShort();
         }
-
+        if (skillID == Job.MONOLITH || skillID == Job.FURY_TOTEM) {
+            chr.checkAndRemoveExpiredItems(); // To ensure that items that give a totem skill will be checked on every totem skill usage.
+            if ((skillID == Job.MONOLITH && !chr.hasSkill(Job.MONOLITH)) || (skillID == Job.FURY_TOTEM && !chr.hasSkill(Job.FURY_TOTEM))) {
+                chr.dispose();
+                return;
+            }
+        }
         if (skillID == 400041021) { // Blades of Destiny
             chr.write(UserLocal.skillUseResult((byte) 1, skillID));
         }
-
-
         boolean isByUnreliableMemory = option == 1824;
         if ((isByUnreliableMemory) || (chr.applyMpCon(skillID, slv) && ((chr.checkAndSetSkillCooltime(skillID) || SkillConstants.isBypassCooldownSkill(skillID)) || chr.hasSkillCDBypass()))) {
             if (skillID != DawnWarrior.EQUINOX_SLASH) {

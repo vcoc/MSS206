@@ -572,7 +572,7 @@ public class Field {
         if (getChars().size() > 0) {
             controller = Util.getRandomFromCollection(getChars());
             life.notifyControllerChange(controller);
-            if (life instanceof Mob && CustomConstants.AUTO_AGGRO) {
+            if (life instanceof Mob && CustomConstants.AUTO_MOB_AGGRO) {
                 broadcastPacket(MobPool.forceChase(life.getObjectId(), false));
             }
         }

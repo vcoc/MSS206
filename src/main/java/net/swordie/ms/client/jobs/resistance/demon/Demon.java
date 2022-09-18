@@ -13,6 +13,7 @@ import net.swordie.ms.client.jobs.Job;
 import net.swordie.ms.connection.InPacket;
 import net.swordie.ms.constants.JobConstants;
 import net.swordie.ms.loaders.SkillData;
+import net.swordie.ms.scripts.ScriptType;
 
 import static net.swordie.ms.client.character.skills.SkillStat.*;
 import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat.*;
@@ -31,10 +32,10 @@ public class Demon extends Job {
     public static final int DEFENDER_OF_THE_DEMON = 400001013;
     public static final int DEFENDER_OF_THE_DEMON_MASTEMA_MARK = 400001016;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             SECRET_ASSEMBLY,
             DARK_WINDS,
-            DEMONIC_BLOOD,
+            DEMONIC_BLOOD
     };
 
     private long mastemaMarkTime;
@@ -45,8 +46,10 @@ public class Demon extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -201,11 +204,14 @@ public class Demon extends Job {
         super.handleHit(c, inPacket, hitInfo);
     }
 
-    // Character creation related methods ---------------------------------------------------------------------------------------------
+    // Character creation related methods ------------------------------------------------------------------------------
+
     @Override
-    public void setCharCreationStats(Char chr) {
-        super.setCharCreationStats(chr);
-        chr.getAvatarData().getCharacterStat().setPosMap(927000000);
+    public void handleJobStart() {
+        super.handleJobStart();
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(927000000);
+        chr.getScriptManager().startScript(0, "job_resistance", ScriptType.Npc);
     }
 
     @Override

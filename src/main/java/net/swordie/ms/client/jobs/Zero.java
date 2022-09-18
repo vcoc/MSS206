@@ -8,7 +8,6 @@ import net.swordie.ms.client.character.CharacterStat;
 import net.swordie.ms.client.character.ExtendSP;
 import net.swordie.ms.client.character.SPSet;
 import net.swordie.ms.client.character.info.HitInfo;
-import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.quest.Quest;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -33,7 +32,6 @@ import net.swordie.ms.life.Summon;
 import net.swordie.ms.life.mob.Mob;
 import net.swordie.ms.life.mob.MobStat;
 import net.swordie.ms.life.mob.MobTemporaryStat;
-import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.QuestData;
 import net.swordie.ms.loaders.SkillData;
 import net.swordie.ms.util.Util;
@@ -47,7 +45,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Zero extends Job {
-
     public static final int DUAL_COMBAT = 100001270;
     public static final int DUAL_COMBAT_2 = 100000282;
     public static final int TEMPLE_RECALL = 100001262;
@@ -87,7 +84,7 @@ public class Zero extends Job {
     public static final int IMMUNE_BARRIER = 101120109;
     public static final int ARMOR_SPLIT = 101110103;
 
-    // V
+    // V Skills
     public static final int CHRONO_BREAK = 400011015;
     public static final int TWIN_BLADES_OF_TIME_START = 400011039;
     public static final int SHADOW_FLASH_ALPHA_TILE = 400011098;
@@ -95,7 +92,7 @@ public class Zero extends Job {
     public static final int SHADOW_FLASH_BETA_TILE = 400011100;
     public static final int SHADOW_FLASH_BETA_ATTACK = 400011101;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             DUAL_COMBAT,
             DUAL_COMBAT_2,
             TEMPLE_RECALL,
@@ -106,7 +103,7 @@ public class Zero extends Job {
             DIVINE_FORCE,
             DIVINE_SPEED,
             RHINNES_PROTECTION,
-            DOUBLE_TIME,
+            DOUBLE_TIME
     };
 
     private int doubleTimePrevSkill = 0;
@@ -174,31 +171,16 @@ public class Zero extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (chr.getZeroInfo() == null) {
                 chr.initZeroInfo();
             }
         }
-    }
-
-    @Override
-    public void addMissingSkills(Char chr) {
-        super.addMissingSkills(chr);
-        chr.addSkill(DUAL_COMBAT, 1, 1);
-        chr.addSkill(DUAL_COMBAT_2, 1, 1);
-        chr.addSkill(TEMPLE_RECALL, 1, 1);
-        chr.addSkill(RESOLUTION_TIME, 5, 5);
-        chr.addSkill(BURST_STEP, 1, 1);
-        chr.addSkill(BURST_JUMP, 1, 1);
-        chr.addSkill(BURST_LEAP, 1, 1);
-        chr.addSkill(RHINNES_BLESSING_BOOST, 1 ,1);
-        chr.addSkill(DIVINE_FORCE, 1, 1);
-        chr.addSkill(DIVINE_SPEED, 1, 1);
-        chr.addSkill(RHINNES_PROTECTION, 1, 1);
-        chr.addSkill(DOUBLE_TIME, 1, 1);
     }
 
     @Override
@@ -282,9 +264,6 @@ public class Zero extends Job {
             System.err.println(linkSkillID + " " + linkSkillLevel);
         }
     }
-
-
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -520,7 +499,6 @@ public class Zero extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -658,7 +636,6 @@ public class Zero extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -699,22 +676,15 @@ public class Zero extends Job {
         chr.getField().broadcastPacket(UserRemote.effect(chr.getId(), Effect.skillSpecial(REWIND)));
     }
 
-
-
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
-
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-
         int sp = 3;
         ExtendSP esp = chr.getAvatarData().getCharacterStat().getExtendSP();
         SPSet alphaSpSet = esp.getSpSet().get(0);
@@ -724,15 +694,10 @@ public class Zero extends Job {
         Map<Stat, Object> stats = new HashMap<>();
         stats.put(Stat.sp, chr.getAvatarData().getCharacterStat().getExtendSP());
         chr.write(WvsContext.statChanged(stats));
-
-       addMissingSkills(chr);
     }
-
 
     @Override
     public void setCharCreationStats(Char chr) {
-//        super.setCharCreationStats(chr);
-
         CharacterStat cs = chr.getAvatarData().getCharacterStat();
         cs.setJob(10112);
         cs.setLevel(100);
@@ -749,12 +714,5 @@ public class Zero extends Job {
         stats.put(Stat.ap, (short) chr.getStat(Stat.ap));
         stats.put(Stat.sp, chr.getAvatarData().getCharacterStat().getExtendSP());
         chr.write(WvsContext.statChanged(stats));
-
-
-        // starter consumables
-        Item powerElixir = ItemData.getItemDeepCopy(2000005);
-        powerElixir.setQuantity(200);
-        chr.addItemToInventory(powerElixir);
     }
-
 }

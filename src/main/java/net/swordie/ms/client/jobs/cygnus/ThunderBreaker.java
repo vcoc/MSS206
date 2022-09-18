@@ -25,7 +25,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class ThunderBreaker extends Noblesse {
-
     public static final int ELEMENTAL_HARMONY_STR = 10000246;
 
     public static final int LIGHTNING_ELEMENTAL = 15001022; //Buff (Charge) //Stackable Charge
@@ -47,16 +46,15 @@ public class ThunderBreaker extends Noblesse {
     public static final int GLORY_OF_THE_GUARDIANS_TB = 15121053;
     public static final int PRIMAL_BOLT = 15121054;
 
-    // V Skill
+    // V Skills
     public static final int LIGHTNING_CASCADE = 400051007;
     public static final int LIGHTNING_CASCADE_ATTACK = 400051013;
     public static final int SHARK_TORPEDO = 400051016;
     public static final int TRIDENT_STRIKE = 400051044;
     public static final int TRIDENT_STRIKE_AFTER_HITS = 400051045;
 
-
-    private static final int[] addedSkills = new int[]{
-            ELEMENTAL_HARMONY_STR,
+    private static final int[] addedSkills = new int[] {
+            ELEMENTAL_HARMONY_STR
     };
 
     private static final int[] lightningBuffs = new int[]{
@@ -76,8 +74,10 @@ public class ThunderBreaker extends Noblesse {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -87,7 +87,6 @@ public class ThunderBreaker extends Noblesse {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isThunderBreaker(id);
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -266,7 +265,6 @@ public class ThunderBreaker extends Noblesse {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -395,15 +393,15 @@ public class ThunderBreaker extends Noblesse {
         super.handleLevelUp();
         short level = chr.getLevel();
         switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_4.getJobId());
-//                break;
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.THUNDER_BREAKER_4.getJobId());
+                break;
             case 120:
                 giveCallOfCygnus(CALL_OF_CYGNUS_TB);
                 break;
@@ -411,14 +409,9 @@ public class ThunderBreaker extends Noblesse {
     }
 
     @Override
-    public void handleJobStart() {
-        super.handleJobStart();
-    }
-
-    @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Steel Knuckler
         Item steelKnuckler = ItemData.getItemDeepCopy(1482110);
         chr.addItemToInventory(steelKnuckler);
     }

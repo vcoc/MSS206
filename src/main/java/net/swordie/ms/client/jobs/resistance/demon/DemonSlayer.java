@@ -39,7 +39,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
 public class DemonSlayer extends Demon {
     public static final int CURSE_OF_FURY = 30010111;
 
-
     public static final int GRIM_SCYTHE = 31001000; //Special Attack            //TODO (Demon Force)
     public static final int BATTLE_PACT_DS = 31001001; //Buff
     public static final int DEMON_LASH = 31000004;
@@ -47,11 +46,9 @@ public class DemonSlayer extends Demon {
     public static final int DEMON_LASH_3 = 31001007;
     public static final int DEMON_LASH_4 = 31001008;
 
-
     public static final int SOUL_EATER = 31101000; //Special Attack             //TODO (Demon Force)
     public static final int DARK_THRUST = 31101001; //Special Attack            //TODO (Demon Force)
     public static final int CHAOS_LOCK = 31101002; //Special Attack  -Stun-     //TODO (Demon Force)
-
 
     public static final int JUDGEMENT = 31111000; //Special Attack              //TODO (Demon Force)
     public static final int VORTEX_OF_DOOM = 31111001; //Special Attack  -Stun- //TODO (Demon Force)
@@ -60,7 +57,6 @@ public class DemonSlayer extends Demon {
     public static final int POSSESSED_AEGIS = 31110008;
     public static final int MAX_FURY = 31110009;
     public static final int VENGEANCE = 31101003; //Buff (Stun Debuff)
-
 
     public static final int BLUE_BLOOD = 31121054;
     public static final int LEECH_AURA = 31121002; //Buff                       //TODO (Demon Force)
@@ -74,16 +70,14 @@ public class DemonSlayer extends Demon {
     public static final int DEMONIC_FORTITUDE_DS = 31121053;
     public static final int CERBERUS_CHOMP = 31121052;
 
-
-    // V skills
+    // V Skills
     public static final int ORTHRUS_2 = 400011078;
     public static final int ORTHRUS = 400011077;
     public static final int SPIRIT_OF_RAGE = 400011057;
     public static final int DEMON_AWAKENING = 400011006;
 
-
-    private static final int[] addedSkills = new int[]{
-            CURSE_OF_FURY,
+    private static final int[] addedSkills = new int[] {
+            CURSE_OF_FURY
     };
 
     private long leechAuraCD = Long.MIN_VALUE;
@@ -95,8 +89,10 @@ public class DemonSlayer extends Demon {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (maxFuryTimer != null && !maxFuryTimer.isDone()) {
@@ -106,12 +102,10 @@ public class DemonSlayer extends Demon {
         }
     }
 
-
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isDemonSlayer(id);
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -489,7 +483,6 @@ public class DemonSlayer extends Demon {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -542,21 +535,29 @@ public class DemonSlayer extends Demon {
     public void handleLevelUp() {
         super.handleLevelUp();
         switch (chr.getLevel()) {
-            case 30 -> {
+            case 30: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_SLAYER_2.getJobId());
+                // Sub-Weapon: DS Will
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099000);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099002)); // DS Will
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099002));
+                break;
             }
-            case 60 -> {
+            case 60: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_SLAYER_3.getJobId());
+                // Sub-Weapon: DS Authority
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099002);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099003)); // DS Authority
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099003));
+                break;
             }
-            case 100 -> {
+            case 100: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_SLAYER_4.getJobId());
+                // Sub-Weapon: DS Extremes
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099003);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099004)); // DS Extremes
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099004));
+                break;
             }
         }
     }
-
 
     public void regenDFInterval() {
         if (chr != null && chr.getField() != null && chr.hasSkill(MAX_FURY)) {
@@ -565,11 +566,24 @@ public class DemonSlayer extends Demon {
         maxFuryTimer = EventManager.addEvent(this::regenDFInterval, 4, TimeUnit.SECONDS);
     }
 
+    // Character creation related methods ------------------------------------------------------------------------------
+
+    @Override
+    public void handleJobEnd() {
+        super.handleJobEnd();
+        // Weapon: Doom Scepter
+        Item doomScepter = ItemData.getItemDeepCopy(1322122);
+        chr.addItemToInventory(doomScepter);
+        // Sub-Weapon: Force Shield of Patience
+        Item forceShield = ItemData.getItemDeepCopy(1099000);
+        chr.forceUpdateSecondary(null, forceShield);
+        // Medal: Rage Acolyte
+        Item rageAcolyte = ItemData.getItemDeepCopy(1142553);
+        chr.addItemToInventory(rageAcolyte);
+    }
 
     @Override
     public void cancelTimers() {
-
         super.cancelTimers();
     }
-
 }

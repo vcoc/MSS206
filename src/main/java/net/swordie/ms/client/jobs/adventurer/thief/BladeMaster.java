@@ -30,24 +30,19 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
 public class BladeMaster extends Thief {
     public static final int RETURN = 1282;
 
-
     public static final int SELF_HASTE = 4301003; //Buff
 
-
     public static final int KATARA_BOOSTER = 4311009; //Buff
-
 
     public static final int VENOM_DB = 4320005;
     public static final int FLYING_ASSAULTER = 4321006; //Special Attack (Stun Debuff)
     public static final int FLASHBANG = 4321002; //Special Attack
-
 
     public static final int CHAINS_OF_HELL = 4331006; //Special Attack (Stun Debuff)
     public static final int MIRROR_IMAGE = 4331002; //Buff
     public static final int SHADOW_MELD = 4330009;
     public static final int LIFE_DRAIN = 4330007;
     public static final int ADVANCED_DARK_SIGHT_DB = 4330001;
-
 
     public static final int FINAL_CUT = 4341002; //Special Attack
     public static final int SUDDEN_RAID_DB = 4341011; //Special Attack
@@ -59,22 +54,27 @@ public class BladeMaster extends Thief {
     public static final int BLADE_CLONE = 4341054;
     public static final int MIRRORED_TARGET = 4341006;
 
-
-    // V skills
+    // V Skills
     public static final int BLADE_TEMPEST = 400041006;
 
+    private static final int[] addedSkills = new int[] {
+            RETURN
+    };
 
     public BladeMaster(Char chr) {
         super(chr);
         if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
-            if (!chr.hasSkill(RETURN)) {
-                Skill skill = SkillData.getSkillDeepCopyById(RETURN);
-                skill.setCurrentLevel(skill.getMasterLevel());
-                chr.addSkill(skill);
+            for (int id : addedSkills) {
+                if (!chr.hasSkill(id)) {
+                    Skill skill = SkillData.getSkillDeepCopyById(id);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
+                }
             }
         }
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -301,12 +301,10 @@ public class BladeMaster extends Thief {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -333,10 +331,8 @@ public class BladeMaster extends Thief {
         }
     }
 
-
     @Override
     public void cancelTimers() {
-
         super.cancelTimers();
     }
 }

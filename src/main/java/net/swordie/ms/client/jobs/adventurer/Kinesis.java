@@ -3,7 +3,6 @@ package net.swordie.ms.client.jobs.adventurer;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
-import net.swordie.ms.client.character.items.BodyPart;
 import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
@@ -73,10 +72,9 @@ public class Kinesis extends Job {
     public static final int MENTAL_SHOCK = 142121031;
     public static final int MENTAL_OVERDRIVE = 142121032;
 
-    // V skills
+    // V Skills
     public static final int PSYCHIC_TORNADO = 400021008;
     public static final int MIND_OVER_MATTER = 400021048;
-
 
     private static final int MAX_PP = 30;
 
@@ -133,7 +131,6 @@ public class Kinesis extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     public void applyMindAreaDebuff(int skillId, Position position, List<Mob> mobList) {
         Skill skill = chr.getSkill(skillId);
         if (skill == null) {
@@ -166,7 +163,6 @@ public class Kinesis extends Job {
             }
         });
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -362,7 +358,6 @@ public class Kinesis extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -468,7 +463,6 @@ public class Kinesis extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -487,52 +481,44 @@ public class Kinesis extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-
-        Item item = ItemData.getItemDeepCopy(1353200); // Pawn Chess Piece
-        item.setBagIndex(BodyPart.Shield.getVal());
-        chr.getEquippedInventory().addItem(item);
-
-        /*
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-        cs.setLevel(10);
-        cs.setMaxHp(400);
-        cs.setHp(400);
-        cs.setInt(58);
-        cs.setAp(5);
-         */
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(331001100);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.KINESIS_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.KINESIS_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.KINESIS_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.KINESIS_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.KINESIS_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.KINESIS_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
+        handleJobAdvance(JobConstants.JobEnum.KINESIS_1.getJobId());
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353200)); // Pawn Chess Piece
-        handleJobAdvance(JobConstants.JobEnum.KINESIS_1.getJobId());
+        // SP
         chr.addSpToJobByCurrentJob(5);
-
+        // Weapon: Prototype Psy-Limiter
+        Item prototypePsy = ItemData.getItemDeepCopy(1262000);
+        chr.addItemToInventory(prototypePsy);
+        // Sub-Weapon: Pawn Chess Piece
+        Item pawnChessPiece = ItemData.getItemDeepCopy(1353200);
+        chr.forceUpdateSecondary(null, pawnChessPiece);
     }
 }

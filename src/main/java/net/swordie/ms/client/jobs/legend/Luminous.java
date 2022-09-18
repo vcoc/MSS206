@@ -51,11 +51,11 @@ public class Luminous extends Job {
     public static final int FLASH_BLINK = 20041222;
     public static final int CHANGE_LIGHT_DARK = 20041239;
 
-    // dual skills - level each other up
+    // Dual skills - level each other up
     public static final int FLASH_SHOWER = 27001100;
     public static final int ABYSSAL_DROP = 27001201;
 
-    // affinities
+    // Affinities
     public static final int LIGHT_AFFINITY = 27000106;
     public static final int DARK_AFFINITY = 27000207;
 
@@ -80,15 +80,15 @@ public class Luminous extends Job {
     public static final int HEROIC_MEMORIES_LUMI = 27121053;
     public static final int ARMAGEDDON = 27121052; //Stun debuff
 
-    // V
+    // V Skills
     public static final int DOOR_OF_LIGHT = 400021005;
     public static final int AETHER_CONDUIT_L = 400021041;
     public static final int AETHER_CONDUIT_D = 400021049;
     public static final int AETHER_CONDUIT_EQ = 400021050;
     public static final int BAPTISM_OF_LIGHT_AND_DARKNESS = 400021071;
 
-    private static final int[] addedSkills = new int[]{
-            EQUILIBRIUM,
+    private static final int[] addedSkills = new int[] {
+            EQUILIBRIUM
     };
 
     private static final int[] aetherForms = new int[]{
@@ -103,8 +103,10 @@ public class Luminous extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
 
@@ -118,7 +120,6 @@ public class Luminous extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isLuminous(id);
     }
-
 
     private void giveLunarTideBuff() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -219,7 +220,6 @@ public class Luminous extends Job {
         }
         return eqTime;
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -370,7 +370,6 @@ public class Luminous extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -492,7 +491,6 @@ public class Luminous extends Job {
         lm.changeGauge(50);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -558,54 +556,42 @@ public class Luminous extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-
-//        chr.getAvatarData().getCharacterStat().setPosMap(927020080);
-
-        Item orb = ItemData.getItemDeepCopy(1352400);
-        chr.addItemToInventory(orb);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(927020080);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_2.getJobId());
-//                chr.getQuestManager().completeQuest(25510);
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_3.getJobId());
-//                chr.getQuestManager().completeQuest(25511);
-//                chr.addSpToJobByCurrentJob(20);
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_4.getJobId());
-//                chr.getQuestManager().completeQuest(25512);
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_2.getJobId());
+                chr.getQuestManager().completeQuest(25510);
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_3.getJobId());
+                chr.getQuestManager().completeQuest(25511);
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.LUMINOUS_4.getJobId());
+                chr.getQuestManager().completeQuest(25512);
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.LUMINOUS_1.getJobId());
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-
-
-        // Stats
+        // SP
         chr.addSpToJobByCurrentJob(5);
-
         // Skills
         chr.addSkill(FLASH_SHOWER, 3, 20);
         chr.addSkill(ABYSSAL_DROP, 3, 20);
@@ -615,9 +601,11 @@ public class Luminous extends Job {
         chr.addSkill(ECLIPSE, 1, 1);
         chr.addSkill(INNER_LIGHT, 1, 1);
         chr.addSkill(FLASH_BLINK, 1, 1);
-
-        // Items
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352400)); // Light Orb
+        // Weapon: Plain
+        Item plain = ItemData.getItemDeepCopy(1212001);
+        chr.addItemToInventory(plain);
+        // Sub-Weapon: Light Orb
+        Item lightOrb = ItemData.getItemDeepCopy(1352400);
+        chr.forceUpdateSecondary(null, lightOrb);
     }
 }

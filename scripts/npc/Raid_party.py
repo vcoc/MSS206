@@ -1,5 +1,5 @@
 # Vote Points & Donation Points NPC
-# Custom server script
+# Custom Server Script
 
 import math
 

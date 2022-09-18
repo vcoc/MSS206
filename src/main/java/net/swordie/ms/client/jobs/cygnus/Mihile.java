@@ -71,10 +71,9 @@ public class Mihile extends Job {
 
     public static final int KNIGHTS_WATCH = 50001214; // Link Skill
 
-    //Final Attack
+    // Final Attack
     public static final int FINAL_ATTACK_MIHILE = 51100002;
     public static final int ADVANCED_FINAL_ATTACK_MIHILE = 51120002;
-
 
     public static final int CHARGING_LIGHT = 51121052;
     public static final int QUEEN_OF_TOMORROW = 51121053;
@@ -90,7 +89,7 @@ public class Mihile extends Job {
     public static final int SWORD_OF_LIGHT_PASSIVE = 400011067;
     public static final int RADIANT_SOUL = 400011083;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
 
     };
 
@@ -105,8 +104,10 @@ public class Mihile extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (selfRecoveryTimer != null && !selfRecoveryTimer.isDone()) {
@@ -120,7 +121,6 @@ public class Mihile extends Job {
     public boolean isHandlerOfJob(short id) {
         return id == JobConstants.JobEnum.NAMELESS_WARDEN.getJobId() || JobConstants.isMihile(id);
     }
-
 
     public void giveShieldOfLightBuff() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -150,7 +150,6 @@ public class Mihile extends Job {
             pTSM.putCharacterStatValue(RhoAias, o);
             pTSM.sendSetStatPacket();
         }
-
     }
 
     public void hitShieldOfLight() {
@@ -469,7 +468,6 @@ public class Mihile extends Job {
         }
     }
 
-
     // Attack related methods ------------------------------------------------------------------------------------------
 
     @Override
@@ -641,7 +639,6 @@ public class Mihile extends Job {
         }
         return skill;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -835,7 +832,6 @@ public class Mihile extends Job {
         selfRecoveryTimer = EventManager.addEvent(this::selfRecovery, 4, TimeUnit.SECONDS);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -847,10 +843,13 @@ public class Mihile extends Job {
         super.handleHit(c, inPacket, hitInfo);
     }
 
-    // Character creation related methods ---------------------------------------------------------------------------------------------
+    // Character creation related methods ------------------------------------------------------------------------------
+
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(913070000);
     }
 
     @Override
@@ -870,44 +869,40 @@ public class Mihile extends Job {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.MIHILE_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.MIHILE_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.MIHILE_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.MIHILE_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.MIHILE_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.MIHILE_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.MIHILE_1.getJobId());
+        handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        // Newborn Light (Medal)
-        Item medal = ItemData.getItemDeepCopy(1142399);
-        chr.addItemToInventory(medal);
-
-        // Apprentice Knight of Light Robe
-        Item overall = ItemData.getItemDeepCopy(1052444);
-        chr.addItemToInventory(overall);
-
-        // Beginner Warrior's Sword
-        Item sword = ItemData.getItemDeepCopy(1302077);
-        chr.addItemToInventory(sword);
-
-        // Soul Shield of Protection
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1098000)); // SS Protection
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Beginner Warrior's Sword
+        Item beginnerSword = ItemData.getItemDeepCopy(1302077);
+        chr.addItemToInventory(beginnerSword);
+        // Sub-Weapon: Soul Shield of Protection
+        Item ssProtection = ItemData.getItemDeepCopy(1098000);
+        chr.forceUpdateSecondary(null, ssProtection);
+        // Medal: Newborn Light
+        Item newbornLight = ItemData.getItemDeepCopy(1142399);
+        chr.addItemToInventory(newbornLight);
     }
 }

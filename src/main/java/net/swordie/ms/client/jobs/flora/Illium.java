@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.flora;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -39,7 +40,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 6/25/2018.
  */
 public class Illium extends Job {
-
     public static final int SHELTER_RETURN = 150001021; // requires Complete QuestId  34900
     public static final int MAGIC_CONVERSION = 150000079;
 
@@ -85,12 +85,11 @@ public class Illium extends Job {
     public static final int DIVINE_WRATH = 152121042;
     public static final int CRYSTALLINE_BULWARK = 152121043;
 
-    // V skills
+    // V Skills
     public static final int CRYSTAL_IGNITION = 400021061;
     public static final int REFLECTION_SPECTRAL_BLAST = 400021062;
     public static final int TEMPLAR_KNIGHT = 400021063;
     public static final int CRYSTALLINE_SPIRIT = 400021068;
-
 
     public static final int CRYSTAL_SKILL_ID_VORTEX_OF_LIGHT = 1;
     public static final int CRYSTAL_SKILL_ID_RESONANCE = 2;
@@ -118,9 +117,9 @@ public class Illium extends Job {
         put(CRYSTAL_SKILL_ID_VORTEX_WINGS, true);
     }};
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             SHELTER_RETURN,
-            MAGIC_CONVERSION,
+            MAGIC_CONVERSION
     };
 
     public Illium(Char chr) {
@@ -129,8 +128,10 @@ public class Illium extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -140,7 +141,6 @@ public class Illium extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isIllium(id);
     }
-
 
     public Summon getCrystal() {
         return chr.getField().getSummons().stream().filter(s -> s.getSkillID() == DEPLOY_CRYSTAL && s.getChr() == chr).findAny().orElse(null);
@@ -296,7 +296,6 @@ public class Illium extends Job {
         }
         return state;
     }
-
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
@@ -591,44 +590,44 @@ public class Illium extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        //cs.setPosMap(100000000); // default - 940202013
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(940202013);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        int level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.ILLIUM_2.getJobId());
-//                chr.addSpToJobByCurrentJob(7);
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.ILLIUM_3.getJobId());
-//                chr.addSpToJobByCurrentJob(7);
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.ILLIUM_4.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//        }
+        int level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.ILLIUM_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.ILLIUM_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.ILLIUM_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.ILLIUM_1.getJobId());
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353500)); // Basic Wings (2ndary)
-        chr.addSpToJobByCurrentJob(8);
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Luna Lucent Gauntlet
+        Item lunaLucent = ItemData.getItemDeepCopy(1282000);
+        chr.addItemToInventory(lunaLucent);
+        // Sub-Weapon: Basic Lucent Wings
+        Item basicLucent = ItemData.getItemDeepCopy(1353500);
+        chr.forceUpdateSecondary(null, basicLucent);
     }
 }

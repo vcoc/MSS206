@@ -20,26 +20,27 @@ import net.swordie.ms.scripts.ScriptType;
  */
 public class Citizen extends Job {
     public static final int CRYSTAL_THROW = 30001000;
-    public static final int INFLITRATE = 30001001;
+    public static final int INFILTRATE = 30001001;
     public static final int POTION_MASTERY = 30000002;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             CRYSTAL_THROW,
-            INFLITRATE,
+            INFILTRATE,
             POTION_MASTERY
     };
 
     public Citizen(Char chr) {
         super(chr);
-
         if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setRootId(3000);
-                    skill.setMasterLevel(3);
-                    skill.setMaxLevel(3);
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setRootId(3000);
+                        skill.setMasterLevel(3);
+                        skill.setMaxLevel(3);
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -47,7 +48,6 @@ public class Citizen extends Job {
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
-
         super.handleAttack(c, attackInfo);
     }
 
@@ -60,7 +60,6 @@ public class Citizen extends Job {
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
         super.handleHit(c, inPacket, hitInfo);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -75,6 +74,8 @@ public class Citizen extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(931000000);
     }
 
     @Override
@@ -86,6 +87,7 @@ public class Citizen extends Job {
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
+        // Chair: Mechanical Chair
         Item mechanicalChair = ItemData.getItemDeepCopy(3010538);
         chr.addItemToInventory(mechanicalChair);
     }

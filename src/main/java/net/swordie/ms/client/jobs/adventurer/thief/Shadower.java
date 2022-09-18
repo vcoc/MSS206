@@ -38,12 +38,10 @@ import static net.swordie.ms.client.character.skills.SkillStat.*;
 import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat.*;
 
 public class Shadower extends Thief {
-
     public static final int CRITICAL_GROWTH = 4200013; //Passive Crit increasing buff
     public static final int MESOGUARD = 4201011; //Buff
     public static final int STEAL = 4201004; //Special Attack (Steal Debuff)?
     public static final int DAGGER_BOOSTER = 4201002; //Buff
-
 
     public static final int VENOM_SHAD = 4210010; //Passive DoT
     public static final int MESO_EXPLOSION_ATOM = 4210014; // ?
@@ -53,7 +51,6 @@ public class Shadower extends Thief {
     public static final int DARK_FLARE_SHAD = 4211007; //Summon
     public static final int MESO_EXPLOSION = 4211006; //CreateForceAtom Attack
     public static final int PICK_POCKET = 4211003; //Buff
-
 
     public static final int BOOMERANG_STAB = 4221007; //Special Attack (Stun Debuff)
     public static final int MAPLE_WARRIOR_SHAD = 4221000; //Buff
@@ -68,8 +65,7 @@ public class Shadower extends Thief {
     public static final int FLIP_THE_COIN = 4221054;
     public static final int EPIC_ADVENTURE_SHAD = 4221053;
 
-
-    // V skills
+    // V Skills
     public static final int SHADOW_ASSAULT_4 = 400041005;
     public static final int SHADOW_ASSAULT_3 = 400041004;
     public static final int SHADOW_ASSAULT_2 = 400041003;
@@ -215,7 +211,6 @@ public class Shadower extends Thief {
     private int getMesoDropsByPickPocket() {
         return (int) chr.getField().getDrops().stream().filter(Drop::isByPickPocket).count();
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -391,8 +386,6 @@ public class Shadower extends Thief {
         }
     }
 
-
-
     private void createMesoExplosionForceAtom(List<Drop> droplist) {
         if (!chr.hasSkill(MESO_EXPLOSION)) {
             return;
@@ -438,7 +431,6 @@ public class Shadower extends Thief {
             }
         }
     }
-
 
     @Override
     public int getFinalAttackSkill() {
@@ -543,27 +535,25 @@ public class Shadower extends Thief {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.CHIEF_BANDIT.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.SHADOWER.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.CHIEF_BANDIT.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.SHADOWER.getJobId());
+                break;
+        }
     }
 
     @Override

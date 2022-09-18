@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.resistance;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -86,15 +87,14 @@ public class Xenon extends Job {
     private int hybridDefenseCount;
     private ScheduledFuture supplyTimer;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             SUPPLY_SURPLUS,
             MULTILATERAL_I,
             MODAL_SHIFT,
             LIBERTY_BOOSTERS,
             MIMIC_PROTOCOL,
-            PROMESSA_ESCAPE,
+            PROMESSA_ESCAPE
     };
-
 
     public Xenon(Char chr) {
         super(chr);
@@ -102,8 +102,10 @@ public class Xenon extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             supplyProp = SkillData.getSkillInfoById(SUPPLY_SURPLUS).getValue(prop, 1);
@@ -119,7 +121,6 @@ public class Xenon extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isXenon(id);
     }
-
 
     public void useOmegaBlasterAttack() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -201,7 +202,6 @@ public class Xenon extends Job {
 
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -369,7 +369,6 @@ public class Xenon extends Job {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -559,7 +558,6 @@ public class Xenon extends Job {
         chr.healMP(-si.getValue(y, slv));
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -668,54 +666,45 @@ public class Xenon extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        /*
-        CharacterStat cs = chr.getAvatarData().getCharacterStat();
-        cs.setPosMap(310010000); // edelstein hideout
-        cs.setLevel(10);
-        cs.setJob(3600);
-        cs.setStr(4);
-        cs.setInt(4);
-        cs.setDex(4);
-        cs.setLuk(4);
-        cs.setAp(4 + chr.getLevel() * 5);
-        cs.setMaxHp(cs.getMaxMp() + 50);
-        byte jobLevel = (byte) JobConstants.getJobLevel(chr.getJob());
-        int currentSP = cs.getExtendSP().getSpByJobLevel(jobLevel);
-        cs.getExtendSP().setSpToJobLevel(jobLevel, currentSP + 5);
-         */
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(310010000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.XENON_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.XENON_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.XENON_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.XENON_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.XENON_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.XENON_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
         handleJobAdvance(JobConstants.JobEnum.XENON_1.getJobId());
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353001)); // Dual Core Controller (Secondary)
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Horned Blade
+        Item hornedBlade = ItemData.getItemDeepCopy(1242001);
+        chr.addItemToInventory(hornedBlade);
+        // Sub-Weapon: Dual Core Controller
+        Item dualCore = ItemData.getItemDeepCopy(1353001);
+        chr.forceUpdateSecondary(null, dualCore);
 
     }
 }
-

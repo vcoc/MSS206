@@ -40,8 +40,7 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Mercedes extends Job {
-    //Link Skill = return skill
-
+    // Link Skill = return skill
     public static final int ELVEN_GRACE = 20020112;
     public static final int UPDRAFT = 20020111;
     public static final int ELVEN_HEALING = 20020109;
@@ -68,7 +67,7 @@ public class Mercedes extends Job {
     public static final int ELVISH_BLESSING = 23121054;
     public static final int WRATH_OF_ENLIL = 23121052;
 
-    //Final Attack
+    // Final Attack
     public static final int FINAL_ATTACK_DBG = 23100006;
     public static final int ADVANCED_FINAL_ATTACK = 23120012;
 
@@ -76,10 +75,10 @@ public class Mercedes extends Job {
     public static final int SYLVIDIAS_FLIGHT = 400031017;
     public static final int BREATH_OF_IRKALLA = 400031011;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             ELVEN_GRACE,
             UPDRAFT,
-            ELVEN_HEALING,
+            ELVEN_HEALING
     };
 
     private static final int[] summonAttacks = new int[]{
@@ -99,8 +98,10 @@ public class Mercedes extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             if (elvenHealingTimer != null && !elvenHealingTimer.isDone()) {
@@ -114,7 +115,6 @@ public class Mercedes extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isMercedes(id);
     }
-
 
     private void summonEleKnights() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -146,7 +146,6 @@ public class Mercedes extends Job {
         SkillInfo si = SkillData.getSkillInfoById(ELEMENTAL_KNIGHTS_BLUE);
         int slv = chr.getSkill(ELEMENTAL_KNIGHTS_BLUE).getCurrentLevel();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -356,7 +355,6 @@ public class Mercedes extends Job {
         return skill;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -493,12 +491,10 @@ public class Mercedes extends Job {
         elvenHealingTimer = EventManager.addEvent(this::healByElvenHealing, 4, TimeUnit.SECONDS);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -514,48 +510,47 @@ public class Mercedes extends Job {
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
         chr.getAvatarData().getAvatarLook().setDrawElfEar(true);
-//        chr.getAvatarData().getCharacterStat().setPosMap(910150000);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(910150000);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.MERCEDES_2.getJobId());
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.MERCEDES_3.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.MERCEDES_4.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.MERCEDES_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.MERCEDES_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.MERCEDES_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.MERCEDES_1.getJobId());
-
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-//        chr.addSkill(20021181, 1, 1);
-        chr.removeSkill(20021166); // Beginner Stunning Strike
-        chr.removeSkill(20021181); // Beginner Flash Jump
-
-        // Medal - A Hero, No More
-        Item medal = ItemData.getItemDeepCopy(1142336);
-        chr.addItemToInventory(medal);
-
-        // Secondary - Magic Arrows
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352000)); // Magic Arrows
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Trusty & Faithful
+        Item trusty = ItemData.getItemDeepCopy(1522000);
+        chr.addItemToInventory(trusty);
+        // Sub-Weapon: Magic Arrows
+        Item magicArrows = ItemData.getItemDeepCopy(1352000);
+        chr.forceUpdateSecondary(null, magicArrows);
+        // Medal: A Hero, No More
+        Item aHero = ItemData.getItemDeepCopy(1142336);
+        chr.addItemToInventory(aHero);
     }
 }

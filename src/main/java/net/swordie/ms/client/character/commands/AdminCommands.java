@@ -643,6 +643,13 @@ public class AdminCommands {
         }
     }
 
+    @Command(names = { "jobinfo" }, requiredType = Admin)
+    public static class JobInfo extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            chr.chatMessage(adminChatType, adminMsgPrefix + "JobID: " + chr.getJob() + " SubJob: " + chr.getSubJob());
+        }
+    }
+
     @Command(names = {"stats"}, requiredType = Tester)
     public static class Stats extends AdminCommand {
         public static void execute(Char chr, String[] args) {
@@ -3331,6 +3338,17 @@ public class AdminCommands {
             Char other = chr.getWorld().getCharByName(name);
             other.getAvatarData().getCharacterStat().setPierce(amount);
             chr.chatMessage("You have set " + amount + "% pierce to " + other.getName());
+        }
+    }
+
+    @Command(names = {"arcanesymbols"}, requiredType = Admin)
+    public static class ArcaneSymbols extends AdminCommand {
+        public static void execute(Char chr, String[] args) {
+            int[] arcaneSymbols = { 1712001, 1712002, 1712003, 1712004, 1712005, 1712006 };
+            for (int id : arcaneSymbols) {
+                Item item = ItemData.getItemDeepCopy(id);
+                chr.addItemToInventory(item);
+            }
         }
     }
 }

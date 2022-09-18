@@ -3,6 +3,7 @@ package net.swordie.ms.client.jobs.legend;
 import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
+import net.swordie.ms.client.character.items.Item;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -95,7 +96,7 @@ public class Phantom extends Job {
     public static final int HEROIC_MEMORIES_PH = 24121053;
     public static final int CARTE_ROSE_FINALE = 24121052;
 
-    // V skill
+    // V Skills
     public static final int LUCK_OF_THE_DRAW = 400041009;
     public static final int LUCK_OF_THE_DRAW_ATOM = 400041010;
     public static final int LUCK_OF_THE_DRAW_RED_CROSS = 400041011;
@@ -114,13 +115,14 @@ public class Phantom extends Job {
 
     public static final int CARTE_ATOM = 80001890;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             JUDGMENT_DRAW_2,
             SKILL_SWIPE,
             LOADOUT,
             TO_THE_SKIES,
             DEXTEROUS_TRAINING,
             JUDGMENT_DRAW_AUTO_MANUAL,
+            SHROUD_WALK
     };
 
     private boolean isCaneSkill(int skillId) {
@@ -137,8 +139,10 @@ public class Phantom extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
             stealJobHandlers.add(new Warrior(chr));
@@ -210,7 +214,6 @@ public class Phantom extends Job {
         tsm.putCharacterStatValue(Judgement, o);
         tsm.sendSetStatPacket();
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -496,7 +499,6 @@ public class Phantom extends Job {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -850,7 +852,6 @@ public class Phantom extends Job {
         }
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -897,30 +898,46 @@ public class Phantom extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-
         chr.setStolenSkills(new HashSet<>());
         chr.setChosenSkills(new HashSet<>());
-//        chr.getAvatarData().getCharacterStat().setPosMap(915000000);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(915000000);
+    }
+
+    @Override
+    public void handleLevelUp() {
+        super.handleLevelUp();
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.PHANTOM_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.PHANTOM_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.PHANTOM_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
-
+        handleJobAdvance(JobConstants.JobEnum.PHANTOM_1.getJobId());
         handleJobEnd();
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
-        handleJobAdvance(JobConstants.JobEnum.PHANTOM_1.getJobId());
-
-        // Skills
-        chr.addSkill(SHROUD_WALK, 1, 1);
-
-        // Items
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1352100)); // Carte Magique
+        // SP
+        chr.addSpToJobByCurrentJob(5);
+        // Weapon: Novice Cane
+        Item noviceCane = ItemData.getItemDeepCopy(1362001);
+        chr.addItemToInventory(noviceCane);
+        // Sub-Weapon: Carte Magique
+        Item carteMagique = ItemData.getItemDeepCopy(1352100);
+        chr.forceUpdateSecondary(null, carteMagique);
     }
 }

@@ -869,10 +869,9 @@ public class ScriptManagerImpl implements ScriptManager {
     }
 
     @Override
-    public void jobAdvance(short jobID) {
-        setJob(jobID);
-        addAP(5); //Standard added AP upon Job Advancing
-        addSP(5); //Standard added SP upon Job Advancing
+    public void jobAdvance(short jobId) {
+        chr.getJobHandler().handleJobAdvance(jobId);
+        addSP(5); // Standard added SP upon Job Advancing
     }
 
     @Override
@@ -3427,7 +3426,7 @@ public class ScriptManagerImpl implements ScriptManager {
     }
 
     public void warpToHub() {
-        chr.warp(GameConstants.PLAYER_HUB_MAP);
+        chr.warp(CustomConstants.PLAYER_HUB_MAP, CustomConstants.PLAYER_HUB_PORTAL);
     }
 
     public void doJobStart() {
@@ -3508,6 +3507,14 @@ public class ScriptManagerImpl implements ScriptManager {
 
     public void printStyle(Cosmetic cosmetic) {
         System.out.printf("id: %d, name: %s", cosmetic.getId(), cosmetic.getName());
+    }
+
+    public void giveStartItems() {
+        for (int id : CustomConstants.PLAYER_START_ITEMS) {
+            Item startItem = ItemData.getItemDeepCopy(id);
+            chr.addItemToInventory(startItem);
+        }
+        chr.addMoney(CustomConstants.PLAYER_START_MONEY);
     }
 
     public void spawnLotus(byte phase, byte difficulty) {

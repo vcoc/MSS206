@@ -41,7 +41,6 @@ public class DarkKnight extends Warrior {
     public static final int WEAPON_BOOSTER_SPEARMAN = 1301004;
     public static final int FINAL_ATTACK_SPEARMAN = 1300002;
 
-
     public static final int EVIL_EYE_OF_DOMINATION = 1310013;
     public static final int CROSS_SURGE = 1311015;
     public static final int EVIL_EYE_SHOCK = 1311014;
@@ -49,7 +48,6 @@ public class DarkKnight extends Warrior {
     public static final int EVIL_EYE_AURA_REINFORCE = 1320044;
     public static final int HEX_OF_THE_EVIL_EYE = 1310016;
     public static final int LORD_OF_DARKNESS = 1310009;
-
 
     public static final int DARK_THIRST = 1321054; //Lv150
     public static final int SACRIFICE = 1321015; //Resets summon
@@ -64,10 +62,8 @@ public class DarkKnight extends Warrior {
     public static final int GUNGNIR_DESCENT = 1321013;
     public static final int EPIC_ADVENTURE_DRK = 1321053; //Lv200
 
-
-    // V skills
+    // V Skills
     public static final int RADIANT_EVIL = 400011054;
-
 
     private Summon evilEye;
     private long finalPactTimer;
@@ -75,7 +71,6 @@ public class DarkKnight extends Warrior {
     public DarkKnight(Char chr) {
         super(chr);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -299,7 +294,6 @@ public class DarkKnight extends Warrior {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -409,7 +403,6 @@ public class DarkKnight extends Warrior {
             tsm.removeStat(Beholder, true);
         }
     }
-
 
     // Hit related methods ---------------------------------------------------------------------------------------------
 
@@ -522,22 +515,19 @@ public class DarkKnight extends Warrior {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.DRAGON_KNIGHT.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.DARK_KNIGHT.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.DRAGON_KNIGHT.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.DARK_KNIGHT.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
-
         super.cancelTimers();
     }
 }
-
-

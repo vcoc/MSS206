@@ -2138,6 +2138,7 @@ public class Char {
         if (isPassive && isChanged) {
             addToBaseStatCache(skill);
         }
+        write(WvsContext.changeSkillRecordResult(skill));
     }
 
     /**
@@ -5541,8 +5542,8 @@ public class Char {
     }
 
     public void checkAndRemoveExpiredItems() {
-        Inventory[] inventories = new Inventory[]{getEquippedInventory(), getEquipInventory(), getConsumeInventory(),
-                getEtcInventory(), getInstallInventory(), getCashInventory()};
+        Inventory[] inventories = new Inventory[] { getEquippedInventory(), getEquipInventory(), getConsumeInventory(),
+                getEtcInventory(), getInstallInventory(), getCashInventory() };
         Set<Item> expiredItems = new HashSet<>();
         for (Inventory inv : inventories) {
             expiredItems.addAll(inv.getItems().stream().filter(item -> item.getDateExpire().isExpired())
@@ -5553,20 +5554,16 @@ public class Char {
         for (Item item : expiredItems) {
             consumeItem(item);
             if (item.getItemId() == ItemConstants.GAGAGUCCI) {
-                int qid = QuestConstants.PVAC_DATA;
-                if (getRecordFromQuestEx(qid, "vac") == 1) {
-                    setQuestRecordEx(qid, "vac", 0);
-                    chatMessage("Pvac has been disabled since your item has expired.");
+                int questID = QuestConstants.PVAC_DATA;
+                if (getRecordFromQuestEx(questID, "vac") == 1) {
+                    setQuestRecordEx(questID, "vac", 0);
                 }
             }
-            if (item.getItemId() == ItemConstants.FRENZY_TOTEM || item.getItemId() == ItemConstants.FURY_TOTEM) {
-                if (hasSkill(Job.MONOLITH)) {
-                    removeSkillAndSendPacket(Job.MONOLITH);
-                    chatMessage("Monolith skill has been removed since your item has expired.");
-                } else if (hasSkill(Job.FURY_TOTEM)) {
-                    removeSkillAndSendPacket(Job.FURY_TOTEM);
-                    chatMessage("Fury Totem skill has been removed since your item has expired.");
-                }
+            if (item.getItemId() == ItemConstants.FRENZY_TOTEM && hasSkill(Job.MONOLITH)) {
+                removeSkillAndSendPacket(Job.MONOLITH);
+            }
+            if (item.getItemId() == ItemConstants.FURY_TOTEM && hasSkill(Job.FURY_TOTEM)) {
+                removeSkillAndSendPacket(Job.FURY_TOTEM);
             }
         }
     }
@@ -6582,11 +6579,6 @@ public class Char {
         this.hotTimeRewards = hotTimeRewards;
     }
 
-    public void giveStartingItems() {
-        addHotTimeReward(2000005, HotTimeRewardType.GAME_ITEM, 100, 0, 0,0,"A starter gift from " + ServerConfig.SERVER_NAME + " team."); // Power Elixir
-        addHotTimeReward(ItemConstants.HYPER_TELEPORT_ROCK, HotTimeRewardType.GAME_ITEM, 1, 0, 0,0,"A starter gift from " + ServerConfig.SERVER_NAME + " team."); // Hyper Teleport Rock
-    }
-
     public void addHotTimeReward(int itemID, HotTimeRewardType type, int quantity, int meso, int exp, int maplepoint, String description) {
         HotTimeReward reward = new HotTimeReward();
         reward.setCharId(getId());
@@ -6611,7 +6603,6 @@ public class Char {
         query.executeUpdate();
         transaction.commit();
     }
-
 
     public void forceUpdateSecondary(Item oldSecondary, Item newSecondary) {
         if (oldSecondary != null) {

@@ -4,7 +4,6 @@ import net.swordie.ms.client.Client;
 import net.swordie.ms.client.character.Char;
 import net.swordie.ms.client.character.info.HitInfo;
 import net.swordie.ms.client.character.items.Item;
-import net.swordie.ms.client.character.quest.QuestManager;
 import net.swordie.ms.client.character.skills.ForceAtom;
 import net.swordie.ms.client.character.skills.Option;
 import net.swordie.ms.client.character.skills.Skill;
@@ -78,7 +77,17 @@ public class Shade extends Job {
     public static final int SPIRITGATE_SUMMONER = 400051022;
     public static final int SPIRITGATE_SUMMONS = 400051023;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
+            FOX_TROT,
+            SPIRIT_BOND_I
+    };
+
+    private static final int[] questToComplete = new int[] {
+            38000, 38001, 38002, 38003, 38004, 38005,
+            38006, 38007, 38008, 38009, 38010, 38011,
+            38012, 38013, 38014, 38015, 38016, 38017,
+            38018, 38019, 38020, 38021, 38022, 38023,
+            38024, 38025, 38026, 38027
     };
 
     private long spiritWardTimer;
@@ -90,8 +99,10 @@ public class Shade extends Job {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -101,7 +112,6 @@ public class Shade extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isShade(id);
     }
-
 
     public void summonSpiritgateSummons(Position position) {
         if (!chr.hasSkill(SPIRITGATE_SUMMONER)) {
@@ -121,7 +131,6 @@ public class Shade extends Job {
             }
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -387,7 +396,6 @@ public class Shade extends Job {
         return 0;
     }
 
-
     // Skill related methods -------------------------------------------------------------------------------------------
 
     @Override
@@ -515,7 +523,6 @@ public class Shade extends Job {
 
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -583,63 +590,55 @@ public class Shade extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
-        chr.getAvatarData().getCharacterStat().setPosMap(927030050);
+        //CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        //cs.setPosMap(927030050);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        switch (chr.getLevel()) {
-//            case 30:
-//                handleJobAdvance(JobConstants.JobEnum.SHADE_2.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.SHADE_3.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.SHADE_4.getJobId());
-//                chr.addSpToJobByCurrentJob(5);
-//                break;
-//        }
+       switch (chr.getLevel()) {
+            case 30:
+                handleJobAdvance(JobConstants.JobEnum.SHADE_2.getJobId());
+                break;
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.SHADE_3.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.SHADE_4.getJobId());
+                break;
+        }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-
         handleJobAdvance(JobConstants.JobEnum.SHADE_1.getJobId());
-
         handleJobEnd();
     }
-
-    int[] questsToSkip = new int[]{38000, 38001, 38002, 38003, 38004, 38005, 38006, 38007, 38008, 38009, 38010, 38011, 38012, 38013, 38014, 38015, 38016, 38017, 38018, 38019, 38020, 38021, 38022, 38023, 38024, 38025, 38026, 38027};
-
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // SP
+        chr.addSpToJobByCurrentJob(5);
         // Skills
         chr.addSkill(FLASH_FIST, 0, 25);
-        chr.addSkill(FOX_TROT, 1, 1);
-        chr.addSkill(SPIRIT_BOND_I, 1, 1);
-
-        // Items
+        // Weapon: Steel Knuckler
+        Item steelKnuckler = ItemData.getItemDeepCopy(1482110);
+        chr.addItemToInventory(steelKnuckler);
+        // Sub-Weapon: Blue Fox Marble
+        Item blueFox = ItemData.getItemDeepCopy(1353100);
+        chr.forceUpdateSecondary(null, blueFox);
+        // Chair: Pointy-Ear Wooden Chair
         Item chair = ItemData.getItemDeepCopy(3010766);
         chr.addItemToInventory(chair);
-
-        Item medal = ItemData.getItemDeepCopy(1142671);
-        chr.addItemToInventory(medal);
-
-        chr.forceUpdateSecondary(null, ItemData.getItemDeepCopy(1353100)); // Blue Marble
-
-
-
-        QuestManager qm = chr.getQuestManager();
-        for (int questId : questsToSkip) {
-            qm.completeQuest(questId);
+        // Medal: Foxy
+        Item foxy = ItemData.getItemDeepCopy(1142671);
+        chr.addItemToInventory(foxy);
+        // Quests
+        for (int id : questToComplete) {
+            chr.getScriptManager().completeQuestNoRewards(id);
         }
     }
 }

@@ -45,7 +45,7 @@ public class MobGen extends Life {
         mob.setPosition(pos.deepCopy());
         mob.setHomePosition(pos.deepCopy());
         field.spawnLife(mob, null);
-        if (CustomConstants.AUTO_AGGRO) {
+        if (CustomConstants.AUTO_MOB_AGGRO) {
             field.broadcastPacket(MobPool.forceChase(mob.getObjectId(), false));
         }
         setNextPossibleSpawnTime(System.currentTimeMillis() + (getMob().getMobTime() * 1000));

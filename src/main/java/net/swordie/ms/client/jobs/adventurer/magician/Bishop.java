@@ -54,7 +54,6 @@ public class Bishop extends Magician {
     public static final int HOLY_FOUNTAIN = 2311011;
     public static final int MYSTIC_DOOR = 2311002;
 
-
     public static final int HOLY_MAGIC_SHELL_PERSIST = 2320044;
     public static final int HOLY_MAGIC_SHELL_EXTRA_GUARD = 2320043;
     public static final int HOLY_SYMBOL_EXPERIENCE = 2320046;
@@ -78,16 +77,12 @@ public class Bishop extends Magician {
     public static final int RIGHTEOUSLY_INDIGNANT = 2321054;
     public static final int HEAVENS_DOOR = 2321052;
 
-
-    // V skills
+    // V Skills
     public static final int BENEDICTION = 400021003;
     public static final int ANGEL_OF_BALANCE_AVENGE = 400021033;
     public static final int ANGEL_OF_BALANCE_BENEVOLENCE = 400021032;
     public static final int PEACEMAKER_TRAVEL = 400021070;
     public static final int PEACEMAKER_EXPLOSION = 400021077;
-
-
-
 
     public static final List<Integer> unreliableMemBishop = new ArrayList<Integer>() {{
         add(2001008);
@@ -109,7 +104,6 @@ public class Bishop extends Magician {
     public Bishop(Char chr) {
         super(chr);
     }
-
 
     @Override
     public boolean isHandlerOfJob(short id) {
@@ -243,7 +237,6 @@ public class Bishop extends Magician {
             }
         }
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -664,32 +657,29 @@ public class Bishop extends Magician {
         chr.chatMessage("You have been revived by Heaven's Door.");
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.PRIEST.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.BISHOP.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.PRIEST.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BISHOP.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
         super.cancelTimers();
-
     }
 }

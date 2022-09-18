@@ -14,7 +14,6 @@ import net.swordie.ms.client.character.skills.temp.TemporaryStatManager;
 import net.swordie.ms.client.jobs.Job;
 import net.swordie.ms.connection.InPacket;
 import net.swordie.ms.constants.JobConstants;
-import net.swordie.ms.enums.Stat;
 import net.swordie.ms.loaders.ItemData;
 import net.swordie.ms.loaders.SkillData;
 import net.swordie.ms.scripts.ScriptType;
@@ -26,10 +25,9 @@ public class Beginner extends Job {
     public static final int THREE_SNAILS = 1000;
     public static final int RECOVERY = 1001;
     public static final int NIMBLE_FEET = 1002;
-
     public static final int MAPLE_RETURN = 1281;
 
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             RECOVERY,
             NIMBLE_FEET,
             THREE_SNAILS
@@ -37,18 +35,20 @@ public class Beginner extends Job {
 
     public Beginner(Char chr) {
         super(chr);
-
         if (chr != null && chr.getId() != 0 && isHandlerOfJob(chr.getJob())) {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setRootId(0);
-                    skill.setMasterLevel(3);
-                    skill.setMaxLevel(3);
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setRootId(0);
+                        skill.setMasterLevel(3);
+                        skill.setMaxLevel(3);
+                        chr.addSkill(skill);
+                    }
                 }
             }
-            if (!JobConstants.isPathFinder(chr.getJob()) && !JobConstants.isDualBlade(chr.getJob())) {
+            // 1- Dual Blade  2- Cannoneer  3- Path Finder  10- Jett
+            if (chr.getSubJob() != 1 && chr.getSubJob() != 2 && chr.getSubJob() != 3 && chr.getSubJob() != 10) {
                 Skill skill = SkillData.getSkillDeepCopyById(MAPLE_RETURN);
                 skill.setCurrentLevel(skill.getMasterLevel());
                 chr.addSkill(skill);
@@ -103,42 +103,47 @@ public class Beginner extends Job {
     @Override
     public void setCharCreationStats(Char chr) {
         super.setCharCreationStats(chr);
+        /*
+        CharacterStat cs = chr.getAvatarData().getCharacterStat();
+        if (chr.getSubJob() == 1) { // Dual Blade
+            cs.setPosMap(103050900);
+        } else if (chr.getSubJob() == 2) { // Cannoneer
+            cs.setPosMap(3000600);
+        } else if (chr.getSubJob() == 3) { // Path Finder
+            cs.setPosMap(910090301);
+        } else if (chr.getSubJob() == 10) { // Jett
+            cs.setPosMap(552000060);
+        } else {
+            cs.setPosMap(4000011);
+        }
+         */
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                break;
-//            case 100:
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 30:
+                chr.getScriptManager().startScript(0, "job_explorer", ScriptType.Npc);
+                break;
+       }
     }
 
     @Override
     public void handleJobStart() {
         super.handleJobStart();
-        if (!JobConstants.isPathFinder(chr.getJob()) && chr.getSubJob() != 1 && chr.getSubJob() != 2) { //subjob 1 = dual blade // subjob 2 = Cannoneer
-            chr.getScriptManager().startScript(0, "job_explorer", ScriptType.Npc);
-        }
-        if (chr.getSubJob() == 1) {
-            chr.setJob(JobConstants.JobEnum.THIEF.getJobId());
-            chr.setStatAndSendPacket(Stat.job, chr.getJob());
-            chr.addSpToJobByCurrentJob(5);
-        }
-        if (chr.getSubJob() == 2) {
-            chr.setJob(JobConstants.JobEnum.PIRATE_CANNONEER.getJobId());
-            chr.setStatAndSendPacket(Stat.job, chr.getJob());
-            chr.addSpToJobByCurrentJob(3);
-        }
+        chr.getScriptManager().startScript(0, "job_explorer", ScriptType.Npc);
     }
 
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
+        // Chair: The Relaxer
         Item theRelaxer = ItemData.getItemDeepCopy(3010000);
         chr.addItemToInventory(theRelaxer);
+        // Medal: Beginner Adventurer
+        Item beginnerAdventurer = ItemData.getItemDeepCopy(1142107);
+        chr.addItemToInventory(beginnerAdventurer);
     }
 }

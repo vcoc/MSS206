@@ -42,7 +42,6 @@ public class DemonAvenger extends Demon {
     public static final int EXCEED = 30010230;
     public static final int BLOOD_PACT = 30010242;
 
-
     public static final int EXCEED_DOUBLE_SLASH_1 = 31011000; //Special Attack
     public static final int EXCEED_DOUBLE_SLASH_2 = 31011004; //Special Attack
     public static final int EXCEED_DOUBLE_SLASH_3 = 31011005; //Special Attack
@@ -51,7 +50,6 @@ public class DemonAvenger extends Demon {
     public static final int LIFE_SAP = 31010002; //Passive Life Drain
     public static final int OVERLOAD_RELEASE = 31011001; // Special Buff        //TODO TempStat: ExceedOverload
 
-
     public static final int EXCEED_DEMON_STRIKE_1 = 31201000; //Special Attack
     public static final int EXCEED_DEMON_STRIKE_2 = 31201007; //Special Attack
     public static final int EXCEED_DEMON_STRIKE_3 = 31201008; //Special Attack
@@ -59,7 +57,6 @@ public class DemonAvenger extends Demon {
     public static final int EXCEED_DEMON_STRIKE_PURPLE = 31201010; //Special Attack
     public static final int BATTLE_PACT_DA = 31201002; //Buff
     public static final int BAT_SWARM = 31201001;
-
 
     public static final int EXCEED_LUNAR_SLASH_1 = 31211000; //Special Attack
     public static final int EXCEED_LUNAR_SLASH_2 = 31211007; //Special Attack
@@ -71,7 +68,6 @@ public class DemonAvenger extends Demon {
     public static final int SHIELD_CHARGE = 31211011; //Special Attack (Stun Debuff)
     public static final int ADVANCED_LIFE_SAP = 31210006; //Passive Life Drain
     public static final int PAIN_DAMPENER = 31210005;
-
 
     public static final int EXCEED_EXECUTION_1 = 31221000; //Special Attack
     public static final int EXCEED_EXECUTION_2 = 31221009; //Special Attack
@@ -90,8 +86,7 @@ public class DemonAvenger extends Demon {
     public static final int WARD_EVIL = 31211003; //Buff
     public static final int DIABOLIC_RECOVERY = 31211004; //Buff
 
-
-    // V skills
+    // V Skills
     public static final int DEMONIC_FRENZY = 400011010;
     public static final int DEMONIC_FRENZY_AA = 400010010;
     public static final int DEMONIC_BLAST_HOLDDOWN = 400011038;
@@ -101,17 +96,15 @@ public class DemonAvenger extends Demon {
     public static final int DIMENSIONAL_SWORD_SUMMON = 400011090;
     public static final int DIMENSIONAL_SWORD_ATTACK = 400011102;
 
-
-    private static final int[] addedSkills = new int[]{
+    private static final int[] addedSkills = new int[] {
             EXCEED,
             BLOOD_PACT,
             HYPER_POTION_MASTERY,
-            STAR_FORCE_CONVERSION,
+            STAR_FORCE_CONVERSION
     };
 
     private int lastExceedSkill;
     private ScheduledFuture diabolicRecoveryTimer;
-
 
     public DemonAvenger(Char chr) {
         super(chr);
@@ -119,8 +112,10 @@ public class DemonAvenger extends Demon {
             for (int id : addedSkills) {
                 if (!chr.hasSkill(id)) {
                     Skill skill = SkillData.getSkillDeepCopyById(id);
-                    skill.setCurrentLevel(skill.getMasterLevel());
-                    chr.addSkill(skill);
+                    if (skill != null) {
+                        skill.setCurrentLevel(skill.getMasterLevel());
+                        chr.addSkill(skill);
+                    }
                 }
             }
         }
@@ -130,7 +125,6 @@ public class DemonAvenger extends Demon {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isDemonAvenger(id);
     }
-
 
     public void diabolicRecoveryHPRecovery() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -194,7 +188,6 @@ public class DemonAvenger extends Demon {
         EventManager.addEvent(this::drainHPByDemonicBlast, 1, TimeUnit.SECONDS);
     }
 
-
     public void giveDemonFrenzy() {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         if (!chr.hasSkill(DEMONIC_FRENZY) || tsm.getOptByCTSAndSkill(BattlePvPHelenaMark, DEMONIC_FRENZY) == null) {
@@ -229,7 +222,6 @@ public class DemonAvenger extends Demon {
     }
 
     // Attack related methods ------------------------------------------------------------------------------------------
-
 
     @Override
     public void handleAttack(Client c, AttackInfo attackInfo) {
@@ -376,7 +368,6 @@ public class DemonAvenger extends Demon {
             tsm.sendSetStatPacket();
         }
     }
-
 
     private void createNetherShieldForceAtom() {
         Field field = chr.getField();
@@ -655,22 +646,32 @@ public class DemonAvenger extends Demon {
         }
     }
 
+    // Level related methods -------------------------------------------------------------------------------------------
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
         switch (chr.getLevel()) {
-            case 30 -> {
+            case 30: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_AVENGER_2.getJobId());
+                // Sub-Weapon: DA Will
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099006);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099007)); // DA Will
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099007));
+                break;
             }
-            case 60 -> {
+            case 60: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_AVENGER_3.getJobId());
+                // Sub-Weapon: DA Authority
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099007);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099008)); // DA Authority
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099008));
+                break;
             }
-            case 100 -> {
+            case 100: {
+                handleJobAdvance(JobConstants.JobEnum.DEMON_AVENGER_4.getJobId());
+                // Sub-Weapon: DA Extremes
                 Item oldAegis = chr.getEquippedInventory().getItemByItemID(1099008);
-                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099009)); // DA Extremes
+                chr.forceUpdateSecondary(oldAegis, ItemData.getItemDeepCopy(1099009));
+                break;
             }
         }
     }
@@ -681,7 +682,6 @@ public class DemonAvenger extends Demon {
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
-
         // Demonic Frenzy
         if (hitInfo.hpDamage > 0) {
             if (chr.hasSkill(DEMONIC_FRENZY)) {
@@ -693,6 +693,21 @@ public class DemonAvenger extends Demon {
         }
     }
 
+    // Character creation related methods ------------------------------------------------------------------------------
+
+    @Override
+    public void handleJobEnd() {
+        super.handleJobEnd();
+        // Weapon: Blue Ravager
+        Item blueRavager = ItemData.getItemDeepCopy(1232001);
+        chr.addItemToInventory(blueRavager);
+        // Sub-Weapon: Force Shield of Patience
+        Item forceShield = ItemData.getItemDeepCopy(1099006);
+        chr.forceUpdateSecondary(null, forceShield);
+        // Medal: Demon Reborn
+        Item demonReborn = ItemData.getItemDeepCopy(1142341);
+        chr.addItemToInventory(demonReborn);
+    }
 
     @Override
     public void cancelTimers() {
@@ -701,5 +716,4 @@ public class DemonAvenger extends Demon {
         }
         super.cancelTimers();
     }
-
 }

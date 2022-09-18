@@ -31,9 +31,7 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class Warrior extends Beginner {
-
-
-    // V skill
+    // V Skills
     public static final int BLITZ_SHIELD_BUFF = 400001010;
     public static final int BLITZ_SHIELD_ATTACK = 400001011;
 
@@ -47,7 +45,6 @@ public class Warrior extends Beginner {
     public boolean isHandlerOfJob(short id) {
         return id == JobConstants.JobEnum.WARRIOR.getJobId();
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -76,7 +73,6 @@ public class Warrior extends Beginner {
         switch (skillID) {
         }
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -107,7 +103,6 @@ public class Warrior extends Beginner {
             super.handleAttack(c, attackInfo);
         }
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -191,7 +186,6 @@ public class Warrior extends Beginner {
         tsm.sendSetStatPacket();
     }
 
-
     public int alterCooldownSkill(int skillId) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         switch (skillId) {
@@ -208,7 +202,6 @@ public class Warrior extends Beginner {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -223,8 +216,6 @@ public class Warrior extends Beginner {
                 tsm.removeStatsBySkill(BLITZ_SHIELD_BUFF);
             }
         }
-
-
         super.handleHit(c, inPacket, hitInfo);
     }
 
@@ -255,9 +246,8 @@ public class Warrior extends Beginner {
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Warrior's Sword
         Item sword = ItemData.getItemDeepCopy(1302077);
         chr.addItemToInventory(sword);
     }
 }
-

@@ -39,14 +39,12 @@ public class Buccaneer extends Pirate {
     public static final int KNUCKLE_BOOSTER = 5101006; //Buff
     public static final int ENERGY_CHARGE = 5100015; //Energy Gauge
 
-
     public static final int ROLL_OF_THE_DICE_BUCC = 5111007; //Buff
     public static final int ENERGY_BURST = 5111002; //Special Attack
     public static final int ENERGY_BURST_CHARGED = 5111013;
     public static final int STATIC_THUMPER = 5111012; //Special Attack
     public static final int STUN_MASTERY = 5110000;
     public static final int SUPERCHARGE = 5110014;
-
 
     public static final int OCTOPUNCH = 5121007; //Special Attack
     public static final int NAUTILUS_STRIKE_BUCC = 5121013; //Special Attack
@@ -68,13 +66,11 @@ public class Buccaneer extends Pirate {
     public static final int SPEED_INFUSION = 5121009; //Buff
     public static final int CROSSBONES = 5121015; //Buff
 
-
-    // V skills
+    // V Skills
     public static final int MELTDOWN = 400051002;
     public static final int MELTDOWN_ENERGY_ORB = 400051003;
     public static final int LORD_OF_THE_DEEP = 400051015;
     public static final int SERPENT_VORTEX = 400051042;
-
 
     private ScheduledFuture stimulatingConversationTimer;
     private ScheduledFuture lordOfTheDeepTimer;
@@ -152,7 +148,6 @@ public class Buccaneer extends Pirate {
         tsm.sendSetStatPacket();
     }
 
-
     private void lordOfTheDeepActiveEnergyConsumption(AttackInfo attackInfo) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
         if (!tsm.hasStatBySkillId(LORD_OF_THE_DEEP) || !chr.hasSkill(LORD_OF_THE_DEEP)) {
@@ -205,7 +200,6 @@ public class Buccaneer extends Pirate {
         tsm.putCharacterStatValue(UnityOfPower, o1);
         tsm.sendSetStatPacket();
     }
-
 
     public void handleKeyDownSkill(Char chr, int skillID, InPacket inPacket) {
         super.handleKeyDownSkill(chr, skillID, inPacket);
@@ -329,7 +323,6 @@ public class Buccaneer extends Pirate {
         return skill;
     }
 
-
     public void handleSkillRemove(Char chr, int skillID) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
     }
@@ -418,7 +411,6 @@ public class Buccaneer extends Pirate {
         }
         return 0;
     }
-
 
     public void handleShootObj(Char chr, int skillId, int slv) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -592,27 +584,25 @@ public class Buccaneer extends Pirate {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-        TemporaryStatManager tsm = chr.getTemporaryStatManager();
         super.handleHit(c, inPacket, hitInfo);
     }
 
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.MARAUDER.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.BUCCANEER.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.MARAUDER.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.BUCCANEER.getJobId());
+                break;
+        }
     }
 
     @Override

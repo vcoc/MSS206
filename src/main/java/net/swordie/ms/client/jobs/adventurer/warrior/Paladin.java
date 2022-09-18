@@ -47,14 +47,12 @@ public class Paladin extends Warrior {
     public static final int DIVINE_SHIELD = 1210016;
     public static final int BLIZZARD_CHARGE = 1201012;
 
-
     public static final int PARASHOCK_GUARD = 1211014;
     public static final int COMBAT_ORDERS = 1211011;
     public static final int LIGHTNING_CHARGE = 1211008;
     public static final int HP_RECOVERY = 1211010;
     public static final int DIVINE_CHARGE = 1221004;
     public static final int THREATEN = 1211013;
-
 
     public static final int ELEMENTAL_FORCE = 1221015;
     public static final int THREATEN_PERSIST = 1220043;
@@ -71,8 +69,7 @@ public class Paladin extends Warrior {
     public static final int SMITE_SHIELD = 1221052; //Lv160
     public static final int EPIC_ADVENTURE_PALA = 1221053; //Lv190
 
-
-    // V skills
+    // V Skills
     public static final int HAMMERS_OF_THE_RIGHTEOUS = 400011052;
     public static final int GRAND_GUARDIAN = 400011072;
     public static final int HAMMERS_OF_THE_RIGHTEOUS_2 = 400011053;
@@ -87,12 +84,10 @@ public class Paladin extends Warrior {
         super(chr);
     }
 
-
     @Override
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isPaladin(id);
     }
-
 
     private void setDivineEchoLinkedChr(int chrId) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -271,7 +266,6 @@ public class Paladin extends Warrior {
             tsm.sendResetStatPacket();
         }
     }
-
 
     public void handleSkillRemove(Char chr, int skillID) {
         TemporaryStatManager tsm = chr.getTemporaryStatManager();
@@ -470,7 +464,6 @@ public class Paladin extends Warrior {
         tsm.sendResetStatPacket();
     }
 
-
     private Skill getFinalAtkSkill() {
         Skill skill = null;
         if (chr.hasSkill(FINAL_ATTACK_PAGE)) {
@@ -494,7 +487,6 @@ public class Paladin extends Warrior {
         }
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -709,7 +701,6 @@ public class Paladin extends Warrior {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -787,20 +778,19 @@ public class Paladin extends Warrior {
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
-//        short level = chr.getLevel();
-//        switch (level) {
-//            case 60:
-//                handleJobAdvance(JobConstants.JobEnum.WHITE_KNIGHT.getJobId());
-//                break;
-//            case 100:
-//                handleJobAdvance(JobConstants.JobEnum.PALADIN.getJobId());
-//                break;
-//        }
+        short level = chr.getLevel();
+        switch (level) {
+            case 60:
+                handleJobAdvance(JobConstants.JobEnum.WHITE_KNIGHT.getJobId());
+                break;
+            case 100:
+                handleJobAdvance(JobConstants.JobEnum.PALADIN.getJobId());
+                break;
+        }
     }
 
     @Override
     public void cancelTimers() {
-
         if (parashockGuardTimer != null) {
             parashockGuardTimer.cancel(false);
         }

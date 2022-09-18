@@ -36,7 +36,6 @@ import static net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat
  * Created on 12/14/2017.
  */
 public class PinkBean extends Job {
-
     public static final int CHILL_OUT_ZZZ = 131001306; //Buff
     public static final int CHILL_OUT_TONGUE_OUT = 131001106; //Buff
     public static final int CHILL_OUT_MYSTERIOUS_COCKTAIL = 131001406; //Buff
@@ -58,7 +57,6 @@ public class PinkBean extends Job {
     private static final int MAX_YOYO_STACK = 8;
     private ScheduledFuture yoyoStackTimer;
 
-
     public PinkBean(Char chr) {
         super(chr);
         // TODO yoyo Stack timer
@@ -68,7 +66,6 @@ public class PinkBean extends Job {
     public boolean isHandlerOfJob(short id) {
         return JobConstants.isPinkBean(id);
     }
-
 
     // Attack related methods ------------------------------------------------------------------------------------------
 
@@ -160,7 +157,6 @@ public class PinkBean extends Job {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -320,10 +316,8 @@ public class PinkBean extends Job {
         tsm.sendSetStatPacket();
     }
 
-
     @Override
     public void handleHit(Client c, InPacket inPacket, HitInfo hitInfo) {
-
         super.handleHit(c, inPacket, hitInfo);
     }
 

@@ -46,13 +46,10 @@ public class Magician extends Beginner {
     public static final int TELEPORT = 2001009;
     public static final int MAGIC_GUARD = 2001002;
 
-
-    // V skills
+    // V Skills
     public static final int UNRELIABLE_MEMORY = 400001021;
 
-
     private ScheduledFuture infinityTimer;
-
 
     public Magician(Char chr) {
         super(chr);
@@ -121,7 +118,6 @@ public class Magician extends Beginner {
         }
     }
 
-
     private void incrementArcaneAim() {
         Skill skill = chr.getSkill(getArcaneAimSkill());
         if (skill == null) {
@@ -175,7 +171,6 @@ public class Magician extends Beginner {
     public int getFinalAttackSkill() {
         return 0;
     }
-
 
     // Skill related methods -------------------------------------------------------------------------------------------
 
@@ -303,7 +298,6 @@ public class Magician extends Beginner {
     public int alterCooldownSkill(int skillid) {
         switch (skillid) {
         }
-
         return super.alterCooldownSkill(skillid);
     }
 
@@ -387,7 +381,6 @@ public class Magician extends Beginner {
         super.handleRemoveCTS(cts);
     }
 
-
     // Hit related methods ---------------------------------------------------------------------------------------------
 
     @Override
@@ -465,7 +458,6 @@ public class Magician extends Beginner {
         }
     }
 
-
     @Override
     public void handleLevelUp() {
         super.handleLevelUp();
@@ -496,12 +488,11 @@ public class Magician extends Beginner {
     @Override
     public void handleJobEnd() {
         super.handleJobEnd();
-
+        // Weapon: Beginner Magician's Wand
         Item beginnerWand = ItemData.getItemDeepCopy(1372107);
         chr.addItemToInventory(beginnerWand);
-
+        // Weapon: Beginner Magician's Staff
         Item beginnerStaff = ItemData.getItemDeepCopy(1382100);
         chr.addItemToInventory(beginnerStaff);
     }
 }
-

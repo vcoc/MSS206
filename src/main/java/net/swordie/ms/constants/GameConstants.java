@@ -51,12 +51,8 @@ public class GameConstants {
     public static final int MAX_PQ_POINTS = 999_999_999;
     public static final int MAX_DOJO_POINTS = 999_999_999;
 
-    // Custom
-    public static final int PLAYER_START_MAP = 4000011; // Maple Tree Hill
-    public static final int PLAYER_HUB_MAP = 100000000; // Henesys
-
     // GameMaster
-    public static final boolean HIDE_ON_LOGIN = true;
+    public static final boolean HIDE_ON_LOGIN = false;
 
     // Inventory
     public static final int MAX_INV_SLOTS = 128;
