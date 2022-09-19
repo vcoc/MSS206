@@ -1935,7 +1935,7 @@ public class Field {
                 dropMeso(items[i], startPosX, startPosY, endPosX, startPosY);
             }
 
-            //Thread.sleep(Math.max(msDelay, 0)); // todo figure out this gay delay packet
+            //Thread.sleep(Math.max(msDelay, 0)); // TODO: Figure out this delay packet.
         }
     }
 

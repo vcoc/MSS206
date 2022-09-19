@@ -10,6 +10,9 @@ public class ServerConfig {
     // World
     public static final WorldId WORLD_ID = WorldId.Scania;
     public static final String SERVER_NAME = "MapleStory";
+    public static String[] WORLD_SELECTION_BACKGROUND = new String[] { // Backgrounds to be displayed at World Selection page.
+            "SavageT", "adventurePathfinder", "uFarm"
+    };
 
     // Message
     public static String SLIDE_MSG = "Welcome to MapleStory!!"; // Message that is shown at the top of in-game screen.

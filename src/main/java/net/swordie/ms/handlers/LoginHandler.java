@@ -14,7 +14,6 @@ import net.swordie.ms.client.character.items.Equip;
 import net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat;
 import net.swordie.ms.client.jobs.JobManager;
 import net.swordie.ms.connection.InPacket;
-import net.swordie.ms.connection.OutPacket;
 import net.swordie.ms.connection.db.DatabaseManager;
 import net.swordie.ms.connection.packet.Login;
 import net.swordie.ms.connection.packet.MapLoadable;
@@ -153,10 +152,8 @@ public class LoginHandler {
             DatabaseManager.saveToDB(c.getAccount());
             c.setAccount(null);
         }
-        //String[] bgs = new String[]{"Adventure", "adventurePathfinder"};
-        String[] bgs = new String[]{"2018halloween", "2018christMas", "SavageT", "adventurePathfinder", "2018MapleTree", "uFarm"};
         c.write(MapLoadable.setMapTaggedObjectVisisble(Collections.singleton(
-                new MapTaggedObject(String.format("%s", Util.getRandomFromCollection(bgs)), true)
+                new MapTaggedObject(String.format("%s", Util.getRandomFromCollection(ServerConfig.WORLD_SELECTION_BACKGROUND)), true)
         )));
         for (World world : Server.getInstance().getWorlds()) {
             c.write(Login.sendWorldInformation(world, null));
@@ -200,22 +197,18 @@ public class LoginHandler {
         byte worldId = inPacket.decodeByte();
         byte channel = (byte) (inPacket.decodeByte() + 1);
         byte code = 0; // success code
-
-        System.out.println("auth info: " + authInfo);
-
+        log.debug("[AuthInfo] " + authInfo);
         User user = User.getFromDBById(userID);
         userID = userID == 0 ? 1 : userID;
         if (user == null) {
-            c.write(WvsContext.broadcastMsg(BroadcastMsg.popUpMessage("Cannot find user or your token is expired. restart the client and try again.")));
+            c.write(WvsContext.broadcastMsg(BroadcastMsg.popUpMessage("Cannot find user or your token is expired. Restart the client and try again.")));
             return;
         }
         Account acc = user.getAccountByWorldId(worldId);
-
         if (!Server.getInstance().isOnline()) {
             c.write(WvsContext.broadcastMsg(BroadcastMsg.popUpMessage("Server is offline.")));
             return;
         }
-
         if (user.getBanExpireDate() != null && !user.getBanExpireDate().isExpired()) {
             boolean success;
             LoginType result;
@@ -226,7 +219,6 @@ public class LoginHandler {
             c.write(WvsContext.broadcastMsg(BroadcastMsg.popUpMessage(banMsg)));
             return;
         }
-
         user.getAccountByWorldId(worldId);
         if (acc == null) {
             acc = new Account(user, worldId);
@@ -234,28 +226,16 @@ public class LoginHandler {
             user.addAccount(acc);
             DatabaseManager.saveToDB(user); // add to user's list of accounts
         }
-
         if (Server.getInstance().isUserLoggedIn(user)) {
             c.write(Login.checkPasswordResult(false, LoginType.AlreadyConnected, user));
-            OutPacket outPacket = new OutPacket(OutHeader.SET_FIELD.getValue());
-            outPacket.encodeInt(69);
-            outPacket.encodeInt(420);
-            outPacket.encodeInt(1337);
-            outPacket.encodeInt(32767);
-            outPacket.encodeString("lol you gay why you hack tho?");
-            c.write(outPacket);
             return;
         }
-
         c.setUser(user);
         c.setAccount(acc);
         acc.setUser(user);
         user.setCurrentAcc(acc);
         c.setChannel(channel);
-
         c.write(Login.sendAccountInfo(user));
-
-
         c.setWorldId(worldId);
         c.setChannel(channel);
         c.setMachineID(machineID);
@@ -267,7 +247,7 @@ public class LoginHandler {
     public static void handleLogOutWorld(Client c, InPacket inPacket) {
         Server.getInstance().removeUser(c.getUser());
         c.setUser(c.getUser());
-        System.out.println(c.getUser());
+        log.debug("[LogoutWorld] User: " + c.getUser() + " Name: " + c.getUser().getName());
     }
 
     @Handler(op = InHeader.CHECK_DUPLICATE_ID)
