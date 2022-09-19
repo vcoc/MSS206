@@ -11,6 +11,7 @@ import net.swordie.ms.client.character.skills.info.AttackInfo;
 import net.swordie.ms.client.character.skills.info.ForceAtomInfo;
 import net.swordie.ms.client.character.skills.info.SkillInfo;
 import net.swordie.ms.client.character.skills.info.SkillUseInfo;
+import net.swordie.ms.client.character.skills.temp.CharacterTemporaryStat;
 import net.swordie.ms.client.character.skills.temp.TemporaryStatBase;
 import net.swordie.ms.client.character.skills.temp.TemporaryStatManager;
 import net.swordie.ms.client.jobs.Job;
@@ -337,6 +338,9 @@ public class Mechanic extends Citizen {
         Option o1 = new Option();
         Option o2 = new Option();
         Option o3 = new Option();
+        Option o4 = new Option();
+        Option o5 = new Option();
+        Option o6 = new Option();
         switch (skillID) {
             case OPEN_PORTAL_GX9:
                 int duration = si.getValue(time, slv);
@@ -363,6 +367,27 @@ public class Mechanic extends Citizen {
                 o1.nOption = 0;
                 o1.rOption = skillID;
                 tsm.putCharacterStatValue(Mechanic, o1);
+                // Max HP
+                o2.nOption = si.getValue(emhp, slv);
+                o2.rOption = skillID;
+                tsm.putCharacterStatValue(EMHP, o2);
+                // Max MP
+                o3.nOption = si.getValue(emmp, slv);
+                o3.rOption = skillID;
+                tsm.putCharacterStatValue(EMMP, o3);
+                // Speed
+                o4.nValue = si.getValue(indieSpeed, slv);
+                o4.rOption = skillID;
+                tsm.putCharacterStatValue(IndieSpeed, o4);
+                // ATT
+                o5.nOption = si.getValue(epad, slv);
+                o5.rOption = skillID;
+                tsm.putCharacterStatValue(CharacterTemporaryStat.PAD, o5);
+                // DEF
+                o6.nValue = si.getValue(epdd, slv);
+                o6.rOption = skillID;
+                tsm.putCharacterStatValue(IndieDEF, o6);
+
                 tsm.sendSetStatPacket();
 
                 tsb.setNOption(MECH_VEHICLE);
