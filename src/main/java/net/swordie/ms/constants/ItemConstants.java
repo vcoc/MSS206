@@ -2785,11 +2785,11 @@ public class ItemConstants {
     }
 
     public static int getSymbolXenonStatByLevel(int level) {
-        return 78 + level * 39;
+        return 96 + level * 48;
     }
 
     public static int getSymbolDaHpByLevel(int level) {
-        return (2450) + level * 1750;
+        return (4200 + level * 2100) / 10;
     }
 
     public static boolean isCashWeapon(int itemID) {

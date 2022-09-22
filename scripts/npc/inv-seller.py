@@ -1,5 +1,6 @@
-# Custom NPC script used for @sell player command
+# Custom Inventory Seller Script
 # Author: Clueless Cow
+# Custom Server Script
 
 from net.swordie.ms.loaders import ItemData
 from net.swordie.ms.constants import ItemConstants
@@ -10,10 +11,11 @@ def disposeAll():
     chr.dispose()
 
 def sellItemsFromTab(invType = InvType.EQUIP):
-    # query inv info
+    # Query inv info
     inventory = chr.getInventoryByType(invType)
     invItems = inventory.getItems()
     tabName = ""
+
     if invType == InvType.CONSUME:
         tabName = "CONSUME"
     elif invType == InvType.ETC:
@@ -21,29 +23,29 @@ def sellItemsFromTab(invType = InvType.EQUIP):
     else:
         tabName = "EQUIPMENT"
 
-    # empty inv
+    # Empty inv
     if len(invItems) == 0:
-        sm.sendSayOkay("You have no item to sell")
+        sm.sendSayOkay("You have no item to sell in your selected inventory.")
         disposeAll()
         return
 
-    # has at least 1 item in inv
+    # Has at least 1 item in inv
     if len(invItems) == 1:
-        # only has 1 item, proceed to ask for confirmation
+        # Only has 1 item, proceed to ask for confirmation
         sellingItems = list(invItems)
         _itemId = invItems.get(0).getItemId()
         confirmed = sm.sendAskYesNo("Are you sure you want to sell #i{}# #z{}#".format(_itemId, _itemId))
     else:
-        # has more than 1 item, prompt mode selection
+        # Has more than 1 item, prompt mode selection
         optionList = "Please select what you want to sell in your {} tab:\r\n#L1##rEverything#k#l\r\n#L2##gSell between selected items#k#l\r\n#L3#Maybe later#l\r\n".format(tabName)
         option = sm.sendNext(optionList)
         if option:
             if option == 1:
-                # sell everything
+                # Sell everything
                 sellingItems = list(invItems)
                 confirmed = sm.sendAskYesNo("Are you sure you want to sell #rEVERYTHING#k in your Equipment inventory?")
-            if option == 2:
-                # sell from/to
+            elif option == 2:
+                # Sell from/to
                 sortedItems = list(invItems)
                 sortedItems.sort(key=lambda x: x.getBagIndex())
                 itemListTemplate = "This option will sell all available items between STARTING item and ENDING item.\r\nPlease select #r<order>#k item:\r\n"
@@ -59,16 +61,17 @@ def sellItemsFromTab(invType = InvType.EQUIP):
                     soldItemsTemplate += "#i{}# #z{}#\r\n".format(item.getItemId(), item.getItemId(), item.getBagIndex())
                 confirmed = sm.sendAskYesNo(soldItemsTemplate)
             else:
-                # 'maybe later' option / no response
+                # 'Maybe later' option / no response
                 disposeAll()
                 return
-    # finish asking for selling items, proceed to actually sell it
+
+    # Finish asking for selling items, proceed to actually sell it
     if not confirmed:
-        sm.sendSayOkay("Thank you for using my service")
+        sm.sendSayOkay("Thank you for using my service!")
         disposeAll()
         return
 
-    # player confirmed
+    # Player confirmed
     totalMesos = 0
     for item in sellingItems:
         cost = 0
@@ -85,7 +88,7 @@ def sellItemsFromTab(invType = InvType.EQUIP):
         totalMesos += cost
 
     if chr.canAddMoney(totalMesos):
-        # remove item from inv
+        # Remove item from inv
         for soldItem in sellingItems:
             _id = soldItem.getItemId()
             _quantity = soldItem.getQuantity()
@@ -93,7 +96,7 @@ def sellItemsFromTab(invType = InvType.EQUIP):
                 chr.consumeItem(soldItem)
             else:
                 chr.consumeItem(_id, _quantity)
-        # add money
+        # Add money
         chr.addMoney(totalMesos)
         sm.sendSayOkay("You've received {} mesos. Thank you for using my service!".format(totalMesos))
         disposeAll()
